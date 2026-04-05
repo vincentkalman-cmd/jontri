@@ -1,0 +1,219 @@
+{
+  "name": "Weekly KPI Digest",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * 1"
+            }
+          ]
+        }
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"ENTER_COMPANY_NAME\": \"Your Company\",\n  \"ENTER_REPORT_RECIPIENTS\": \"team@company.com\",\n  \"ENTER_GOOGLE_SHEET_ID\": \"your-kpi-sheet\",\n  \"ENTER_SLACK_CHANNEL\": \"kpi-reports\",\n  \"ENTER_KPI_METRICS\": \"revenue, leads, emails_sent, meetings_booked\"\n}",
+        "options": {}
+      },
+      "name": "CLIENT CONFIG - Edit These Values",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "value": "ENTER_SHEET_ID"
+        },
+        "sheetName": {
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "name": "Fetch KPIs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        500,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ENTER_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "var metrics = {}; items.forEach(function(i){Object.keys(i.json).forEach(function(k){if(typeof i.json[k]===\"number\"){metrics[k]=(metrics[k]||0)+i.json[k]}})}); return [{json:{metrics:metrics}}];"
+      },
+      "name": "Calculate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "content": "Analyze KPI metrics, provide 3-5 actionable insights. Metrics: {{$json.metrics}}. Executive summary format."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "AI - Insights",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ENTER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$node[\"CLIENT CONFIG - Edit These Values\"].json.ENTER_REPORT_RECIPIENTS}}",
+        "subject": "Weekly KPI Digest",
+        "message": "={{$json}}",
+        "options": {}
+      },
+      "name": "Email Report",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        200
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ENTER_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": {
+          "value": "kpi-reports"
+        },
+        "text": "Weekly KPI Report:\n{{$json}}",
+        "otherOptions": {}
+      },
+      "name": "Post Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        450
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "ENTER_SLACK_CREDENTIAL_ID",
+          "name": "Slack"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLIENT CONFIG - Edit These Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLIENT CONFIG - Edit These Values": {
+      "main": [
+        [
+          {
+            "node": "Fetch KPIs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch KPIs": {
+      "main": [
+        [
+          {
+            "node": "Calculate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate": {
+      "main": [
+        [
+          {
+            "node": "AI - Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Insights": {
+      "main": [
+        [
+          {
+            "node": "Email Report",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Post Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "reporting"
+    }
+  ],
+  "pinData": {}
+}

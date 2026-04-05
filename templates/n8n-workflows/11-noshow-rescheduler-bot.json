@@ -1,0 +1,311 @@
+{
+  "name": "No-Show Rescheduler Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "calendly-no-show",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"ENTER_COMPANY_NAME\": \"Your Company\",\n  \"ENTER_SENDER_NAME\": \"Your Name\",\n  \"ENTER_SENDER_EMAIL\": \"you@company.com\",\n  \"ENTER_CALENDLY_API_KEY\": \"your-calendly-key\",\n  \"ENTER_TWILIO_PHONE\": \"+1XXXXXXXXXX\",\n  \"ENTER_BOOKING_URL\": \"https://calendly.com/your-link\",\n  \"ENTER_SLACK_CHANNEL\": \"missed-meetings\",\n  \"ENTER_FOLLOWUP_DELAY_MIN\": \"15\"\n}",
+        "options": {}
+      },
+      "name": "CLIENT CONFIG - Edit These Values",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "var p = $json.payload || $json; return [{json: {name: p.name||\"\", email: p.email||\"\", phone: p.phone||\"\", event_type: (p.event_type||{}).name||\"\", scheduled: p.start_time||\"\"}}];"
+      },
+      "name": "Parse No-Show",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 0,
+        "unit": "days"
+      },
+      "name": "Wait 15 min",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "content": "Write a friendly reschedule message to {{$json.name}} who missed their {{$json.event_type}} call. No guilt. Under 80 words. Return JSON: subject, body."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "AI - Reschedule Msg",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ENTER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json.email}}",
+        "subject": "={{$json.subject}}",
+        "message": "={{$json.body}}",
+        "options": {}
+      },
+      "name": "Reschedule Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        200
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ENTER_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"phone\"]}}",
+              "operation": "notEmpty",
+              "value2": ""
+            }
+          ]
+        }
+      },
+      "name": "Has Phone?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        450
+      ]
+    },
+    {
+      "parameters": {
+        "from": "ENTER_TWILIO_PHONE",
+        "to": "={{$json.phone}}",
+        "message": "Hi {{$json.name}}, sorry we missed you! Book a new time: ENTER_BOOKING_URL"
+      },
+      "name": "Send SMS",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        450
+      ],
+      "credentials": {
+        "twilioApi": {
+          "id": "ENTER_TWILIO_CREDENTIAL_ID",
+          "name": "Twilio"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": {
+          "value": "missed-meetings"
+        },
+        "text": "No-show: {{$json.name}} missed {{$json.event_type}}. Reschedule sent.",
+        "otherOptions": {}
+      },
+      "name": "Notify Team",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [
+        1750,
+        300
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "ENTER_SLACK_CREDENTIAL_ID",
+          "name": "Slack"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "value": "ENTER_SHEET_ID"
+        },
+        "sheetName": {
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "name": "Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2000,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ENTER_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLIENT CONFIG - Edit These Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLIENT CONFIG - Edit These Values": {
+      "main": [
+        [
+          {
+            "node": "Parse No-Show",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse No-Show": {
+      "main": [
+        [
+          {
+            "node": "Wait 15 min",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 15 min": {
+      "main": [
+        [
+          {
+            "node": "AI - Reschedule Msg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Reschedule Msg": {
+      "main": [
+        [
+          {
+            "node": "Reschedule Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Has Phone?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reschedule Email": {
+      "main": [
+        [
+          {
+            "node": "Notify Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Phone?": {
+      "main": [
+        [
+          {
+            "node": "Send SMS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send SMS": {
+      "main": [
+        [
+          {
+            "node": "Notify Team",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Team": {
+      "main": [
+        [
+          {
+            "node": "Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "calls"
+    }
+  ],
+  "pinData": {}
+}

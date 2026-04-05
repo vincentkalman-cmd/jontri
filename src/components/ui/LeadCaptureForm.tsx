@@ -7,9 +7,10 @@ export function LeadCaptureForm() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
 
@@ -22,9 +23,23 @@ export function LeadCaptureForm() {
       return;
     }
 
-    // Placeholder: log the lead capture data
-    console.log("Lead captured:", { name, email });
-    setSubmitted(true);
+    setLoading(true);
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong. Please try again.");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (submitted) {
@@ -72,8 +87,8 @@ export function LeadCaptureForm() {
           {error}
         </p>
       )}
-      <Button type="submit" className="w-full sm:w-auto">
-        Get the Free Checklist
+      <Button type="submit" className="w-full sm:w-auto" disabled={loading}>
+        {loading ? "Submitting..." : "Get the Free Checklist"}
       </Button>
       <p className="text-xs text-text-muted">
         No spam, ever. Unsubscribe anytime.

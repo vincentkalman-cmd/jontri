@@ -1,0 +1,53 @@
+{
+  "name": "Jontri Consulting - Automation Template Library",
+  "version": "1.0",
+  "total_templates": 11,
+  "categories": [
+    {
+      "id": "lead-gen",
+      "name": "Lead Gen & Outreach",
+      "icon": "zap",
+      "templates": [
+        "apollo-cold-email-engine",
+        "linkedin-multi-touch-sequence"
+      ]
+    },
+    {
+      "id": "crm-followup",
+      "name": "CRM & Follow-Up Sequences",
+      "icon": "refresh",
+      "templates": [
+        "lead-crm-auto-routing",
+        "no-reply-reengagement-drip"
+      ]
+    },
+    {
+      "id": "client-onboarding",
+      "name": "Client Onboarding",
+      "icon": "rocket",
+      "templates": [
+        "new-client-welcome-flow",
+        "intake-form-project-kickoff"
+      ]
+    },
+    {
+      "id": "reporting",
+      "name": "Reporting & Dashboards",
+      "icon": "bar-chart",
+      "templates": [
+        "weekly-kpi-digest",
+        "live-dashboard-builder"
+      ]
+    },
+    {
+      "id": "calls-scheduling",
+      "name": "Inbound & Outbound Calls + Scheduling",
+      "icon": "phone",
+      "templates": [
+        "ai-voice-inbound-handler",
+        "ai-outbound-dialer",
+        "no-show-rescheduler-bot"
+      ]
+    }
+  ]
+}

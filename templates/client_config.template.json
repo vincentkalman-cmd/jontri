@@ -1,0 +1,63 @@
+{
+  "_instructions": "Copy this file to clients/<client-name>/config.json and fill in the values below.",
+
+  "client": {
+    "name": "",
+    "industry": "",
+    "description": "One-sentence description of the client's business",
+    "website": ""
+  },
+
+  "sender": {
+    "from_name": "Vincent Kalman",
+    "from_title": "Founder",
+    "from_company": "Jontri Consulting",
+    "booking_url": "https://calendly.com/jontri/consultation"
+  },
+
+  "icp": {
+    "person_titles": [
+      "Owner", "President", "CEO", "Founder",
+      "Vice President", "VP", "Executive Director",
+      "Director of Operations", "COO", "General Manager"
+    ],
+    "person_locations": ["Colorado, United States"],
+    "organization_industry_tag_ids": [],
+    "q_keywords": "",
+    "organization_num_employees_ranges": ["1,500"],
+    "per_page": 25
+  },
+
+  "qualification": {
+    "min_score": 6,
+    "ideal_customer_description": "Describe the ideal customer profile in plain English. This gets injected into the AI qualification prompt.",
+    "service_focus": "What specific AI/automation services are most relevant to this client's prospects?"
+  },
+
+  "email": {
+    "tone": "professional but conversational, not pushy",
+    "max_words": 150,
+    "cta_style": "soft",
+    "custom_guidelines": [
+      "Do NOT use phrases like 'I hope this email finds you well'"
+    ]
+  },
+
+  "instantly": {
+    "campaign_prefix": "",
+    "schedule": {
+      "from": "09:00",
+      "to": "17:00",
+      "days": [1, 2, 3, 4, 5],
+      "timezone": "America/Denver"
+    }
+  },
+
+  "website_agent": {
+    "gmaps_query": "Example: 'plumbers in Dallas' or 'wedding venues in Sydney'",
+    "max_leads": 20,
+    "max_site_score": 5,
+    "require_website": true,
+    "deploy_method": "netlify"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "lead-crm-auto-routing",
+  "name": "Lead → CRM Auto-Routing Pipeline",
+  "category": "crm-followup",
+  "complexity": "Low",
+  "deploy_time": "2-3 hrs",
+  "description": "Inbound leads from any source auto-tagged, scored, and routed to the right pipeline stage with owner assignment.",
+
+  "tools": ["GoHighLevel / HubSpot", "n8n", "OpenAI", "Slack"],
+
+  "client_variables": {
+    "company_name": "",
+    "crm_platform": "GoHighLevel or HubSpot",
+    "lead_sources": ["Website form", "Facebook Ads", "Google Ads", "Referral", "Manual"],
+    "pipeline_stages": [
+      "New Lead",
+      "Contacted",
+      "Qualified",
+      "Proposal Sent",
+      "Won",
+      "Lost"
+    ],
+    "routing_rules": {
+      "description": "Define how leads get assigned to team members",
+      "rules": [
+        {"condition": "lead_source = 'Website'", "assign_to": "", "pipeline_stage": "New Lead"},
+        {"condition": "lead_source = 'Referral'", "assign_to": "", "pipeline_stage": "Qualified"},
+        {"condition": "score >= 8", "assign_to": "", "pipeline_stage": "Qualified"}
+      ]
+    },
+    "scoring_criteria": "Describe what makes a hot vs cold lead for this client",
+    "slack_channel": "#new-leads",
+    "notification_recipients": []
+  },
+
+  "api_keys_required": [
+    "GHL_API_KEY or HUBSPOT_API_KEY",
+    "OPENAI_API_KEY",
+    "SLACK_WEBHOOK_URL"
+  ],
+
+  "setup_steps": [
+    "Audit client's current CRM pipeline and custom fields",
+    "Define lead scoring criteria with client",
+    "Map lead sources to CRM tags/properties",
+    "Build n8n workflow: Webhook → AI score → CRM create/update → Route → Notify",
+    "Configure OpenAI prompt for lead scoring based on client criteria",
+    "Set up Slack notifications for high-priority leads",
+    "Connect all lead source webhooks (forms, ads, etc.)",
+    "Test with sample leads from each source",
+    "Train client team on pipeline stages and what to expect"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Webhook Trigger (receives lead from any source)",
+    "Switch - Identify lead source",
+    "OpenAI - Score lead (1-10) based on criteria",
+    "GHL/HubSpot - Create or update contact",
+    "GHL/HubSpot - Assign pipeline stage",
+    "GHL/HubSpot - Assign owner based on routing rules",
+    "IF - High priority (score >= 8)",
+    "Slack - Send notification for hot leads",
+    "Google Sheets - Log all leads for reporting"
+  ],
+
+  "kpis_to_track": [
+    "Leads processed per day",
+    "Average lead score",
+    "Lead-to-qualified conversion rate",
+    "Response time (first contact)",
+    "Pipeline velocity by stage"
+  ]
+}

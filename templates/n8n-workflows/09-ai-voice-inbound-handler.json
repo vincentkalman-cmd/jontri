@@ -1,0 +1,251 @@
+{
+  "name": "AI Voice Inbound Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "vapi-call",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"ENTER_COMPANY_NAME\": \"Your Company\",\n  \"ENTER_TWILIO_PHONE\": \"+1XXXXXXXXXX\",\n  \"ENTER_VAPI_API_KEY\": \"your-vapi-key\",\n  \"ENTER_AI_GREETING\": \"Thank you for calling. How can I help?\",\n  \"ENTER_BUSINESS_HOURS\": \"Mon-Fri 9AM-5PM MST\",\n  \"ENTER_TRANSFER_PHONE\": \"+1XXXXXXXXXX\",\n  \"ENTER_SLACK_CHANNEL\": \"inbound-calls\",\n  \"ENTER_CRM_API_KEY\": \"your-crm-key\"\n}",
+        "options": {}
+      },
+      "name": "CLIENT CONFIG - Edit These Values",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "var c = $json; return [{json: {caller: (c.customer||{}).number||\"\", name: (c.customer||{}).name||\"Unknown\", transcript: c.transcript||\"\", duration: c.duration||0}}];"
+      },
+      "name": "Parse Call",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "content": "Analyze call transcript. Return JSON: intent, summary, sentiment, action_required (bool), recommended_action. Transcript: {{$json.transcript}}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "AI - Analyze",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ENTER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"action_required\"]}}",
+              "operation": "equal",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "name": "Needs Action?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "channel": {
+          "value": "inbound-calls"
+        },
+        "text": "Inbound: {{$json.name}} ({{$json.caller}})\nIntent: {{$json.intent}}\nSummary: {{$json.summary}}",
+        "otherOptions": {}
+      },
+      "name": "Alert Team",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        200
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "ENTER_SLACK_CREDENTIAL_ID",
+          "name": "Slack"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.hubapi.com/crm/v3/objects/calls",
+        "method": "POST",
+        "options": {}
+      },
+      "name": "CRM - Log Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1250,
+        450
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "value": "ENTER_SHEET_ID"
+        },
+        "sheetName": {
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "name": "Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1500,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ENTER_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLIENT CONFIG - Edit These Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLIENT CONFIG - Edit These Values": {
+      "main": [
+        [
+          {
+            "node": "Parse Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Call": {
+      "main": [
+        [
+          {
+            "node": "AI - Analyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Analyze": {
+      "main": [
+        [
+          {
+            "node": "Needs Action?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs Action?": {
+      "main": [
+        [
+          {
+            "node": "Alert Team",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CRM - Log Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert Team": {
+      "main": [
+        [
+          {
+            "node": "Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM - Log Call": {
+      "main": [
+        [
+          {
+            "node": "Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "calls"
+    }
+  ],
+  "pinData": {}
+}

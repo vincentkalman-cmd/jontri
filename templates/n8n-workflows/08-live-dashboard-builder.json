@@ -1,0 +1,262 @@
+{
+  "name": "Live Dashboard Builder",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/30 * * * *"
+            }
+          ]
+        }
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"ENTER_COMPANY_NAME\": \"Your Company\",\n  \"ENTER_GOOGLE_SHEET_ID\": \"your-dashboard-sheet\",\n  \"ENTER_HUBSPOT_API_KEY\": \"your-hubspot-key\",\n  \"ENTER_INSTANTLY_API_KEY\": \"your-instantly-key\",\n  \"ENTER_REFRESH_MINUTES\": \"30\",\n  \"ENTER_SLACK_CHANNEL\": \"dashboard-alerts\",\n  \"ENTER_ALERT_THRESHOLDS\": \"open_rate<20,reply_rate<5\"\n}",
+        "options": {}
+      },
+      "name": "CLIENT CONFIG - Edit These Values",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.hubapi.com/crm/v3/objects/deals",
+        "method": "GET",
+        "options": {}
+      },
+      "name": "Fetch CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.instantly.ai/api/v1/analytics/campaign/summary",
+        "method": "GET",
+        "options": {}
+      },
+      "name": "Fetch Email Stats",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        450
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json: {updated: new Date().toISOString()}}];"
+      },
+      "name": "Merge",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "ENTER_SHEET_ID"
+        },
+        "sheetName": {
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "name": "Update Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1000,
+        300
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ENTER_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "var alerts=[]; var s=$json; if(s.open_rate<20) alerts.push(\"Open rate low\"); if(s.reply_rate<5) alerts.push(\"Reply rate low\"); return [{json:{alerts:alerts,has_alerts:alerts.length>0}}];"
+      },
+      "name": "Check Alerts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"has_alerts\"]}}",
+              "operation": "equal",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "name": "Has Alerts?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "channel": {
+          "value": "dashboard-alerts"
+        },
+        "text": "Dashboard Alert:\n{{$json.alerts}}",
+        "otherOptions": {}
+      },
+      "name": "Send Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [
+        1750,
+        200
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "ENTER_SLACK_CREDENTIAL_ID",
+          "name": "Slack"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLIENT CONFIG - Edit These Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLIENT CONFIG - Edit These Values": {
+      "main": [
+        [
+          {
+            "node": "Fetch CRM",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Email Stats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch CRM": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Email Stats": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Update Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Sheet": {
+      "main": [
+        [
+          {
+            "node": "Check Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Alerts": {
+      "main": [
+        [
+          {
+            "node": "Has Alerts?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Alerts?": {
+      "main": [
+        [
+          {
+            "node": "Send Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "reporting"
+    }
+  ],
+  "pinData": {}
+}

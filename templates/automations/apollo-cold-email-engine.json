@@ -1,0 +1,94 @@
+{
+  "id": "apollo-cold-email-engine",
+  "name": "Apollo → Instantly Cold Email Engine",
+  "category": "lead-gen",
+  "complexity": "Low",
+  "deploy_time": "2-3 hrs",
+  "description": "Scrape leads from Apollo by ICP criteria, enrich them, push to Instantly campaign with AI-personalized first lines.",
+
+  "tools": ["Apollo.io", "Instantly.ai", "OpenAI", "n8n"],
+
+  "client_variables": {
+    "company_name": "",
+    "industry": "",
+    "sender_name": "",
+    "sender_email": "",
+    "sender_title": "",
+    "booking_url": "",
+    "icp": {
+      "target_titles": [],
+      "target_locations": [],
+      "target_industries": [],
+      "keywords": "",
+      "employee_range": "1,500"
+    },
+    "email_tone": "professional but conversational",
+    "value_proposition": "One sentence describing what you solve for the prospect",
+    "pain_points_to_reference": [],
+    "max_emails_per_day": 30,
+    "sending_schedule": {
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      "hours": "09:00-17:00",
+      "timezone": "America/Denver"
+    }
+  },
+
+  "api_keys_required": [
+    "APOLLO_API_KEY",
+    "INSTANTLY_API_KEY",
+    "OPENAI_API_KEY"
+  ],
+
+  "setup_steps": [
+    "Create Apollo saved search with client's ICP filters",
+    "Export Apollo CSV or connect Apollo API",
+    "Create Instantly sending account and warm it for 2 weeks",
+    "Configure n8n workflow: Apollo trigger → AI enrichment → Instantly push",
+    "Set up personalization prompt with client's value prop and tone",
+    "Configure sending limits and schedule in Instantly",
+    "Run test batch of 5-10 leads in dry-run mode",
+    "Review generated emails with client for tone approval",
+    "Launch campaign with daily monitoring"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Schedule Trigger (daily)",
+    "Apollo API - Search People",
+    "Filter - Apply ICP criteria",
+    "OpenAI - Qualify lead (score 1-10)",
+    "IF - Score >= threshold",
+    "OpenAI - Generate personalized email",
+    "Instantly API - Add lead to campaign",
+    "Google Sheets - Log results"
+  ],
+
+  "email_sequence": [
+    {
+      "step": 1,
+      "delay_days": 0,
+      "type": "initial_outreach",
+      "template": "AI-personalized cold email with hook + pain point + soft CTA"
+    },
+    {
+      "step": 2,
+      "delay_days": 3,
+      "type": "follow_up",
+      "template": "Short bump email referencing original message"
+    },
+    {
+      "step": 3,
+      "delay_days": 5,
+      "type": "value_add",
+      "template": "Share relevant case study or insight, re-offer consultation"
+    }
+  ],
+
+  "kpis_to_track": [
+    "Emails sent per day",
+    "Open rate",
+    "Reply rate",
+    "Positive reply rate",
+    "Meetings booked",
+    "Cost per meeting"
+  ]
+}

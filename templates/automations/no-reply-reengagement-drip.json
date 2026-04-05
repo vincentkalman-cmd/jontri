@@ -1,0 +1,76 @@
+{
+  "id": "no-reply-reengagement-drip",
+  "name": "No-Reply Re-engagement Drip",
+  "category": "crm-followup",
+  "complexity": "Very Low",
+  "deploy_time": "1-2 hrs",
+  "description": "Detect contacts who haven't replied in X days, auto-enroll in a re-engagement sequence with AI-written personalized messages.",
+
+  "tools": ["GoHighLevel", "n8n", "OpenAI"],
+
+  "client_variables": {
+    "company_name": "",
+    "crm_platform": "GoHighLevel",
+    "no_reply_threshold_days": 7,
+    "max_reengagement_attempts": 3,
+    "sender_name": "",
+    "sender_email": "",
+    "tone": "friendly, not desperate",
+    "value_proposition": "",
+    "offer_or_incentive": "Optional: free resource, discount, or consultation to re-engage",
+    "exclude_tags": ["Do Not Contact", "Won", "Lost"],
+    "mark_as_lost_after": "3 failed re-engagement attempts"
+  },
+
+  "api_keys_required": [
+    "GHL_API_KEY",
+    "OPENAI_API_KEY"
+  ],
+
+  "setup_steps": [
+    "Define no-reply threshold with client (default 7 days)",
+    "Identify CRM tags/stages that qualify for re-engagement",
+    "Set up exclusion rules (already won, do-not-contact, etc.)",
+    "Build n8n workflow: Schedule → Query CRM for stale leads → AI message → Send",
+    "Create OpenAI prompt for re-engagement email variations",
+    "Configure escalation: mark as lost after max attempts",
+    "Test with 3-5 stale contacts",
+    "Launch with weekly review of re-engagement rates"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Schedule Trigger (daily morning)",
+    "GHL API - Query contacts with no reply > X days",
+    "Filter - Exclude tagged contacts",
+    "OpenAI - Generate re-engagement message (varies by attempt #)",
+    "GHL API - Send email/SMS",
+    "GHL API - Update contact tag (re-engagement attempt #)",
+    "IF - Max attempts reached",
+    "GHL API - Move to Lost stage"
+  ],
+
+  "drip_sequence": [
+    {
+      "attempt": 1,
+      "delay_days": 0,
+      "message_type": "Friendly check-in, reference original conversation"
+    },
+    {
+      "attempt": 2,
+      "delay_days": 4,
+      "message_type": "Value-add: share relevant tip or resource"
+    },
+    {
+      "attempt": 3,
+      "delay_days": 7,
+      "message_type": "Breakup email: 'Should I close your file?' with easy reply option"
+    }
+  ],
+
+  "kpis_to_track": [
+    "Re-engagement rate per attempt",
+    "Total contacts recovered",
+    "Revenue from re-engaged leads",
+    "Time saved vs manual follow-up"
+  ]
+}

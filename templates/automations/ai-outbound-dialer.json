@@ -1,0 +1,99 @@
+{
+  "id": "ai-outbound-dialer",
+  "name": "AI Outbound Dialer — Cold Call + Book",
+  "category": "calls-scheduling",
+  "complexity": "Medium-High",
+  "deploy_time": "5-8 hrs",
+  "description": "AI calls a list of prospects, delivers a pitch, handles objections, and books qualified leads into a sales rep's calendar.",
+
+  "tools": ["VAPI / Bland AI", "n8n", "Apollo.io", "Calendly", "GHL"],
+
+  "client_variables": {
+    "company_name": "",
+    "voice_provider": "VAPI or Bland AI",
+    "voice_persona": {
+      "name": "",
+      "gender": "male or female",
+      "accent": "neutral American",
+      "personality": "confident, conversational, not pushy"
+    },
+    "opening_script": "Hi [First Name], this is [AI Name] from [Company]. I'm reaching out because...",
+    "pitch": {
+      "value_proposition": "",
+      "key_benefits": [],
+      "social_proof": "We recently helped [similar company] achieve [result]"
+    },
+    "objection_handling": {
+      "not_interested": "I totally understand. Just curious - what's your biggest challenge with [pain point] right now?",
+      "too_busy": "I respect your time. Would it make sense to book a quick 15-min call when it works better?",
+      "already_have_solution": "That's great! How's that working for you? We've helped companies like yours get even better results.",
+      "send_info": "Absolutely, I'll send that right over. What's the best email? And would it help to have a quick walkthrough?",
+      "how_much": "Great question. It depends on scope, but our clients typically see ROI within [timeframe]. Worth a quick chat?"
+    },
+    "qualification_criteria": [
+      "Decision maker or influencer",
+      "Has budget authority",
+      "Expressed a pain point",
+      "Agreed to next step"
+    ],
+    "booking_calendar": "",
+    "call_list_source": "Apollo CSV or CRM query",
+    "max_calls_per_day": 50,
+    "calling_hours": {
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      "hours": "09:00-17:00",
+      "timezone": "America/Denver"
+    },
+    "do_not_call_list": "Path or tag for DNC contacts",
+    "voicemail_script": "Hi [First Name], this is [AI Name] from [Company]. I was calling about... Give us a call back at [number] or book a time at [booking_url]."
+  },
+
+  "api_keys_required": [
+    "VAPI_API_KEY or BLAND_AI_API_KEY",
+    "APOLLO_API_KEY (if sourcing leads)",
+    "CALENDLY_API_KEY",
+    "GHL_API_KEY"
+  ],
+
+  "setup_steps": [
+    "Define target prospect list and source (Apollo/CRM)",
+    "Create AI voice agent with client's pitch and persona",
+    "Program objection handling responses",
+    "Set up voicemail detection and voicemail script",
+    "Connect Calendly for real-time booking during calls",
+    "Build n8n workflow: Pull leads → Initiate calls → Process outcomes → CRM update",
+    "Configure DNC list checking before each call",
+    "Set up daily call limits and schedule",
+    "Test with 10 internal/test calls",
+    "Review call recordings and refine script",
+    "Gradual ramp: 10 calls/day → 25 → 50",
+    "Weekly review of conversion rates and script optimization"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Schedule Trigger (daily at start of calling hours)",
+    "Apollo/GHL - Pull today's call list",
+    "Filter - Remove DNC and recently contacted",
+    "VAPI/Bland AI - Initiate outbound call batch",
+    "Webhook - Call completed callback",
+    "Code - Parse transcript, extract qualification data",
+    "IF - Qualified (meeting booked)",
+    "GHL - Update contact with call outcome",
+    "Calendly - Verify booking",
+    "Gmail - Send confirmation to prospect",
+    "Slack - Notify sales rep of booked meeting",
+    "Google Sheets - Log all call outcomes"
+  ],
+
+  "kpis_to_track": [
+    "Calls attempted per day",
+    "Connect rate (answered vs total)",
+    "Conversation rate (talked > 30 seconds)",
+    "Qualification rate",
+    "Meetings booked per day",
+    "Voicemails left",
+    "Callback rate from voicemails",
+    "Cost per meeting booked",
+    "Objection frequency by type"
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "name": "Lead-to-CRM Auto-Routing",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "new-lead-intake",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"ENTER_COMPANY_NAME\": \"Your Company\",\n  \"ENTER_CRM_API_KEY\": \"your-crm-key\",\n  \"ENTER_CRM_BASE_URL\": \"https://api.hubapi.com\",\n  \"ENTER_SLACK_CHANNEL\": \"new-leads\",\n  \"ENTER_SCORE_THRESHOLD\": \"7\",\n  \"ENTER_ASSIGN_TO_EMAIL\": \"sales@company.com\"\n}",
+        "options": {}
+      },
+      "name": "CLIENT CONFIG - Edit These Values",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "content": "Analyze lead, return JSON: score (1-10), category (hot/warm/cold), notes. Lead: {{$json}}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "AI - Score Lead",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ENTER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"category\"]}}",
+              "operation": "equal",
+              "value2": "hot"
+            }
+          ]
+        }
+      },
+      "name": "Hot Lead?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.hubapi.com/crm/v3/objects/contacts",
+        "method": "POST",
+        "options": {}
+      },
+      "name": "CRM - Priority Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "channel": {
+          "value": "new-leads"
+        },
+        "text": "New hot lead! {{$json.first_name}} at {{$json.company}} - Score: {{$json.score}}/10",
+        "otherOptions": {}
+      },
+      "name": "Alert Sales",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        200
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "ENTER_SLACK_CREDENTIAL_ID",
+          "name": "Slack"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.hubapi.com/crm/v3/objects/contacts",
+        "method": "POST",
+        "options": {}
+      },
+      "name": "CRM - Standard Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        450
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "value": "ENTER_SHEET_ID"
+        },
+        "sheetName": {
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "name": "Log Lead",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1250,
+        450
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ENTER_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLIENT CONFIG - Edit These Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLIENT CONFIG - Edit These Values": {
+      "main": [
+        [
+          {
+            "node": "AI - Score Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Score Lead": {
+      "main": [
+        [
+          {
+            "node": "Hot Lead?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hot Lead?": {
+      "main": [
+        [
+          {
+            "node": "CRM - Priority Contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "CRM - Standard Contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM - Priority Contact": {
+      "main": [
+        [
+          {
+            "node": "Alert Sales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CRM - Standard Contact": {
+      "main": [
+        [
+          {
+            "node": "Log Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "crm"
+    }
+  ],
+  "pinData": {}
+}

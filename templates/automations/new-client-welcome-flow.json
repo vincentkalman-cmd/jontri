@@ -1,0 +1,72 @@
+{
+  "id": "new-client-welcome-flow",
+  "name": "New Client Welcome & Setup Flow",
+  "category": "client-onboarding",
+  "complexity": "Low",
+  "deploy_time": "2-3 hrs",
+  "description": "Triggered on deal close - sends welcome email, creates client folder, assigns tasks, schedules kickoff call, notifies team.",
+
+  "tools": ["n8n", "Google Drive", "Calendly", "Slack", "Gmail"],
+
+  "client_variables": {
+    "company_name": "",
+    "welcome_email_from": "",
+    "welcome_email_template": "Customize the welcome email content",
+    "google_drive_parent_folder": "ID of parent folder where client folders are created",
+    "folder_structure": [
+      "01 - Contracts & Agreements",
+      "02 - Onboarding",
+      "03 - Deliverables",
+      "04 - Reports",
+      "05 - Assets & Branding"
+    ],
+    "kickoff_calendly_link": "",
+    "slack_channel": "#client-onboarding",
+    "team_members_to_notify": [],
+    "onboarding_tasks": [
+      "Send welcome packet",
+      "Schedule kickoff call",
+      "Collect brand assets",
+      "Set up client in CRM",
+      "Create project in PM tool"
+    ],
+    "task_assignees": {},
+    "trigger": "CRM deal moved to 'Won' stage"
+  },
+
+  "api_keys_required": [
+    "GOOGLE_SERVICE_ACCOUNT",
+    "GMAIL_OAUTH",
+    "SLACK_WEBHOOK_URL",
+    "CALENDLY_API_KEY"
+  ],
+
+  "setup_steps": [
+    "Create Google Drive folder template structure",
+    "Draft welcome email template with client's branding",
+    "Set up Calendly event type for kickoff calls",
+    "Build n8n workflow: CRM trigger → parallel actions",
+    "Configure Slack notification with client summary",
+    "Set up task creation in PM tool (Notion/ClickUp/Asana)",
+    "Test full flow with a dummy client",
+    "Document for client's team so they know what happens automatically"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Webhook Trigger (CRM deal closed-won)",
+    "Google Drive - Create client folder from template",
+    "Gmail - Send personalized welcome email",
+    "Calendly - Generate booking link for kickoff",
+    "Slack - Notify team with client details",
+    "HTTP Request - Create tasks in PM tool",
+    "Google Sheets - Log new client to master tracker"
+  ],
+
+  "kpis_to_track": [
+    "Onboarding completion time",
+    "Client response time to welcome email",
+    "Kickoff call booking rate",
+    "Tasks completed on time",
+    "Client satisfaction score (post-onboarding survey)"
+  ]
+}

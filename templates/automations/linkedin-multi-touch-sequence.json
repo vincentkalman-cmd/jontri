@@ -1,0 +1,91 @@
+{
+  "id": "linkedin-multi-touch-sequence",
+  "name": "LinkedIn + Email Multi-Touch Sequence",
+  "category": "lead-gen",
+  "complexity": "Low",
+  "deploy_time": "3-4 hrs",
+  "description": "Automated LinkedIn connection → message → email follow-up sequence with reply detection and auto-pause.",
+
+  "tools": ["PhantomBuster", "Instantly.ai", "n8n", "OpenAI"],
+
+  "client_variables": {
+    "company_name": "",
+    "industry": "",
+    "linkedin_profile_url": "Client's LinkedIn profile to send from",
+    "sender_name": "",
+    "sender_email": "",
+    "booking_url": "",
+    "icp": {
+      "linkedin_search_url": "LinkedIn Sales Navigator search URL",
+      "target_titles": [],
+      "target_industries": [],
+      "target_locations": []
+    },
+    "connection_note": "Short personalized connection request (max 300 chars)",
+    "value_proposition": "",
+    "tone": "professional but conversational"
+  },
+
+  "api_keys_required": [
+    "PHANTOMBUSTER_API_KEY",
+    "INSTANTLY_API_KEY",
+    "OPENAI_API_KEY"
+  ],
+
+  "setup_steps": [
+    "Set up PhantomBuster LinkedIn session cookie",
+    "Create Sales Navigator search with client's ICP",
+    "Configure PhantomBuster LinkedIn Auto-Connect phantom",
+    "Build n8n workflow: PhantomBuster → delay → LinkedIn message → email fallback",
+    "Set up OpenAI personalization for connection notes and messages",
+    "Configure reply detection webhook to auto-pause sequence",
+    "Set daily LinkedIn action limits (20-30 connections/day)",
+    "Create Instantly campaign for email follow-up leg",
+    "Test with 5 manual connections first",
+    "Launch with monitoring for LinkedIn warnings"
+  ],
+
+  "sequence": [
+    {
+      "step": 1,
+      "day": 0,
+      "channel": "LinkedIn",
+      "action": "Send connection request with personalized note"
+    },
+    {
+      "step": 2,
+      "day": 2,
+      "channel": "LinkedIn",
+      "action": "If accepted, send intro DM with value prop"
+    },
+    {
+      "step": 3,
+      "day": 5,
+      "channel": "Email",
+      "action": "If no LinkedIn reply, send email referencing LinkedIn connection"
+    },
+    {
+      "step": 4,
+      "day": 8,
+      "channel": "Email",
+      "action": "Follow-up email with case study or relevant insight"
+    }
+  ],
+
+  "safety_limits": {
+    "max_connections_per_day": 25,
+    "max_messages_per_day": 50,
+    "max_emails_per_day": 30,
+    "pause_on_reply": true,
+    "pause_on_linkedin_warning": true
+  },
+
+  "kpis_to_track": [
+    "Connection acceptance rate",
+    "LinkedIn reply rate",
+    "Email open rate",
+    "Email reply rate",
+    "Meetings booked",
+    "Channel attribution (LinkedIn vs Email)"
+  ]
+}

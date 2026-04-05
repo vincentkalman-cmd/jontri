@@ -1,0 +1,74 @@
+{
+  "id": "no-show-rescheduler-bot",
+  "name": "No-Show Re-scheduler Bot",
+  "category": "calls-scheduling",
+  "complexity": "Very Low",
+  "deploy_time": "1-2 hrs",
+  "description": "Detects missed appointments, auto-sends SMS + email with a one-click reschedule link, follows up 2x before marking as lost.",
+
+  "tools": ["Calendly / GHL", "n8n", "Twilio SMS", "Gmail"],
+
+  "client_variables": {
+    "company_name": "",
+    "calendar_platform": "Calendly or GHL",
+    "sender_name": "",
+    "sender_email": "",
+    "sender_phone": "Twilio number for SMS",
+    "reschedule_link": "Calendly/GHL booking link",
+    "no_show_detection": {
+      "method": "Calendly webhook or check 15 min after appointment time",
+      "grace_period_minutes": 10
+    },
+    "sms_message_1": "Hey {{first_name}}, we missed you for your appointment today with {{company_name}}. No worries! Reschedule here: {{reschedule_link}}",
+    "email_subject_1": "Missed you today — let's reschedule",
+    "email_body_1": "Hi {{first_name}},\n\nLooks like we missed each other today. Totally understand — things come up!\n\nHere's a quick link to grab a new time: {{reschedule_link}}\n\nLooking forward to connecting.\n\n{{sender_name}}",
+    "followup_2_delay_days": 2,
+    "sms_message_2": "Hi {{first_name}}, just following up on the missed appointment with {{company_name}}. Still interested? Book a new time: {{reschedule_link}}",
+    "max_attempts": 2,
+    "mark_lost_after_max": true,
+    "lost_tag": "No-Show - Lost"
+  },
+
+  "api_keys_required": [
+    "CALENDLY_API_KEY or GHL_API_KEY",
+    "TWILIO_ACCOUNT_SID",
+    "TWILIO_AUTH_TOKEN",
+    "GMAIL_OAUTH"
+  ],
+
+  "setup_steps": [
+    "Set up Calendly/GHL no-show webhook or detection logic",
+    "Configure Twilio SMS sending number",
+    "Customize SMS and email templates with client's branding/tone",
+    "Build n8n workflow: No-show detected → SMS + Email → Wait → Follow-up → Mark lost",
+    "Set up reschedule link that auto-populates contact info",
+    "Configure CRM tag updates for tracking",
+    "Test with a fake no-show appointment",
+    "Launch and monitor reschedule rates"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Webhook Trigger (no-show event from Calendly/GHL)",
+    "Twilio - Send SMS #1 with reschedule link",
+    "Gmail - Send email #1 with reschedule link",
+    "GHL - Tag contact as 'No-Show Attempt 1'",
+    "Wait - 2 days",
+    "IF - Has rescheduled? (check Calendly/GHL)",
+    "Twilio - Send SMS #2 (if not rescheduled)",
+    "Gmail - Send email #2",
+    "GHL - Tag as 'No-Show Attempt 2'",
+    "Wait - 3 days",
+    "IF - Still not rescheduled",
+    "GHL - Tag as 'No-Show - Lost'",
+    "Google Sheets - Log outcome"
+  ],
+
+  "kpis_to_track": [
+    "No-show rate (total)",
+    "Reschedule rate after attempt 1",
+    "Reschedule rate after attempt 2",
+    "Total appointments recovered",
+    "Revenue recovered from rescheduled appointments",
+    "SMS vs email response rate"
+  ]
+}

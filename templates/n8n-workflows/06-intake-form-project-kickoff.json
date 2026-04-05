@@ -1,0 +1,239 @@
+{
+  "name": "Intake Form to Project Kickoff",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "intake-form",
+        "httpMethod": "POST",
+        "responseMode": "onReceived"
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"ENTER_COMPANY_NAME\": \"Your Company\",\n  \"ENTER_SENDER_NAME\": \"Your Name\",\n  \"ENTER_SENDER_EMAIL\": \"you@company.com\",\n  \"ENTER_SLACK_CHANNEL\": \"new-projects\",\n  \"ENTER_PM_EMAIL\": \"pm@company.com\",\n  \"ENTER_CALENDLY_EVENT\": \"kickoff-call\"\n}",
+        "options": {}
+      },
+      "name": "CLIENT CONFIG - Edit These Values",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "var d = $json; return [{json: {name: d.name || \"Unknown\", email: d.email || \"\", company: d.company || \"\", services: d.services || \"\", budget: d.budget || \"\"}}];"
+      },
+      "name": "Parse Form",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "content": "Recommend services and scope. Client: {{$json.name}}, Company: {{$json.company}}, Services: {{$json.services}}, Budget: {{$json.budget}}. Return JSON: recommended_services, scope_summary, priority."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "AI - Assess",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ENTER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json.email}}",
+        "subject": "Project request received!",
+        "message": "Hi {{$json.name}}, thanks! We will review within 24 hours.",
+        "options": {}
+      },
+      "name": "Confirmation",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        200
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ENTER_GMAIL_CREDENTIAL_ID",
+          "name": "Gmail"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": {
+          "value": "new-projects"
+        },
+        "text": "New intake: {{$json.name}} ({{$json.company}}) - {{$json.services}} - Budget: {{$json.budget}}",
+        "otherOptions": {}
+      },
+      "name": "Alert PM",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        450
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "ENTER_SLACK_CREDENTIAL_ID",
+          "name": "Slack"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.calendly.com/scheduling_links",
+        "method": "POST",
+        "options": {}
+      },
+      "name": "Calendly Invite",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1250,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "value": "ENTER_SHEET_ID"
+        },
+        "sheetName": {
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "name": "Log",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1250,
+        450
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ENTER_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLIENT CONFIG - Edit These Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLIENT CONFIG - Edit These Values": {
+      "main": [
+        [
+          {
+            "node": "Parse Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Form": {
+      "main": [
+        [
+          {
+            "node": "AI - Assess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Assess": {
+      "main": [
+        [
+          {
+            "node": "Confirmation",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Alert PM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmation": {
+      "main": [
+        [
+          {
+            "node": "Calendly Invite",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert PM": {
+      "main": [
+        [
+          {
+            "node": "Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "onboarding"
+    }
+  ],
+  "pinData": {}
+}

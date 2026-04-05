@@ -1,0 +1,77 @@
+{
+  "id": "intake-form-project-kickoff",
+  "name": "Intake Form → Project Kickoff Automator",
+  "category": "client-onboarding",
+  "complexity": "Medium",
+  "deploy_time": "3-5 hrs",
+  "description": "Client fills intake form → auto-creates project in PM tool, generates SOW draft, sends to client for e-sign.",
+
+  "tools": ["Typeform / Tally", "n8n", "Notion / ClickUp", "PandaDoc", "OpenAI"],
+
+  "client_variables": {
+    "company_name": "",
+    "intake_form_platform": "Typeform or Tally",
+    "pm_tool": "Notion or ClickUp",
+    "intake_questions": [
+      "Company name",
+      "Primary contact name & email",
+      "Industry",
+      "Current pain points",
+      "Desired outcomes / goals",
+      "Budget range",
+      "Timeline expectations",
+      "Existing tools & software",
+      "Team size",
+      "Decision maker(s)"
+    ],
+    "sow_template_id": "PandaDoc template ID for Statement of Work",
+    "project_template_id": "Notion/ClickUp template ID for project setup",
+    "pricing_tiers": {
+      "starter": {"name": "", "price": "", "includes": []},
+      "growth": {"name": "", "price": "", "includes": []},
+      "enterprise": {"name": "", "price": "", "includes": []}
+    },
+    "notification_email": "",
+    "slack_channel": "#new-projects"
+  },
+
+  "api_keys_required": [
+    "TYPEFORM_API_KEY or TALLY_WEBHOOK",
+    "NOTION_API_KEY or CLICKUP_API_KEY",
+    "PANDADOC_API_KEY",
+    "OPENAI_API_KEY",
+    "SLACK_WEBHOOK_URL"
+  ],
+
+  "setup_steps": [
+    "Build intake form with all required questions",
+    "Create PandaDoc SOW template with merge fields",
+    "Create project template in Notion/ClickUp",
+    "Build n8n workflow: Form submission → AI analysis → PM setup → SOW generation",
+    "Configure OpenAI prompt to analyze intake and recommend package/scope",
+    "Set up PandaDoc merge fields mapping from form data",
+    "Configure e-sign workflow with client notification",
+    "Test full flow: form → project → SOW → e-sign",
+    "Set up Slack notification for team awareness"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Webhook Trigger (form submission)",
+    "OpenAI - Analyze intake, recommend scope & package",
+    "Notion/ClickUp - Create project from template",
+    "Notion/ClickUp - Populate with intake data & AI recommendations",
+    "PandaDoc - Create SOW from template with merge fields",
+    "PandaDoc - Send for e-signature",
+    "Slack - Notify team with project summary",
+    "Gmail - Send client confirmation with project timeline",
+    "Google Sheets - Log to master project tracker"
+  ],
+
+  "kpis_to_track": [
+    "Form-to-project creation time",
+    "SOW signing rate",
+    "Average time to signature",
+    "Client drop-off points in intake",
+    "Revenue per project tier"
+  ]
+}

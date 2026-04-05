@@ -1,0 +1,79 @@
+{
+  "id": "weekly-kpi-digest",
+  "name": "Weekly KPI Digest (Auto-Send)",
+  "category": "reporting",
+  "complexity": "Low",
+  "deploy_time": "3-4 hrs",
+  "description": "Pulls data from client's tools every week, compiles into a formatted report, emails it to stakeholders automatically.",
+
+  "tools": ["n8n", "Google Sheets", "OpenAI", "Gmail", "Airtable"],
+
+  "client_variables": {
+    "company_name": "",
+    "report_name": "Weekly Performance Report",
+    "send_day": "Monday",
+    "send_time": "08:00",
+    "timezone": "America/Denver",
+    "recipients": [],
+    "data_sources": [
+      {
+        "name": "Sales CRM",
+        "type": "API or Google Sheets",
+        "metrics": ["New leads", "Deals closed", "Revenue", "Pipeline value"]
+      },
+      {
+        "name": "Marketing",
+        "type": "Google Sheets or API",
+        "metrics": ["Website traffic", "Ad spend", "Cost per lead", "Conversion rate"]
+      },
+      {
+        "name": "Operations",
+        "type": "Google Sheets or Airtable",
+        "metrics": ["Projects active", "Tasks completed", "Client satisfaction"]
+      }
+    ],
+    "kpi_targets": {
+      "description": "Define target values for each KPI to show red/green status"
+    },
+    "report_format": "HTML email with charts or PDF attachment",
+    "include_ai_insights": true,
+    "ai_insight_prompt": "Analyze this week's KPIs vs last week. Highlight wins, concerns, and one action item."
+  },
+
+  "api_keys_required": [
+    "GOOGLE_SERVICE_ACCOUNT",
+    "GMAIL_OAUTH",
+    "OPENAI_API_KEY",
+    "AIRTABLE_API_KEY (if used)"
+  ],
+
+  "setup_steps": [
+    "Identify all data sources and KPIs with client",
+    "Set up Google Sheets or Airtable as data aggregation layer",
+    "Connect each data source to the aggregation sheet",
+    "Design report email template (HTML) with client branding",
+    "Build n8n workflow: Schedule → Pull data → AI analyze → Format → Send",
+    "Configure OpenAI prompt for weekly insights generation",
+    "Set up target thresholds for red/yellow/green indicators",
+    "Test with one week of real data",
+    "Get client approval on format and launch"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Schedule Trigger (weekly, Monday 8am)",
+    "Google Sheets - Pull this week's data",
+    "Google Sheets - Pull last week's data for comparison",
+    "Code - Calculate week-over-week changes",
+    "OpenAI - Generate insights and action items",
+    "Code - Build HTML report with KPIs and insights",
+    "Gmail - Send to stakeholders",
+    "Google Sheets - Log report sent (audit trail)"
+  ],
+
+  "kpis_to_track": [
+    "Report delivery success rate",
+    "Stakeholder open rate",
+    "Action items generated per week",
+    "Data freshness (hours since last source update)"
+  ]
+}

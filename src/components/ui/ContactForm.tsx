@@ -18,6 +18,8 @@ export function ContactForm() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
   function validate(): boolean {
@@ -33,11 +35,27 @@ export function ContactForm() {
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
+    setLoading(true);
+    setSubmitError("");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong. Please try again.");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleChange(
@@ -148,8 +166,11 @@ export function ContactForm() {
         )}
       </div>
 
-      <Button type="submit" className="w-full">
-        Send Message
+      {submitError && (
+        <p role="alert" className="text-sm text-red-400">{submitError}</p>
+      )}
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? "Sending..." : "Send Message"}
       </Button>
     </form>
   );

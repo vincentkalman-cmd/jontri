@@ -1,0 +1,302 @@
+{
+  "name": "Apollo Cold Email Engine",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1-5"
+            }
+          ]
+        }
+      },
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        50,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"ENTER_COMPANY_NAME\": \"Your Company\",\n  \"ENTER_SENDER_NAME\": \"Your Name\",\n  \"ENTER_SENDER_EMAIL\": \"you@company.com\",\n  \"ENTER_SENDER_TITLE\": \"CEO\",\n  \"ENTER_BOOKING_URL\": \"https://calendly.com/your-link\",\n  \"ENTER_VALUE_PROPOSITION\": \"We help businesses automate with AI\",\n  \"ENTER_TARGET_TITLES\": \"CEO, COO, VP Ops\",\n  \"ENTER_TARGET_INDUSTRIES\": \"Construction, HVAC\",\n  \"ENTER_MAX_EMAILS_PER_DAY\": \"30\",\n  \"ENTER_APOLLO_API_KEY\": \"your-apollo-api-key\",\n  \"ENTER_INSTANTLY_API_KEY\": \"your-instantly-api-key\"\n}",
+        "options": {}
+      },
+      "name": "CLIENT CONFIG - Edit These Values",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.apollo.io/v1/mixed_people/search",
+        "method": "POST",
+        "options": {}
+      },
+      "name": "Apollo - Search Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.filter(function(item) { return item.json.title && item.json.email; });"
+      },
+      "name": "Filter by ICP",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "content": "Score this lead 1-10. Lead: {{$json.first_name}} {{$json.last_name}}, {{$json.title}} at {{$json.organization_name}}. Return JSON: score, reasoning, pain_points."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "AI - Qualify Lead",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ENTER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"score\"]}}",
+              "operation": "gte",
+              "value2": "7"
+            }
+          ]
+        }
+      },
+      "name": "Score >= 7",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "content": "Write cold email under 150 words for {{$json.first_name}}, {{$json.title}} at {{$json.organization_name}}. Return JSON: subject, body."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "name": "AI - Write Email",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        200
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "ENTER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.instantly.ai/api/v1/lead/add",
+        "method": "POST",
+        "options": {}
+      },
+      "name": "Instantly - Add Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        1750,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "value": "ENTER_SHEET_ID"
+        },
+        "sheetName": {
+          "value": "Sheet1"
+        },
+        "options": {}
+      },
+      "name": "Log Results",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        2000,
+        200
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ENTER_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"status\": \"below_threshold\"\n}",
+        "options": {}
+      },
+      "name": "Log Skipped",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1500,
+        450
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLIENT CONFIG - Edit These Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CLIENT CONFIG - Edit These Values": {
+      "main": [
+        [
+          {
+            "node": "Apollo - Search Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apollo - Search Leads": {
+      "main": [
+        [
+          {
+            "node": "Filter by ICP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter by ICP": {
+      "main": [
+        [
+          {
+            "node": "AI - Qualify Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Qualify Lead": {
+      "main": [
+        [
+          {
+            "node": "Score >= 7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score >= 7": {
+      "main": [
+        [
+          {
+            "node": "AI - Write Email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI - Write Email": {
+      "main": [
+        [
+          {
+            "node": "Instantly - Add Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instantly - Add Lead": {
+      "main": [
+        [
+          {
+            "node": "Log Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "lead-gen"
+    }
+  ],
+  "pinData": {}
+}

@@ -39,3 +39,26 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
+
+# screenshots & images
+*.png
+temporary screenshots/
+
+# prospector
+prospector/.env
+prospector/output/
+prospector/__pycache__/
+
+# platform data
+data/
+jontri_platform/__pycache__/
+
+# sensitive files
+*.csv
+*.pdf
+*.pptx
+.claude/
+
+.vercel

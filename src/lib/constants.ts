@@ -45,6 +45,18 @@ export const SERVICES = [
     description:
       "Develop a comprehensive AI adoption roadmap that aligns technology with your business goals.",
   },
+  {
+    icon: "Globe" as const,
+    title: "Website Development",
+    description:
+      "Professional, high-performance websites built to convert visitors into customers with modern design and seamless user experiences.",
+  },
+  {
+    icon: "Sparkles" as const,
+    title: "AI Smart Website Development",
+    description:
+      "Next-generation websites powered by AI — featuring intelligent chatbots, personalized content, and automated lead capture that works around the clock.",
+  },
 ];
 
 export const PROCESS_STEPS = [
@@ -84,7 +96,7 @@ export const STATS = [
 export const TESTIMONIALS = [
   {
     quote:
-      "Jontri's AI automation cut our operational costs by 35% in the first quarter. The ROI was almost immediate.",
+      "Jontri Consulting's AI automation cut our operational costs by 35% in the first quarter. The ROI was almost immediate.",
     author: "Sarah Chen",
     role: "COO",
     company: "TechVentures Inc.",

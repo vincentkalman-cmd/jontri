@@ -1,0 +1,84 @@
+{
+  "id": "live-dashboard-builder",
+  "name": "Live Airtable / Sheets Dashboard Builder",
+  "category": "reporting",
+  "complexity": "Medium",
+  "deploy_time": "4-6 hrs",
+  "description": "Connects client's data sources to a live auto-refreshing dashboard. No-code setup with pre-built chart templates.",
+
+  "tools": ["Airtable", "Google Sheets", "n8n", "Looker Studio"],
+
+  "client_variables": {
+    "company_name": "",
+    "dashboard_platform": "Looker Studio or Airtable Interface",
+    "data_backend": "Google Sheets or Airtable",
+    "data_sources": [
+      {
+        "name": "",
+        "connection_type": "API / CSV import / Zapier / n8n",
+        "refresh_interval": "Hourly / Daily / Real-time",
+        "fields": []
+      }
+    ],
+    "dashboard_pages": [
+      {
+        "name": "Sales Overview",
+        "charts": ["Revenue trend (line)", "Deals by stage (funnel)", "Top reps (bar)"]
+      },
+      {
+        "name": "Marketing Performance",
+        "charts": ["Ad spend vs leads (dual axis)", "Channel breakdown (pie)", "CAC trend (line)"]
+      },
+      {
+        "name": "Operations",
+        "charts": ["Active projects (table)", "Task completion rate (gauge)", "Team workload (bar)"]
+      }
+    ],
+    "access_permissions": {
+      "viewers": [],
+      "editors": []
+    },
+    "branding": {
+      "primary_color": "",
+      "logo_url": "",
+      "font": ""
+    },
+    "refresh_schedule": "Every 4 hours"
+  },
+
+  "api_keys_required": [
+    "GOOGLE_SERVICE_ACCOUNT",
+    "AIRTABLE_API_KEY (if used)",
+    "Client data source APIs as needed"
+  ],
+
+  "setup_steps": [
+    "Audit all client data sources and access methods",
+    "Design dashboard layout and chart types with client",
+    "Set up data backend (Sheets or Airtable) as single source of truth",
+    "Build n8n data sync workflows for each source",
+    "Create Looker Studio report connected to data backend",
+    "Design charts and pages matching client's KPIs",
+    "Apply client branding (colors, logo, fonts)",
+    "Set up auto-refresh schedule",
+    "Configure access permissions",
+    "Walk client through dashboard and train on filters/date ranges"
+  ],
+
+  "n8n_workflow_nodes": [
+    "Schedule Trigger (based on refresh interval)",
+    "HTTP Request - Pull from data source 1",
+    "HTTP Request - Pull from data source 2",
+    "Code - Transform and normalize data",
+    "Google Sheets/Airtable - Update master data tables",
+    "IF - Data anomaly detected",
+    "Slack - Alert on data anomalies"
+  ],
+
+  "kpis_to_track": [
+    "Dashboard load time",
+    "Data freshness (last sync timestamp)",
+    "Active dashboard viewers per week",
+    "Sync failure rate"
+  ]
+}

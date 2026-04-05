@@ -1,0 +1,55 @@
+{
+  "client": {
+    "name": "Colorado HVAC Outreach",
+    "industry": "Construction / HVAC / Mechanical",
+    "description": "Colorado-based construction, HVAC, and mechanical companies",
+    "website": ""
+  },
+
+  "sender": {
+    "from_name": "Vincent Kalman",
+    "from_title": "Founder",
+    "from_company": "Jontri Consulting",
+    "booking_url": "https://calendly.com/jontri/consultation"
+  },
+
+  "icp": {
+    "person_titles": [
+      "Owner", "President", "CEO", "Founder",
+      "Vice President", "VP", "Executive Director",
+      "Director of Operations", "COO", "General Manager",
+      "Director of Business Development"
+    ],
+    "person_locations": ["Colorado, United States"],
+    "organization_industry_tag_ids": [],
+    "q_keywords": "construction OR HVAC OR mechanical OR plumbing OR sheet metal OR heating OR cooling",
+    "organization_num_employees_ranges": ["1,500"],
+    "per_page": 25
+  },
+
+  "qualification": {
+    "min_score": 6,
+    "ideal_customer_description": "A Colorado construction/HVAC/mechanical company with 10-500 employees whose leadership is open to technology but hasn't fully adopted AI yet. Companies still using manual processes, spreadsheets, or outdated software score higher.",
+    "service_focus": "AI workflow automation for scheduling, dispatching, estimating, inventory management, and customer communications"
+  },
+
+  "email": {
+    "tone": "professional but conversational, not pushy",
+    "max_words": 150,
+    "cta_style": "soft",
+    "custom_guidelines": [
+      "Do NOT use phrases like 'I hope this email finds you well'",
+      "Reference specific construction/HVAC pain points like scheduling crews, managing estimates, or tracking inventory"
+    ]
+  },
+
+  "instantly": {
+    "campaign_prefix": "CO-HVAC",
+    "schedule": {
+      "from": "09:00",
+      "to": "17:00",
+      "days": [1, 2, 3, 4, 5],
+      "timezone": "America/Denver"
+    }
+  }
+}
