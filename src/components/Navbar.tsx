@@ -56,7 +56,13 @@ export function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
+          <a
+            href="/sign-in"
+            className="text-sm text-text-muted hover:text-text-primary transition-colors"
+          >
+            Dashboard
+          </a>
           <Button href={BOOKING_URL} external className="text-xs px-4 py-2">
             Book a Call
           </Button>
@@ -89,6 +95,13 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
+            <a
+              href="/sign-in"
+              onClick={() => setIsOpen(false)}
+              className="text-sm text-text-secondary hover:text-text-primary transition-colors py-2"
+            >
+              Dashboard
+            </a>
             <Button
               href={BOOKING_URL}
               external
