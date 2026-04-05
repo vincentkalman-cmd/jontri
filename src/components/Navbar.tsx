@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { NAV_LINKS, BOOKING_URL } from "@/lib/constants";
 import { scrollToSection } from "@/lib/smoothScroll";
+import { Button } from "@/components/ui/Button";
 import { LuMenu, LuX } from "react-icons/lu";
 
 export function Navbar() {
@@ -17,9 +18,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const btnBase =
-    "px-5 py-2 text-sm font-semibold rounded-lg transition-colors";
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -31,11 +29,14 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
         {/* Logo */}
         <a
-          href="/"
-          className="text-xl tracking-tight"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="text-xl font-bold text-text-primary tracking-tight"
         >
-          <span className="text-accent font-medium">Jontri</span>{" "}
-          <span className="text-text-primary font-bold">Consulting</span>
+          Jontri
         </a>
 
         {/* Desktop Nav */}
@@ -54,28 +55,11 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Desktop CTA Buttons */}
-        <div className="hidden md:flex items-center gap-3">
-          <a
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${btnBase} bg-accent text-white hover:bg-accent-dark`}
-          >
+        {/* Desktop CTA */}
+        <div className="hidden md:block">
+          <Button href={BOOKING_URL} external className="text-xs px-4 py-2">
             Book a Call
-          </a>
-          <a
-            href="/onboarding"
-            className={`${btnBase} bg-purple-600 text-white hover:bg-purple-700`}
-          >
-            Onboarding
-          </a>
-          <a
-            href="/sign-in"
-            className={`${btnBase} bg-indigo-600 text-white hover:bg-indigo-700`}
-          >
-            Sign In
-          </a>
+          </Button>
         </div>
 
         {/* Mobile Hamburger */}
@@ -105,31 +89,13 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <div className="flex flex-col gap-2 mt-2">
-              <a
-                href={BOOKING_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                className={`${btnBase} bg-accent text-white hover:bg-accent-dark text-center`}
-              >
-                Book a Call
-              </a>
-              <a
-                href="/onboarding"
-                onClick={() => setIsOpen(false)}
-                className={`${btnBase} bg-purple-600 text-white hover:bg-purple-700 text-center`}
-              >
-                Onboarding
-              </a>
-              <a
-                href="/sign-in"
-                onClick={() => setIsOpen(false)}
-                className={`${btnBase} bg-indigo-600 text-white hover:bg-indigo-700 text-center`}
-              >
-                Sign In
-              </a>
-            </div>
+            <Button
+              href={BOOKING_URL}
+              external
+              className="text-xs px-4 py-2 mt-2 w-full"
+            >
+              Book a Call
+            </Button>
           </div>
         </div>
       )}
