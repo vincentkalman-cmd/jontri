@@ -1,20 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 
-function base64url(buf: Buffer): string {
-  return buf.toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+function base64urlDecode(str: string): Uint8Array {
+  const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
+  const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+  const binary = atob(base64 + padding);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
 }
 
-function verifyJwt(token: string, secret: string): boolean {
+function base64urlEncode(buf: ArrayBuffer): string {
+  const bytes = new Uint8Array(buf);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
+}
+
+async function verifyJwt(token: string, secret: string): Promise<boolean> {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return false;
     const [header, body, sig] = parts;
-    const expectedSig = base64url(
-      crypto.createHmac("sha256", secret).update(`${header}.${body}`).digest()
+
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
     );
+
+    const signature = await crypto.subtle.sign(
+      "HMAC",
+      key,
+      encoder.encode(`${header}.${body}`)
+    );
+
+    const expectedSig = base64urlEncode(signature);
     if (sig !== expectedSig) return false;
-    const payload = JSON.parse(Buffer.from(body, "base64").toString());
+
+    const payload = JSON.parse(
+      new TextDecoder().decode(base64urlDecode(body))
+    );
     if (payload.exp && Date.now() / 1000 > payload.exp) return false;
     return true;
   } catch {
@@ -22,10 +54,9 @@ function verifyJwt(token: string, secret: string): boolean {
   }
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect dashboard and client API routes
   const protectedPaths = ["/dashboard", "/api/clients"];
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
 
@@ -34,8 +65,7 @@ export function middleware(request: NextRequest) {
   const secret = process.env.JWT_SECRET || process.env.ADMIN_PASSWORD;
   const session = request.cookies.get("jontri_session");
 
-  if (!session?.value || !secret || !verifyJwt(session.value, secret)) {
-    // API routes get a 401, pages get redirected to sign-in
+  if (!session?.value || !secret || !(await verifyJwt(session.value, secret))) {
     if (pathname.startsWith("/api/")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -48,5 +78,4 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ["/dashboard/:path*", "/api/clients/:path*"],
-  // Note: /client/:path* and /api/client-portal are intentionally NOT matched — they are public
 };
