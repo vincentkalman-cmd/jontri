@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { NAV_LINKS, BOOKING_URL } from "@/lib/constants";
 import { scrollToSection } from "@/lib/smoothScroll";
-import { Button } from "@/components/ui/Button";
 import { LuMenu, LuX } from "react-icons/lu";
 
 export function Navbar() {
@@ -29,14 +28,11 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
         {/* Logo */}
         <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="text-xl font-bold text-text-primary tracking-tight"
+          href="/"
+          className="text-xl tracking-tight"
         >
-          Jontri
+          <span className="text-accent font-medium">Jontri</span>{" "}
+          <span className="text-text-primary font-bold">Consulting</span>
         </a>
 
         {/* Desktop Nav */}
@@ -55,11 +51,28 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Desktop CTA */}
-        <div className="hidden md:block">
-          <Button href={BOOKING_URL} external className="text-xs px-4 py-2">
+        {/* Desktop CTA Buttons */}
+        <div className="hidden md:flex items-center gap-3">
+          <a
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2 text-sm font-semibold rounded-lg bg-accent text-white hover:bg-accent-dark transition-colors"
+          >
             Book a Call
-          </Button>
+          </a>
+          <a
+            href="/onboarding"
+            className="px-5 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors"
+          >
+            Onboarding
+          </a>
+          <a
+            href="/sign-in"
+            className="px-5 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+          >
+            Sign In
+          </a>
         </div>
 
         {/* Mobile Hamburger */}
@@ -89,13 +102,31 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Button
-              href={BOOKING_URL}
-              external
-              className="text-xs px-4 py-2 mt-2 w-full"
-            >
-              Book a Call
-            </Button>
+            <div className="flex flex-col gap-2 mt-2">
+              <a
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="px-5 py-2 text-sm font-semibold rounded-lg bg-accent text-white hover:bg-accent-dark transition-colors text-center"
+              >
+                Book a Call
+              </a>
+              <a
+                href="/onboarding"
+                onClick={() => setIsOpen(false)}
+                className="px-5 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors text-center"
+              >
+                Onboarding
+              </a>
+              <a
+                href="/sign-in"
+                onClick={() => setIsOpen(false)}
+                className="px-5 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors text-center"
+              >
+                Sign In
+              </a>
+            </div>
           </div>
         </div>
       )}
