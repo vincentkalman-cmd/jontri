@@ -57,19 +57,19 @@ export function Navbar() {
             href={BOOKING_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-5 py-2 text-sm font-semibold rounded-lg bg-accent text-white hover:bg-accent-dark transition-colors"
+            className="px-5 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-gradient-end text-white hover:opacity-90 transition-opacity"
           >
             Book a Call
           </a>
           <a
             href="/onboarding"
-            className="px-5 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors"
+            className="px-5 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-gradient-end text-white hover:opacity-90 transition-opacity"
           >
             Onboarding
           </a>
           <a
             href="/sign-in"
-            className="px-5 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+            className="px-5 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-gradient-end text-white hover:opacity-90 transition-opacity"
           >
             Sign In
           </a>
@@ -108,21 +108,21 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2 text-sm font-semibold rounded-lg bg-accent text-white hover:bg-accent-dark transition-colors text-center"
+                className="px-5 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-gradient-end text-white hover:opacity-90 transition-opacity text-center"
               >
                 Book a Call
               </a>
               <a
                 href="/onboarding"
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors text-center"
+                className="px-5 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-gradient-end text-white hover:opacity-90 transition-opacity text-center"
               >
                 Onboarding
               </a>
               <a
                 href="/sign-in"
                 onClick={() => setIsOpen(false)}
-                className="px-5 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors text-center"
+                className="px-5 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-accent to-gradient-end text-white hover:opacity-90 transition-opacity text-center"
               >
                 Sign In
               </a>
