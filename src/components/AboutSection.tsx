@@ -29,10 +29,10 @@ export function AboutSection() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <AnimatedOnScroll direction="left">
           <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-6">
-            About Jontri
+            About Jontri Consulting
           </h2>
           <p className="text-text-secondary leading-relaxed mb-4">
-            Jontri was founded on a simple belief: AI should work for your
+            Jontri Consulting was founded on a simple belief: AI should work for your
             business, not the other way around. We partner with companies to
             identify where intelligent automation can make the biggest impact —
             increasing revenue and cutting costs simultaneously.
