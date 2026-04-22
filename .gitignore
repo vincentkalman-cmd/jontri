@@ -44,6 +44,7 @@ next-env.d.ts
 
 # screenshots & images
 *.png
+!public/mms-previews/*.png
 temporary screenshots/
 
 # prospector
