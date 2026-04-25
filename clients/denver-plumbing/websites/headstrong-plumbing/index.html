@@ -5,182 +5,414 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Headstrong Plumbing — Plumbing in Denver</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #310768;
-      --accent: #E85D3A;
+      --primary-deep: #220549;
+      --primary-soft: #d2c8de;
+      --primary-tint: #efebf3;
+      --cta: #FF7A1A;          /* safety orange — fixed CTA color across all */
+      --cta-deep: #E5651A;
+      --ink: #0E0E10;
+      --paper: #F4F1EA;
+      --paper-warm: #ECE6DA;
+      --line: rgba(14,14,16,0.12);
+      --muted: #5C544A;
     }
-    body { font-family: 'Inter', sans-serif; color: #111827; background: #FFFFFF; }
-    .font-display { font-family: 'Archivo', sans-serif; font-weight: 900; letter-spacing: -0.02em; }
-    .bg-surface { background: #FAF8F5; }
+    html, body { background: var(--paper); color: var(--ink); }
+    body { font-family: 'DM Sans', sans-serif; font-feature-settings: "ss01"; -webkit-font-smoothing: antialiased; }
+
+    /* Display = Anton: heavy condensed, all-caps trade signage */
+    .font-display { font-family: 'Anton', sans-serif; letter-spacing: 0; text-transform: uppercase; line-height: 0.93; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Color utilities */
     .bg-primary { background: var(--primary); }
-    .bg-accent { background: var(--accent); }
+    .bg-primary-deep { background: var(--primary-deep); }
+    .bg-primary-soft { background: var(--primary-soft); }
+    .bg-primary-tint { background: var(--primary-tint); }
+    .bg-cta { background: var(--cta); }
     .text-primary { color: var(--primary); }
-    .text-accent { color: var(--accent); }
+    .text-primary-deep { color: var(--primary-deep); }
+    .text-cta { color: var(--cta); }
     .border-primary { border-color: var(--primary); }
-    .ring-primary { --tw-ring-color: var(--primary); }
-    .primary-shadow { box-shadow: 0 10px 30px -8px color-mix(in srgb, var(--primary) 45%, transparent); }
-    .accent-shadow { box-shadow: 0 10px 30px -8px color-mix(in srgb, var(--accent) 45%, transparent); }
-    .hero-blob { background: var(--accent); opacity: 0.12; filter: blur(80px); }
+    .border-cta { border-color: var(--cta); }
+
+    /* Photo treatment — VISIBLE with subtle brand wash */
+    .trade-photo {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: var(--primary-deep);
+    }
+    .trade-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.05) saturate(1.08);
+    }
+    .trade-photo::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: var(--primary);
+      mix-blend-mode: soft-light;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .trade-photo-frame {
+      border: 6px solid var(--paper);
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+
+    /* Subtle paper grain */
+    .grain::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+      opacity: 0.12;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    /* Diagonal stripe pattern for trade-warning vibe */
+    .stripe {
+      background-image: repeating-linear-gradient(
+        45deg,
+        var(--cta) 0,
+        var(--cta) 14px,
+        var(--ink) 14px,
+        var(--ink) 28px
+      );
+    }
+
+    /* Heritage stamp — circular badge */
+    .stamp {
+      border: 3px solid currentColor;
+      border-radius: 999px;
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(-8deg);
+      font-family: 'Anton', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Big chunky CTA button */
+    .btn-cta {
+      background: var(--cta);
+      color: var(--ink);
+      font-family: 'Anton', sans-serif;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 3px solid var(--ink);
+      box-shadow: 6px 6px 0 var(--ink);
+      transition: transform 100ms ease, box-shadow 100ms ease;
+    }
+    .btn-cta:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+    .btn-cta:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+
+    .btn-ghost-light {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+      font-family: 'Anton', sans-serif;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: background 120ms ease, color 120ms ease;
+    }
+    .btn-ghost-light:hover { background: white; color: var(--ink); }
+
+    /* Diagonal slash divider */
+    .slash-end {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 28px));
+    }
+    .slash-start {
+      clip-path: polygon(0 28px, 100% 0, 100% 100%, 0 100%);
+    }
+
+    /* Section number callouts */
+    .section-num {
+      font-family: 'Anton', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body class="antialiased">
 
-  <!-- Nav -->
-  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-base">HP</div>
-        <span class="text-base font-bold">Headstrong Plumbing</span>
-      </div>
-      <div class="hidden md:flex items-center gap-8 text-sm text-gray-700">
-        <a href="#services" class="hover:text-primary transition-colors">Services</a>
-        <a href="#work" class="hover:text-primary transition-colors">Recent Work</a>
-        <a href="#reviews" class="hover:text-primary transition-colors">Reviews</a>
-        <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
-      </div>
-      <a href="tel:(720) 677-0177" class="bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:opacity-90 transition-opacity">📞 (720) 677-0177</a>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="absolute top-10 right-[-100px] w-[500px] h-[500px] hero-blob rounded-full"></div>
-    <div class="relative max-w-6xl mx-auto px-6 pt-16 pb-20 grid lg:grid-cols-2 gap-12 items-center">
-      <div>
-        <div class="inline-flex items-center gap-2 bg-yellow-50 border border-yellow-200 rounded-full px-3 py-1 text-sm font-semibold text-yellow-900 mb-6">
-          <svg class="w-4 h-4 fill-yellow-500" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          4.9 · 28 reviews on Google
+  <!-- MASTHEAD -->
+  <header class="bg-[var(--ink)] text-white sticky top-0 z-50 border-b-4 border-cta">
+    <div class="max-w-[1280px] mx-auto px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="bg-cta w-10 h-10 flex items-center justify-center text-[var(--ink)] font-display text-[18px]">HP</div>
+        <div>
+          <div class="font-display text-[20px] leading-none">Headstrong Plumbing</div>
+          <div class="font-mono text-[10px] tracking-[0.18em] text-white/60 mt-1">DENVER · LICENSED · INSURED</div>
         </div>
-        <h1 class="font-display text-5xl md:text-6xl leading-[1.02] mb-5">
-          Denver's most trusted<br><span class="text-primary">plumbing team</span>.
+      </div>
+      <nav class="hidden md:flex items-center gap-6 text-[13px] font-medium uppercase tracking-wider text-white/80">
+        <a href="#services" class="hover:text-cta transition-colors">Services</a>
+        <a href="#work" class="hover:text-cta transition-colors">Work</a>
+        <a href="#reviews" class="hover:text-cta transition-colors">Reviews</a>
+      </nav>
+      <a href="tel:(720) 677-0177" class="bg-cta text-[var(--ink)] font-display text-[16px] tracking-wider px-5 py-3 hover:translate-y-[-2px] transition-transform">
+        ☎ (720) 677-0177
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO — brand-color wall + photo -->
+  <section class="relative bg-primary-deep text-white overflow-hidden grain">
+    <!-- Top alert strip -->
+    <div class="bg-cta text-[var(--ink)] font-display tracking-[0.18em] text-[12px] py-2 text-center">
+      ★ ★ ★ ★ ★&nbsp;&nbsp;28 FIVE-STAR REVIEWS ON GOOGLE&nbsp;&nbsp;·&nbsp;&nbsp;4.9 / 5.0&nbsp;&nbsp;·&nbsp;&nbsp;LICENSED & INSURED IN COLORADO
+    </div>
+
+    <div class="max-w-[1280px] mx-auto px-6 pt-12 pb-16 grid grid-cols-12 gap-8 relative">
+
+      <!-- LEFT — typography stack -->
+      <div class="col-span-12 lg:col-span-7 relative">
+        <p class="font-mono text-[12px] tracking-[0.22em] text-cta mb-5 uppercase">A Denver Plumbing Company</p>
+
+        <h1 class="font-display text-white">
+          <span class="block text-[clamp(72px,9.5vw,150px)] leading-[0.88]">Denver'S</span>
+          <span class="block text-[clamp(72px,9.5vw,150px)] leading-[0.88] text-cta">MOST TRUSTED</span>
+          <span class="block text-[clamp(72px,9.5vw,150px)] leading-[0.88]">PLUMBERS.</span>
         </h1>
-        <p class="text-lg text-gray-600 leading-relaxed mb-8 max-w-lg">
-          Headstrong Plumbing has earned 28 five-star reviews serving Denver and nearby. Licensed, insured, same-day service when you need it.
+
+        <p class="text-[18px] leading-[1.5] text-white/85 max-w-[480px] mt-7 mb-9">
+          Same-day service. Upfront pricing. 28 verified five-star reviews. Call Headstrong Plumbing when it can't wait.
         </p>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <a href="tel:(720) 677-0177" class="bg-accent text-white font-semibold px-7 py-4 rounded-xl text-center hover:opacity-90 transition-opacity accent-shadow">Call (720) 677-0177</a>
-          <a href="#contact" class="bg-white border-2 border-gray-900 text-gray-900 font-semibold px-7 py-4 rounded-xl text-center hover:bg-gray-900 hover:text-white transition-colors">Get a free estimate</a>
+
+        <div class="flex flex-wrap gap-3 items-center">
+          <a href="tel:(720) 677-0177" class="btn-cta inline-flex items-center gap-3 px-7 py-5 text-[20px]">
+            <span class="text-[14px] opacity-70">CALL —</span>
+            <span class="text-[24px]">(720) 677-0177</span>
+          </a>
+          <a href="#contact" class="btn-ghost-light inline-flex items-center gap-2 px-7 py-5 text-[16px]">
+            Free Estimate →
+          </a>
+        </div>
+
+        <!-- Heritage stamp -->
+        <div class="absolute right-0 lg:right-[-40px] top-[-20px] w-[140px] h-[140px] hidden md:flex items-center justify-center text-cta">
+          <div class="stamp w-full h-full text-center text-cta">
+            <span class="text-[26px] leading-none mb-1">★ ★ ★</span>
+            <span class="text-[42px] font-display leading-none my-1">4.9</span>
+            <span class="text-[10px] leading-none mt-1">28+ REVIEWS</span>
+          </div>
         </div>
       </div>
-      <div class="relative">
-        <div class="absolute -inset-6 bg-accent rounded-3xl opacity-10 blur-2xl"></div>
-        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1600&q=80" alt="Headstrong Plumbing plumbing service" class="relative rounded-2xl w-full aspect-[4/5] object-cover primary-shadow">
+
+      <!-- RIGHT — large visible photo -->
+      <div class="col-span-12 lg:col-span-5 flex items-end">
+        <div class="trade-photo trade-photo-frame aspect-[4/5] w-full">
+          <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=1600&q=80" alt="Headstrong Plumbing plumbing">
+        </div>
+      </div>
+    </div>
+
+    <!-- Diagonal slash transition -->
+    <div class="absolute bottom-0 left-0 right-0 h-[28px] bg-[var(--paper)] slash-start"></div>
+  </section>
+
+  <!-- TRUST STRIP — black bar with badges -->
+  <section class="bg-[var(--ink)] text-white">
+    <div class="max-w-[1280px] mx-auto px-6 py-7 grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+      <div class="flex items-center gap-3">
+        <div class="bg-cta w-12 h-12 flex items-center justify-center text-[var(--ink)] font-display text-[18px]">01</div>
+        <div>
+          <p class="font-display text-[18px] tracking-wide leading-tight">Licensed & Insured</p>
+          <p class="text-[12px] text-white/60 mt-0.5">Every tech, every job</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="bg-cta w-12 h-12 flex items-center justify-center text-[var(--ink)] font-display text-[18px]">02</div>
+        <div>
+          <p class="font-display text-[18px] tracking-wide leading-tight">24/7 Emergency</p>
+          <p class="text-[12px] text-white/60 mt-0.5">Burst pipe? Call now</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="bg-cta w-12 h-12 flex items-center justify-center text-[var(--ink)] font-display text-[18px]">03</div>
+        <div>
+          <p class="font-display text-[18px] tracking-wide leading-tight">Same-Day Service</p>
+          <p class="text-[12px] text-white/60 mt-0.5">Most calls, most days</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="bg-cta w-12 h-12 flex items-center justify-center text-[var(--ink)] font-display text-[18px]">04</div>
+        <div>
+          <p class="font-display text-[18px] tracking-wide leading-tight">Upfront Pricing</p>
+          <p class="text-[12px] text-white/60 mt-0.5">Quoted before we start</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Trust Bar -->
-  <section class="bg-surface border-y border-gray-200">
-    <div class="max-w-6xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-700">
-      <div class="flex items-center gap-3"><span class="text-2xl">⭐</span><span><strong class="block text-gray-900">28</strong>Google reviews</span></div>
-      <div class="flex items-center gap-3"><span class="text-2xl">🛡️</span><span><strong class="block text-gray-900">Licensed</strong>& insured</span></div>
-      <div class="flex items-center gap-3"><span class="text-2xl">⚡</span><span><strong class="block text-gray-900">Same-day</strong>service available</span></div>
-      <div class="flex items-center gap-3"><span class="text-2xl">💰</span><span><strong class="block text-gray-900">Upfront</strong>pricing, no surprises</span></div>
+  <!-- SERVICES -->
+  <section id="services" class="py-24 bg-[var(--paper)]">
+    <div class="max-w-[1280px] mx-auto px-6">
+      <div class="grid grid-cols-12 gap-8 mb-14 items-end">
+        <div class="col-span-12 md:col-span-7">
+          <p class="section-num text-cta mb-4">/ 01 — Services</p>
+          <h2 class="font-display text-[clamp(56px,7vw,108px)] leading-[0.93]">
+            Six Trades. <span class="text-cta">One Number.</span>
+          </h2>
+        </div>
+        <div class="col-span-12 md:col-span-5 md:text-right">
+          <p class="text-[16px] leading-[1.55] text-[var(--muted)] max-w-[400px] md:ml-auto">
+            Residential and light commercial. Old houses, new builds, the slab leak you've been putting off.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article class="bg-white border-2 border-[var(--ink)] hover:bg-[var(--paper-warm)] transition-colors">
+          <div class="trade-photo aspect-[5/3]"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80" alt="Emergency plumbing"></div>
+          <div class="p-6 border-t-2 border-[var(--ink)]">
+            <p class="section-num text-cta mb-2">No. 01</p>
+            <h3 class="font-display text-[28px] tracking-tight mb-2">Emergency Service</h3>
+            <p class="text-[14px] leading-[1.55] text-[var(--muted)]">Burst pipes, flooding, midnight backups — on call when it can't wait.</p>
+          </div>
+        </article>
+        <article class="bg-white border-2 border-[var(--ink)] hover:bg-[var(--paper-warm)] transition-colors">
+          <div class="trade-photo aspect-[5/3]"><img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=1200&q=80" alt="Drain cleaning"></div>
+          <div class="p-6 border-t-2 border-[var(--ink)]">
+            <p class="section-num text-cta mb-2">No. 02</p>
+            <h3 class="font-display text-[28px] tracking-tight mb-2">Drain Cleaning</h3>
+            <p class="text-[14px] leading-[1.55] text-[var(--muted)]">Hydro-jetting, augering, root removal that keeps drains clear.</p>
+          </div>
+        </article>
+        <article class="bg-white border-2 border-[var(--ink)] hover:bg-[var(--paper-warm)] transition-colors">
+          <div class="trade-photo aspect-[5/3]"><img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80" alt="Water heater"></div>
+          <div class="p-6 border-t-2 border-[var(--ink)]">
+            <p class="section-num text-cta mb-2">No. 03</p>
+            <h3 class="font-display text-[28px] tracking-tight mb-2">Water Heaters</h3>
+            <p class="text-[14px] leading-[1.55] text-[var(--muted)]">Repair, replacement, tankless conversions. Same-day install on most.</p>
+          </div>
+        </article>
+        <article class="bg-white border-2 border-[var(--ink)] hover:bg-[var(--paper-warm)] transition-colors">
+          <div class="trade-photo aspect-[5/3]"><img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1200&q=80" alt="Sewer line"></div>
+          <div class="p-6 border-t-2 border-[var(--ink)]">
+            <p class="section-num text-cta mb-2">No. 04</p>
+            <h3 class="font-display text-[28px] tracking-tight mb-2">Sewer Lines</h3>
+            <p class="text-[14px] leading-[1.55] text-[var(--muted)]">Camera inspection, trenchless repair, full-line replacement.</p>
+          </div>
+        </article>
+        <article class="bg-white border-2 border-[var(--ink)] hover:bg-[var(--paper-warm)] transition-colors">
+          <div class="trade-photo aspect-[5/3]"><img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80" alt="Leak detection"></div>
+          <div class="p-6 border-t-2 border-[var(--ink)]">
+            <p class="section-num text-cta mb-2">No. 05</p>
+            <h3 class="font-display text-[28px] tracking-tight mb-2">Leak Detection</h3>
+            <p class="text-[14px] leading-[1.55] text-[var(--muted)]">Precise locating with minimal disruption — find it before drywall gets worse.</p>
+          </div>
+        </article>
+        <article class="bg-white border-2 border-[var(--ink)] hover:bg-[var(--paper-warm)] transition-colors">
+          <div class="trade-photo aspect-[5/3]"><img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=1200&q=80" alt="Repipe"></div>
+          <div class="p-6 border-t-2 border-[var(--ink)]">
+            <p class="section-num text-cta mb-2">No. 06</p>
+            <h3 class="font-display text-[28px] tracking-tight mb-2">Repipe & Remodel</h3>
+            <p class="text-[14px] leading-[1.55] text-[var(--muted)]">Kitchen, bath, whole-home repipes. Clean cuts, tidy finish, code-compliant.</p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 
-  <!-- Services -->
-  <section id="services" class="py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="max-w-xl mb-12">
-        <p class="text-accent font-semibold text-sm uppercase tracking-wider mb-3">What we do</p>
-        <h2 class="font-display text-4xl md:text-5xl">Plumbing services in Denver</h2>
+  <!-- WARNING-STRIPE divider -->
+  <div class="stripe h-7"></div>
+
+  <!-- RECENT WORK -->
+  <section id="work" class="py-24 bg-primary text-white relative grain">
+    <div class="max-w-[1280px] mx-auto px-6 relative">
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <p class="section-num text-cta mb-4">/ 02 — Recent Work</p>
+          <h2 class="font-display text-[clamp(56px,7vw,108px)] leading-[0.93]">Around <span class="text-cta">Denver.</span></h2>
+        </div>
+        <p class="font-mono text-[12px] tracking-[0.18em] text-white/60 hidden md:block">FOUR OF MANY</p>
       </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="trade-photo aspect-[4/5] border-2 border-white"><img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEiP_fAtcnImJGE9OvD4dQZaOvUa9eVdwZ1i51byV-XD4eTQYO4_G0SSCsk8rdVo3oexuk4z8EP4CCeEUCLDfwW8yJn9KfPNo49VOMIbodLnqnn8TgxD1y4MB86GgC_gmzhuZq-p106LBr0=s1200" alt="Recent work"></div>
+        <div class="trade-photo aspect-[4/5] border-2 border-white"><img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEXBKhB2ooNc7lFFUZ2vrmYLXQJvUGNdJnzdu26eKBn1sztqPtemTUs5GbQOmhu4sID6tD_ZIOboR2yGsaVHbgKUyGt6dySGUe3v6KSlfcUEpS5tHaT3hNSOger40ug4EmlAMyKydNHqoTK=s1200" alt="Recent work"></div>
+        <div class="trade-photo aspect-[4/5] border-2 border-white"><img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAH_HvUVsRGnjkPdcQxLIb6qNJjE6gqSDQ1MFP1oVVhPsDZ1M6HEb3UhBrr4omEw9_3h-qg4vucQUW-QVaJf2loTS6fKiunfGt3aRRKJZHXrvBEpJpejJj-SnEupAP4pQIlaKuE=s1200" alt="Recent work"></div>
+        <div class="trade-photo aspect-[4/5] border-2 border-white"><img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAG448cILhjtqVzaubpEHALCVAmk0gXYRjUCQis-6qptlrKVVopsBZfhz0Gbn_b4nETJrehtfN-jHkXxDPyY6V0f6bUdPW_5WoFtKNoujKuq46_FdrNimaBkN8L5rxixoJ0rjUnaIg=s1200" alt="Recent work"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews" class="py-24 bg-[var(--paper)]">
+    <div class="max-w-[1280px] mx-auto px-6">
+      <div class="text-center mb-14">
+        <p class="section-num text-cta mb-4">/ 03 — Reviews</p>
+        <h2 class="font-display text-[clamp(56px,7vw,108px)] leading-[0.93]">
+          What <span class="text-cta">Neighbors</span><br>Say.
+        </h2>
+        <p class="font-mono text-[12px] tracking-[0.18em] text-[var(--muted)] mt-5">28 VERIFIED FIVE-STAR REVIEWS ON GOOGLE</p>
+      </div>
+
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80" alt="Emergency plumbing" class="w-full h-48 object-cover">
-          <div class="p-6"><h3 class="font-bold text-lg mb-2">Emergency Service</h3><p class="text-gray-600 text-sm leading-relaxed">Burst pipes, flooding, midnight backups — on call 24/7 when it can't wait.</p><a href="#contact" class="inline-block mt-4 text-primary font-semibold text-sm hover:underline">Get a quote →</a></div>
+        <div class="bg-white border-2 border-[var(--ink)] p-7">
+          <div class="text-cta font-display text-[28px] mb-3">★★★★★</div>
+          <p class="text-[16px] leading-[1.5] mb-5">Showed up the same day, found the slab leak in 20 minutes, fixed it clean. Fair price, no upsell. The kind of plumber I tell every neighbor about.</p>
+          <p class="font-mono text-[11px] tracking-[0.14em] text-[var(--muted)]">— VERIFIED GOOGLE REVIEW</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=1200&q=80" alt="Drain cleaning" class="w-full h-48 object-cover">
-          <div class="p-6"><h3 class="font-bold text-lg mb-2">Drain Cleaning</h3><p class="text-gray-600 text-sm leading-relaxed">Hydro-jetting, augering, and root removal that actually keeps drains clear.</p><a href="#contact" class="inline-block mt-4 text-primary font-semibold text-sm hover:underline">Get a quote →</a></div>
+        <div class="bg-white border-2 border-[var(--ink)] p-7">
+          <div class="text-cta font-display text-[28px] mb-3">★★★★★</div>
+          <p class="text-[16px] leading-[1.5] mb-5">Showed up on time, fixed the problem fast, cleaned up after. Will definitely call again.</p>
+          <p class="font-mono text-[11px] tracking-[0.14em] text-[var(--muted)]">— VERIFIED GOOGLE REVIEW</p>
         </div>
-        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80" alt="Water heater" class="w-full h-48 object-cover">
-          <div class="p-6"><h3 class="font-bold text-lg mb-2">Water Heaters</h3><p class="text-gray-600 text-sm leading-relaxed">Repair, replacement, tankless conversions. Same-day install on most units.</p><a href="#contact" class="inline-block mt-4 text-primary font-semibold text-sm hover:underline">Get a quote →</a></div>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1200&q=80" alt="Sewer line service" class="w-full h-48 object-cover">
-          <div class="p-6"><h3 class="font-bold text-lg mb-2">Sewer Lines</h3><p class="text-gray-600 text-sm leading-relaxed">Camera inspections, trenchless repair, full-line replacement when needed.</p><a href="#contact" class="inline-block mt-4 text-primary font-semibold text-sm hover:underline">Get a quote →</a></div>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80" alt="Leak detection" class="w-full h-48 object-cover">
-          <div class="p-6"><h3 class="font-bold text-lg mb-2">Leak Detection</h3><p class="text-gray-600 text-sm leading-relaxed">Precise locating with minimal disruption — find it before the drywall gets worse.</p><a href="#contact" class="inline-block mt-4 text-primary font-semibold text-sm hover:underline">Get a quote →</a></div>
-        </div>
-        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-          <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1200&q=80" alt="Repipe and remodel" class="w-full h-48 object-cover">
-          <div class="p-6"><h3 class="font-bold text-lg mb-2">Repipe & Remodel</h3><p class="text-gray-600 text-sm leading-relaxed">Kitchen, bath, whole-home repipes. Clean cuts, tidy finish, code-compliant.</p><a href="#contact" class="inline-block mt-4 text-primary font-semibold text-sm hover:underline">Get a quote →</a></div>
+        <div class="bg-white border-2 border-[var(--ink)] p-7">
+          <div class="text-cta font-display text-[28px] mb-3">★★★★★</div>
+          <p class="text-[16px] leading-[1.5] mb-5">Fair pricing, honest assessment, quality work. The kind of plumber you keep on speed dial.</p>
+          <p class="font-mono text-[11px] tracking-[0.14em] text-[var(--muted)]">— VERIFIED GOOGLE REVIEW</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Recent Work -->
-  <section id="work" class="bg-surface py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="max-w-xl mb-12">
-        <p class="text-accent font-semibold text-sm uppercase tracking-wider mb-3">Recent work</p>
-        <h2 class="font-display text-4xl md:text-5xl">Projects around Denver, Aurora, Westminster.</h2>
+  <!-- BIG CONTACT CTA -->
+  <section id="contact" class="bg-[var(--ink)] text-white py-24 relative overflow-hidden">
+    <div class="grain"></div>
+    <div class="max-w-[1280px] mx-auto px-6 relative grid grid-cols-12 gap-8 items-center">
+      <div class="col-span-12 md:col-span-7">
+        <p class="section-num text-cta mb-4">/ 04 — Contact</p>
+        <h2 class="font-display text-[clamp(64px,8vw,128px)] leading-[0.92]">
+          Pipes Don't<br>
+          <span class="text-cta">Wait.</span> We Don't<br>
+          Either.
+        </h2>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEiP_fAtcnImJGE9OvD4dQZaOvUa9eVdwZ1i51byV-XD4eTQYO4_G0SSCsk8rdVo3oexuk4z8EP4CCeEUCLDfwW8yJn9KfPNo49VOMIbodLnqnn8TgxD1y4MB86GgC_gmzhuZq-p106LBr0=s1200" alt="Recent plumbing work" class="rounded-2xl aspect-square object-cover">
-        <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEXBKhB2ooNc7lFFUZ2vrmYLXQJvUGNdJnzdu26eKBn1sztqPtemTUs5GbQOmhu4sID6tD_ZIOboR2yGsaVHbgKUyGt6dySGUe3v6KSlfcUEpS5tHaT3hNSOger40ug4EmlAMyKydNHqoTK=s1200" alt="Recent plumbing work" class="rounded-2xl aspect-square object-cover">
-        <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAH_HvUVsRGnjkPdcQxLIb6qNJjE6gqSDQ1MFP1oVVhPsDZ1M6HEb3UhBrr4omEw9_3h-qg4vucQUW-QVaJf2loTS6fKiunfGt3aRRKJZHXrvBEpJpejJj-SnEupAP4pQIlaKuE=s1200" alt="Recent plumbing work" class="rounded-2xl aspect-square object-cover">
-        <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAG448cILhjtqVzaubpEHALCVAmk0gXYRjUCQis-6qptlrKVVopsBZfhz0Gbn_b4nETJrehtfN-jHkXxDPyY6V0f6bUdPW_5WoFtKNoujKuq46_FdrNimaBkN8L5rxixoJ0rjUnaIg=s1200" alt="Recent plumbing work" class="rounded-2xl aspect-square object-cover">
+      <div class="col-span-12 md:col-span-5 md:text-right">
+        <p class="text-[16px] leading-[1.55] text-white/70 max-w-[340px] md:ml-auto mb-7">
+          Same-day service. Free estimates. Licensed and insured. We answer.
+        </p>
+        <a href="tel:(720) 677-0177" class="inline-flex flex-col bg-cta text-[var(--ink)] px-7 py-5 hover:translate-y-[-2px] transition-transform">
+          <span class="font-mono text-[11px] tracking-[0.18em] opacity-70">CALL NOW</span>
+          <span class="font-display text-[36px] leading-none mt-1">(720) 677-0177</span>
+        </a>
       </div>
+    </div>
+    <div class="max-w-[1280px] mx-auto px-6 relative mt-14 pt-6 border-t border-white/15 flex flex-col md:flex-row items-baseline justify-between gap-3 text-[12px] font-mono tracking-[0.12em] text-white/50">
+      <span>Denver, CO</span>
+      <span>SERVING Denver, Aurora, Lakewood</span>
+      <span>LICENSED · INSURED · LOCAL</span>
     </div>
   </section>
 
-  <!-- Why / Trust Pillars -->
-  <section class="py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="max-w-xl mb-12">
-        <p class="text-accent font-semibold text-sm uppercase tracking-wider mb-3">Why Headstrong Plumbing</p>
-        <h2 class="font-display text-4xl md:text-5xl">Reputation you can check.</h2>
-      </div>
-      <div class="grid md:grid-cols-4 gap-6">
-        <div class="bg-white border-2 border-gray-100 rounded-2xl p-6"><div class="font-display text-5xl text-primary mb-2">28+</div><p class="font-semibold text-gray-900">Five-star reviews</p><p class="text-sm text-gray-600 mt-1">Verified on Google.</p></div>
-        <div class="bg-white border-2 border-gray-100 rounded-2xl p-6"><div class="font-display text-5xl text-primary mb-2">Same-day</div><p class="font-semibold text-gray-900">Response</p><p class="text-sm text-gray-600 mt-1">Most calls answered live.</p></div>
-        <div class="bg-white border-2 border-gray-100 rounded-2xl p-6"><div class="font-display text-5xl text-primary mb-2">Licensed</div><p class="font-semibold text-gray-900">& insured</p><p class="text-sm text-gray-600 mt-1">Every tech, every job.</p></div>
-        <div class="bg-white border-2 border-gray-100 rounded-2xl p-6"><div class="font-display text-5xl text-primary mb-2">No</div><p class="font-semibold text-gray-900">Hidden fees</p><p class="text-sm text-gray-600 mt-1">Upfront quote before work starts.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reviews -->
-  <section id="reviews" class="bg-surface py-20">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="max-w-xl mb-12">
-        <p class="text-accent font-semibold text-sm uppercase tracking-wider mb-3">What neighbors say</p>
-        <h2 class="font-display text-4xl md:text-5xl">Reviews from Denver.</h2>
-      </div>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-white border border-gray-200 rounded-2xl p-6"><div class="text-yellow-500 mb-3">★★★★★</div><p class="text-gray-700 leading-relaxed mb-4">Nick came to fix a burst pipe and did an outstanding job.</p><p class="text-sm text-gray-500">— Verified Google review</p></div>
-        <div class="bg-white border border-gray-200 rounded-2xl p-6"><div class="text-yellow-500 mb-3">★★★★★</div><p class="text-gray-700 leading-relaxed mb-4">Showed up on time, fixed the problem fast, cleaned up after. Will definitely call again.</p><p class="text-sm text-gray-500">— Verified Google review</p></div>
-        <div class="bg-white border border-gray-200 rounded-2xl p-6"><div class="text-yellow-500 mb-3">★★★★★</div><p class="text-gray-700 leading-relaxed mb-4">Fair pricing, honest assessment, quality work. The kind of plumber you keep on speed dial.</p><p class="text-sm text-gray-500">— Verified Google review</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact CTA -->
-  <section id="contact" class="py-20">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="font-display text-4xl md:text-5xl mb-5">Ready to fix it?</h2>
-      <p class="text-lg text-gray-600 mb-8">Call now for same-day service. Free estimates. No pressure.</p>
-      <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="tel:(720) 677-0177" class="bg-accent text-white font-bold text-lg px-10 py-5 rounded-xl hover:opacity-90 transition-opacity accent-shadow">📞 (720) 677-0177</a>
-        <a href="#" class="bg-white border-2 border-gray-900 text-gray-900 font-bold text-lg px-10 py-5 rounded-xl hover:bg-gray-900 hover:text-white transition-colors">Book online</a>
-      </div>
-      <p class="text-sm text-gray-500 mt-6">Denver, CO · Serving Denver, Aurora, Westminster · Licensed & insured</p>
-    </div>
-  </section>
-
-  <footer class="border-t border-gray-200 py-8">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-gray-500">
-      <p>&copy; 2026 Headstrong Plumbing. All rights reserved.</p>
-      <p>Site by <a href="https://jontri.com" class="text-primary hover:underline">Jontri</a></p>
+  <footer class="bg-[var(--ink)] py-5 border-t-4 border-cta">
+    <div class="max-w-[1280px] mx-auto px-6 flex flex-col md:flex-row items-baseline justify-between gap-3 text-[11px] font-mono tracking-[0.14em] text-white/50">
+      <span>&copy; 2026 Headstrong Plumbing.</span>
+      <span>SITE BY <a href="https://jontri.com" class="text-cta hover:opacity-80 transition-opacity">JONTRI</a></span>
     </div>
   </footer>
 

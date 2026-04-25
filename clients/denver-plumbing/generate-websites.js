@@ -69,6 +69,62 @@ function hashIndex(str, mod) {
   const h = crypto.createHash('md5').update(str).digest('hex');
   return parseInt(h.slice(0, 8), 16) % mod;
 }
+
+// Trade-noble fallback palette — used when extracted color is too desaturated
+const TRADE_PALETTE = [
+  '#1F4D3F', // forest
+  '#7A3327', // oxblood
+  '#1B3A5C', // cobalt
+  '#3F2E54', // plum
+  '#5A4631', // tobacco
+  '#2C4A52', // gunmetal teal
+  '#6B2737', // wine
+  '#26492F', // pine
+];
+
+function hexToRgb(hex) {
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex || '');
+  if (!m) return null;
+  return { r: parseInt(m[1], 16), g: parseInt(m[2], 16), b: parseInt(m[3], 16) };
+}
+function rgbToHex({ r, g, b }) {
+  const c = n => Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0');
+  return '#' + c(r) + c(g) + c(b);
+}
+function isWashedOut(hex) {
+  const c = hexToRgb(hex);
+  if (!c) return true;
+  const max = Math.max(c.r, c.g, c.b), min = Math.min(c.r, c.g, c.b);
+  const sat = max === 0 ? 0 : (max - min) / max; // simple saturation
+  // Reject near-gray (<18% sat), pure black/white, or extremely light
+  if (sat < 0.18) return true;
+  if (max < 30) return true;
+  if (min > 220) return true;
+  return false;
+}
+function darken(hex, amount) {
+  const c = hexToRgb(hex);
+  if (!c) return hex;
+  return rgbToHex({ r: c.r * (1 - amount), g: c.g * (1 - amount), b: c.b * (1 - amount) });
+}
+function mixWithWhite(hex, ratio) {
+  const c = hexToRgb(hex);
+  if (!c) return hex;
+  return rgbToHex({
+    r: c.r + (255 - c.r) * ratio,
+    g: c.g + (255 - c.g) * ratio,
+    b: c.b + (255 - c.b) * ratio,
+  });
+}
+function buildColorSystem(slug, extracted) {
+  const base = isWashedOut(extracted) ? TRADE_PALETTE[hashIndex(slug, TRADE_PALETTE.length)] : extracted;
+  return {
+    primary: base,
+    primaryDeep: darken(base, 0.30),
+    primarySoft: mixWithWhite(base, 0.78),
+    primaryTint: mixWithWhite(base, 0.92),
+  };
+}
 function inferCity(address) {
   if (!address) return 'Denver';
   if (/aurora/i.test(address)) return 'Aurora';
@@ -89,8 +145,9 @@ async function enrichBusiness(lead, stock) {
 
   console.log(`\n▶ ${name}`);
 
-  const { primary, accent } = await extractBrandColor(website);
-  console.log(`   color: ${primary} / ${accent}`);
+  const { primary: rawPrimary, accent } = await extractBrandColor(website);
+  const colors = buildColorSystem(slug, rawPrimary);
+  console.log(`   raw: ${rawPrimary} → primary: ${colors.primary} ${rawPrimary !== colors.primary ? '(overridden)' : ''}`);
 
   const gbpPhotos = await scrapeGbpPhotos(mapsUrl);
   console.log(`   gbp photos: ${gbpPhotos.length}`);
@@ -116,7 +173,10 @@ async function enrichBusiness(lead, stock) {
     reviewSnippet: (lead['Review Snippet'] || 'Professional, reliable, and fast. Highly recommend.').replace(/^"|"$/g, ''),
     website,
     mapsUrl,
-    primary,
+    primary: colors.primary,
+    primaryDeep: colors.primaryDeep,
+    primarySoft: colors.primarySoft,
+    primaryTint: colors.primaryTint,
     accent,
     heroPhoto,
     servicePhotos,
@@ -139,6 +199,9 @@ function renderTemplate(template, b) {
     .replace(/\{\{INITIALS\}\}/g, getInitials(b.name))
     .replace(/\{\{REVIEW_SNIPPET\}\}/g, b.reviewSnippet)
     .replace(/\{\{PRIMARY_COLOR\}\}/g, b.primary)
+    .replace(/\{\{PRIMARY_DEEP\}\}/g, b.primaryDeep)
+    .replace(/\{\{PRIMARY_SOFT\}\}/g, b.primarySoft)
+    .replace(/\{\{PRIMARY_TINT\}\}/g, b.primaryTint)
     .replace(/\{\{ACCENT_COLOR\}\}/g, b.accent)
     .replace(/\{\{HERO_PHOTO_URL\}\}/g, b.heroPhoto)
     .replace(/\{\{SERVICE_PHOTO_EMERGENCY\}\}/g, b.servicePhotos.emergency)
