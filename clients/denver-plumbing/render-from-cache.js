@@ -110,15 +110,24 @@ async function main() {
       const htmlPath = path.join(dir, 'index.html');
       fs.writeFileSync(htmlPath, html);
 
-      const pngPath = path.join(MMS_DIR, `${m.slug}.png`);
-      await screenshotMms({ htmlPath, outputPath: pngPath });
+      const jpgPath = path.join(MMS_DIR, `${m.slug}.jpg`);
+      await screenshotMms({ htmlPath, outputPath: jpgPath });
 
-      console.log(`✓ ${m.slug}  ${colors.primary === en.primary ? '' : '(palette override)'}`);
+      const sizeKB = Math.round(fs.statSync(jpgPath).size / 1024);
+      console.log(`✓ ${m.slug}  ${sizeKB}KB  ${colors.primary === en.primary ? '' : '(palette override)'}`);
       success++;
     } catch (err) {
       console.error(`✗ ${m.slug}: ${err.message}`);
     }
   }
+
+  // After rendering, rewrite lead-manifest.json with .jpg URLs
+  const updatedManifest = manifest.map(m => ({
+    ...m,
+    mms_preview_url: m.mms_preview_url.replace(/\.png$/, '.jpg'),
+  }));
+  fs.writeFileSync(MANIFEST_FILE, JSON.stringify(updatedManifest, null, 2));
+  console.log(`\nManifest URLs updated to .jpg`);
 
   console.log(`\nDone: ${success}/${leads.length}`);
 }
