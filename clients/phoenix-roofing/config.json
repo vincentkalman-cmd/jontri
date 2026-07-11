@@ -1,0 +1,73 @@
+{
+  "client": {
+    "name": "Phoenix Roofing Outreach",
+    "industry": "Roofing",
+    "description": "Phoenix metro roofing companies - storm season approaching, high-ticket jobs"
+  },
+
+  "sender": {
+    "from_name": "Vincent Kalman",
+    "from_title": "Founder",
+    "from_company": "Jontri Consulting",
+    "booking_url": "https://calendly.com/vincent-jontri/30min"
+  },
+
+  "icp": {
+    "person_titles": [
+      "Owner", "President", "CEO", "Founder",
+      "Vice President", "VP", "General Manager",
+      "Director of Operations", "COO"
+    ],
+    "person_locations": ["Phoenix, Arizona, United States", "Scottsdale, Arizona, United States", "Arizona, United States"],
+    "q_keywords": "roofing OR roofer OR roof repair OR roof replacement OR shingles OR storm damage",
+    "organization_num_employees_ranges": ["1,500"],
+    "per_page": 25
+  },
+
+  "qualification": {
+    "min_score": 6,
+    "ideal_customer_description": "A Phoenix-area roofing company with a dated, generic, or broken website that undersells a high-ticket trade ($5K-25K+ jobs). The kind of site that loses bids to better-looking competitors before the homeowner ever calls.",
+    "service_focus": "A complete, modern website redesign — already built for them — delivered with a 30-second video walkthrough. Not a services pitch; a finished site they can see before they reply."
+  },
+
+  "email": {
+    "tone": "a real person who already did the work, not a salesperson",
+    "max_words": 130,
+    "cta_style": "soft",
+    "custom_guidelines": [
+      "Do NOT use phrases like 'I hope this email finds you well'",
+      "The angle is: I already built you a new site — here's a 30-sec video of it",
+      "Reference that their current site doesn't match the quality of their actual roofing work",
+      "The poster image links to the hosted walkthrough video; CTA is reply for the live link",
+      "No feature list, no services pitch — the built site IS the pitch"
+    ]
+  },
+
+  "instantly": {
+    "campaign_prefix": "PHX-ROOF",
+    "schedule": {
+      "from": "09:00",
+      "to": "17:00",
+      "days": [1, 2, 3, 4, 5],
+      "timezone": "America/Phoenix"
+    }
+  },
+
+  "website_agent": {
+    "gmaps_queries": [
+      "roofing companies in Phoenix, AZ",
+      "roofing companies in Mesa, AZ",
+      "roofing companies in Scottsdale, AZ",
+      "roofing companies in Glendale, AZ",
+      "roofing companies in Tempe, AZ",
+      "roofing companies in Chandler, AZ",
+      "roofing companies in Gilbert, AZ",
+      "roofing companies in Peoria, AZ",
+      "roofing companies in Surprise, AZ",
+      "roofing companies in Avondale, AZ"
+    ],
+    "max_leads": 120,
+    "max_site_score": 5,
+    "require_website": true
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Arizona Roofing and Restoration",
+    "slug": "arizona-roofing-and-restoration",
+    "phone": "(480) 771-8876",
+    "address": "6531 N 10th Pl, Phoenix, AZ 85014, USA",
+    "city": "Phoenix",
+    "rating": 5,
+    "reviews": 135,
+    "website": "https://azroofpros.com/",
+    "site_score": 1,
+    "site_issues": [
+      "Website unreachable or returned an error"
+    ],
+    "site_summary": "Website could not be loaded \u2014 likely broken or offline.",
+    "site_strengths": []
+  },
+  {
+    "name": "Valley Roofing and Repair",
+    "slug": "valley-roofing-and-repair",
+    "phone": "(623) 250-7663",
+    "address": "4010 N 27th Ave Building C, Phoenix, AZ 85017, USA",
+    "city": "Phoenix",
+    "rating": 5,
+    "reviews": 134,
+    "website": "https://valleyroofingandrepair.com/",
+    "site_score": 1,
+    "site_issues": [
+      "Website unreachable or returned an error"
+    ],
+    "site_summary": "Website could not be loaded \u2014 likely broken or offline.",
+    "site_strengths": []
+  },
+  {
+    "name": "SUNVEK Roofing",
+    "slug": "sunvek-roofing",
+    "phone": "(623) 349-7663",
+    "address": "525 E Pinnacle Peak Rd #180, Phoenix, AZ 85024, USA",
+    "city": "Phoenix",
+    "rating": 4.9,
+    "reviews": 295,
+    "website": "https://sunvek.com/locations/phoenix/",
+    "site_score": 1,
+    "site_issues": [
+      "Website unreachable or returned an error"
+    ],
+    "site_summary": "Website could not be loaded \u2014 likely broken or offline.",
+    "site_strengths": []
+  }
+]

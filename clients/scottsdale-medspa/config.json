@@ -1,0 +1,100 @@
+{
+  "client": {
+    "name": "Scottsdale Med Spa Outreach",
+    "industry": "Medical Spa / Aesthetics",
+    "description": "Scottsdale-area independent med spas, aesthetics clinics, and IV therapy practices. High-LTV, brand-conscious owners whose websites are typically the booking bottleneck."
+  },
+
+  "sender": {
+    "from_name": "Vincent Kalman",
+    "from_title": "Founder",
+    "from_company": "Jontri Consulting",
+    "booking_url": "https://calendly.com/vincent-jontri/30min"
+  },
+
+  "icp": {
+    "person_titles": [
+      "Owner", "Founder", "Co-Founder",
+      "Medical Director", "Lead Injector", "Lead Aesthetician",
+      "Practice Manager", "Director of Operations", "CEO", "President"
+    ],
+    "person_locations": [
+      "Scottsdale, Arizona, United States",
+      "Phoenix, Arizona, United States",
+      "Paradise Valley, Arizona, United States",
+      "Tempe, Arizona, United States",
+      "Gilbert, Arizona, United States"
+    ],
+    "q_keywords": "med spa OR medical spa OR aesthetics OR cosmetic OR botox OR injectables OR laser OR microneedling OR IV therapy",
+    "organization_num_employees_ranges": ["2,30"],
+    "per_page": 25
+  },
+
+  "qualification": {
+    "min_score": 7,
+    "business_description": "a website conversion consultancy that helps independent med spas turn Instagram and Google Maps traffic into booked appointments by fixing technical issues on their sites — page speed, booking flow friction, missing local SEO schema, photo quality. Not an AI agency, not a generic web design shop — narrowly focused on conversion-rate fixes for med spa booking funnels.",
+    "pain_point_lens": "could be fixed with website conversion-rate work — slow mobile site, broken/clunky booking flow, missing LocalBusiness schema, low-res or unoptimized photos, no IG-to-site continuity, weak above-the-fold hero. Do NOT include AI-related pain points (no AI follow-up, no AI scheduling, no chatbot pain points)",
+    "ideal_customer_description": "An independent Scottsdale-area med spa or aesthetics clinic with 2-30 staff, founder-led or with a small leadership team. Typically does $800K-3M in revenue. Owner is the lead practitioner, cares deeply about brand, and runs a heavy Instagram presence. Bookings come through their website and IG link-in-bio. Site is usually a basic Wix/Squarespace template that doesn't reflect the polish of the brand and has measurable issues (slow mobile load, broken booking flow, low-res photos, missing schema markup). Decision-maker is a single owner-practitioner — fast close, no committee.",
+    "service_focus": "A complete website rebuild that makes their site as polished as their brand and Instagram, plus monthly conversion optimization (booking flow, schema for Google Maps, page speed, before/after gallery). Tied directly to bookings/revenue, not vanity metrics. NEVER mention AI tools, AI follow-up sequences, AI rebooking, AI scheduling, or any AI-related service. The pitch is purely site/conversion."
+  },
+
+  "email": {
+    "tone": "peer auditor, not salesperson — speak like another practice owner who happens to know web/conversion. Casual, observational, not pitchy.",
+    "max_words": 110,
+    "cta_style": "soft — offer a 2-minute Loom audit only, not a discovery call",
+    "rotation": {
+      "openers": [
+        "Was looking at [Company]'s site this morning and noticed [observation]...",
+        "Hey — quick note on [Company]. The [specific element] on your site is [issue]...",
+        "Spotted something on [Company] worth flagging — [issue]...",
+        "Took a quick look at [Company] this week. One thing stood out: [issue]...",
+        "Quick observation on [Company] — [issue]..."
+      ],
+      "wedges": [
+        "mobile page-speed angle — cite '53% of mobile users abandon sites that take more than 3 seconds to load' (Think with Google) or Google's Core Web Vitals threshold (LCP under 2.5 seconds for 'good')",
+        "booking flow friction angle — cite that 'each additional step in a mobile booking flow drops completion by ~10%' (industry research, NOT Google)",
+        "schema markup / Google Maps visibility angle — cite 'pages with LocalBusiness schema render rich Google Maps results — without it, your listing competes with text-only entries' (Google Search Central guidance, no percentage)",
+        "photo quality / page weight angle — cite 'Google's mobile-first index downranks pages where the largest image takes longer than 2.5 seconds to load' (Core Web Vitals LCP)",
+        "hero / above-the-fold angle — cite Google's research that mobile users decide whether to stay or leave within 3 seconds based on the above-the-fold experience"
+      ],
+      "ctas": [
+        "Want me to send it over?",
+        "Reply 'send it' and I'll have it to you tomorrow.",
+        "Worth a watch?",
+        "Yes or no on the walkthrough?",
+        "Happy to send if it sounds useful."
+      ]
+    },
+    "value_proposition_line": "Briefly mention you can put together a 2-minute Loom walking through the issue and a couple more — this is the value, not a meeting or a free site. Vary the exact phrasing — do not say 'I put together a 2-minute Loom' verbatim every email; sometimes say 'I can record a quick walkthrough', 'happy to film a 2-min audit', 'can send a Loom showing it', etc.",
+    "cta_line": "Close with the EXACT CTA phrasing assigned in the ROTATION ASSIGNMENT block. DO NOT include any Calendly link, calendar URL, booking link, or phone number anywhere in the body.",
+    "custom_guidelines": [
+      "DO NOT mention AI, AI tools, AI follow-up, AI rebooking, AI scheduling, automation, chatbots, or any AI-related service anywhere in the email. The entire pitch is about website conversion fixes — nothing else.",
+      "DO NOT use phrases like 'I hope this email finds you well', 'Just wanted to reach out', 'circling back', 'I'd love to', or 'happy to'.",
+      "DO NOT mention 'building you a free website', 'I built a demo', 'free audit report', or any pre-built site offer — this is a Loom pitch, not a free-site pitch.",
+      "If the prospect's first name is blank, do NOT use 'Hi [blank]' or invent a name. Lead straight into the observation.",
+      "PICK EXACTLY ONE pain point from the list and build the email around that ONE issue. Do NOT list multiple issues in the body.",
+      "Only mention Instagram if the assigned wedge specifically calls for it — do NOT default to 'Instagram vs site mismatch' framing.",
+      "Mention 'a few other AZ med spas' in passing only if it fits naturally — do not force it into every email.",
+      "Sign-off should be just 'Vince' or '— Vince' — never 'Vincent Kalman, Founder of Jontri Consulting'.",
+      "Subject line MUST be unique across the campaign. Under 5 words, lowercase, hints at the specific observation. AVOID generic templates like 'quick note on your site' or 'your booking flow' that other emails will collide with. Examples of varied formats: 'something on [domain]', '[company] — your hero', 'mobile load on [company]', 'your maps listing', '[company] booking', '3 seconds on [domain]'. Use the company name or domain in roughly half of subjects to make them feel unique.",
+      "The body MUST be at least 60 words and no more than 130 words. Never output an empty or near-empty body. If you find yourself writing fewer than 60 words, expand the observation with one more sentence of context."
+    ]
+  },
+
+  "instantly": {
+    "campaign_prefix": "SCOT-MEDSPA",
+    "schedule": {
+      "from": "10:00",
+      "to": "16:00",
+      "days": [1, 2, 3, 4, 5],
+      "timezone": "America/Phoenix"
+    }
+  },
+
+  "website_agent": {
+    "gmaps_query": "med spa in Scottsdale, AZ",
+    "max_leads": 50,
+    "max_site_score": 6,
+    "require_website": true
+  }
+}

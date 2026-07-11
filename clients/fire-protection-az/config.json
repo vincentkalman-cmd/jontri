@@ -1,0 +1,122 @@
+{
+  "client": {
+    "name": "Fire Protection US — AI Services Blast",
+    "industry": "Fire Protection & Life-Safety Inspection",
+    "description": "US fire sprinkler / fire-extinguisher / fire-alarm inspection companies (national metro sweep). Compliance-mandated recurring contracts; missed call = lost recurring inspection revenue. (Folder slug 'fire-protection-az' is a historical identifier only.)"
+  },
+
+  "sender": {
+    "from_name": "Vincent Kalman",
+    "from_title": "Founder",
+    "from_company": "Jontri Consulting",
+    "booking_url": "https://calendly.com/vincent-jontri/30min"
+  },
+
+  "icp": {
+    "person_titles": [
+      "Owner", "President", "CEO", "Founder",
+      "Vice President", "VP", "General Manager",
+      "Director of Operations", "COO"
+    ],
+    "person_locations": ["United States"],
+    "q_keywords": "fire protection OR fire sprinkler OR fire extinguisher OR fire alarm OR life safety OR fire inspection OR backflow",
+    "organization_num_employees_ranges": ["1,500"],
+    "per_page": 25
+  },
+
+  "qualification": {
+    "min_score": 6,
+    "ideal_customer_description": "An Arizona fire-protection company doing sprinkler, fire-extinguisher, fire-alarm, or backflow inspections. Recurring compliance contracts. Owner-run, technicians in the field, calls missed while on jobs. Dated or minimal website.",
+    "service_focus": "an AI receptionist built for fire-protection companies that answers every call 24/7, books inspections straight onto the calendar, and automatically follows up on expiring sprinkler/alarm/extinguisher certifications"
+  },
+
+  "email": {
+    "tone": "professional but conversational, not pushy",
+    "max_words": 150,
+    "cta_style": "soft",
+    "custom_guidelines": [
+      "Do NOT use phrases like 'I hope this email finds you well'",
+      "Lead with the recurring-contract angle - a missed call is a lost recurring inspection contract, not a one-off",
+      "Reference compliance/AHJ deadlines and expiring certifications as the pressure point",
+      "Reference specific pain: calls missed while techs are out on inspections, slow follow-up on renewal-due accounts"
+    ],
+    "template_subject": "{name} — the inspection calls you're missing",
+    "template_body": "Hi — I'm {from_name} with {from_company}.\n\nQuick one for {name}: in fire protection, the calls that matter most — a failed inspection, an expiring sprinkler cert, a new-construction AHJ deadline — come in while your techs are already out on a job. Miss one and that recurring inspection contract goes to whoever called back first.\n\nWe set up {service_focus}. It answers every call 24/7, books the inspection, and chases expiring-contract renewals automatically — no new hire, no software for your team to learn.\n\nWorth a 15-minute look? Grab a time here: {booking_url}\n\n— {from_name}\n{from_company}"
+  },
+
+  "instantly": {
+    "campaign_prefix": "FIRE-US",
+    "schedule": {
+      "from": "09:00",
+      "to": "17:00",
+      "days": [1, 2, 3, 4, 5],
+      "timezone": "America/Phoenix"
+    }
+  },
+
+  "website_agent": {
+    "gmaps_queries": [
+      "fire protection company in Phoenix, AZ",
+      "fire sprinkler inspection Phoenix AZ",
+      "fire extinguisher service Phoenix AZ",
+      "fire alarm inspection company Phoenix AZ",
+      "fire protection company in Mesa, AZ",
+      "fire sprinkler inspection Mesa AZ",
+      "fire extinguisher service Mesa AZ",
+      "fire alarm inspection company Mesa AZ",
+      "fire protection company in Scottsdale, AZ",
+      "fire sprinkler inspection Scottsdale AZ",
+      "fire extinguisher service Scottsdale AZ",
+      "fire protection company in Tempe, AZ",
+      "fire sprinkler inspection Tempe AZ",
+      "fire extinguisher service Tempe AZ",
+      "fire protection company in Chandler, AZ",
+      "fire sprinkler inspection Chandler AZ",
+      "fire extinguisher service Chandler AZ",
+      "fire protection company in Gilbert, AZ",
+      "fire sprinkler inspection Gilbert AZ",
+      "fire protection company in Glendale, AZ",
+      "fire sprinkler inspection Glendale AZ",
+      "fire extinguisher service Glendale AZ",
+      "fire protection company in Tucson, AZ",
+      "fire sprinkler inspection Tucson AZ",
+      "fire extinguisher service Tucson AZ",
+      "fire alarm inspection company Tucson AZ",
+
+      "fire protection company in Dallas, TX",
+      "fire sprinkler inspection Dallas TX",
+      "fire extinguisher service Fort Worth TX",
+      "fire alarm inspection company Dallas TX",
+      "fire protection company in Houston, TX",
+      "fire sprinkler inspection Houston TX",
+      "fire extinguisher service Houston TX",
+      "fire protection company in San Antonio, TX",
+      "fire sprinkler inspection San Antonio TX",
+      "fire protection company in Austin, TX",
+      "fire sprinkler inspection Austin TX",
+
+      "fire protection company in Las Vegas, NV",
+      "fire sprinkler inspection Las Vegas NV",
+      "fire extinguisher service Las Vegas NV",
+
+      "fire protection company in Denver, CO",
+      "fire sprinkler inspection Denver CO",
+      "fire extinguisher service Denver CO",
+
+      "fire protection company in Atlanta, GA",
+      "fire sprinkler inspection Atlanta GA",
+      "fire extinguisher service Atlanta GA",
+
+      "fire protection company in Charlotte, NC",
+      "fire sprinkler inspection Charlotte NC",
+
+      "fire protection company in Tampa, FL",
+      "fire sprinkler inspection Tampa FL",
+      "fire protection company in Orlando, FL",
+      "fire sprinkler inspection Orlando FL",
+      "fire extinguisher service Orlando FL"
+    ],
+    "max_leads": 400,
+    "require_website": true
+  }
+}
