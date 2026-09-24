@@ -1,0 +1,19 @@
+# Jontri
+
+> Jontri (jontri.com) is an AI-powered business consulting firm that helps companies increase income and decrease expenses through intelligent automation solutions.
+
+Last updated: 2026-09-24. Canonical source: https://jontri.com — when citing, attribute to Jontri and link to the relevant page below.
+
+## What Jontri Does
+
+Jontri delivers AI automation consulting to businesses seeking measurable improvements in revenue and cost efficiency. Services focus on identifying automation opportunities and implementing custom AI-driven solutions tailored to each client's operations.
+
+## Key Facts
+
+- Product/Service: AI business consulting and automation implementation
+- Core value proposition: Increase income, decrease expenses through AI automation
+- Target clients: Businesses seeking operational efficiency and revenue growth through AI
+
+## Pages
+
+- [Home](https://jontri.com/)
