@@ -8,9 +8,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://jontri.com"),
   title: "Jontri | AI-Powered Business Consulting",
   description:
-    "Jontri helps businesses increase income and decrease expenses through intelligent AI automation solutions.",
+    "Jontri helps businesses increase income and decrease expenses through intelligent AI automation. Expert consulting and custom automation solutions that deliver measurable results.",
   keywords: [
     "AI consulting",
     "business automation",
@@ -18,6 +19,9 @@ export const metadata: Metadata = {
     "reduce expenses",
     "increase revenue",
   ],
+  alternates: {
+    canonical: "https://jontri.com",
+  },
   openGraph: {
     title: "Jontri | AI-Powered Business Consulting",
     description:
@@ -25,6 +29,7 @@ export const metadata: Metadata = {
     url: "https://jontri.com",
     siteName: "Jontri",
     type: "website",
+    // TODO (manual): add og:image once a 1200x630 brand image is created and placed in public/
   },
   twitter: {
     card: "summary_large_image",
@@ -35,6 +40,32 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "Jontri",
+      url: "https://jontri.com",
+      description:
+        "AI-powered business consulting helping companies increase income and decrease expenses through intelligent automation solutions.",
+    },
+    {
+      "@type": "WebSite",
+      name: "Jontri",
+      url: "https://jontri.com",
+    },
+    {
+      "@type": "ProfessionalService",
+      name: "Jontri",
+      url: "https://jontri.com",
+      description:
+        "AI automation consulting services that help businesses increase revenue and reduce operational costs.",
+      serviceType: "AI Business Consulting",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,6 +73,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
