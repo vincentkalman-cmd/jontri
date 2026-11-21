@@ -1,0 +1,120 @@
+
+[1/4] Running 6 Google Maps queries...
+  (1/6) "med spa in Scottsdale, AZ"   Google Maps API status: INVALID_REQUEST — 
+-> 20 results, 20 new (cumulative: 20)
+  (2/6) "med spa in Phoenix, AZ"   Google Maps API status: INVALID_REQUEST — 
+-> 20 results, 19 new (cumulative: 39)
+  (3/6) "aesthetics in Scottsdale, AZ"   Google Maps API status: INVALID_REQUEST — 
+-> 20 results, 18 new (cumulative: 57)
+  (4/6) "medical spa in Phoenix, AZ"   Google Maps API status: INVALID_REQUEST — 
+-> 20 results, 2 new (cumulative: 59)
+  (5/6) "botox clinic in Scottsdale, AZ"   Google Maps API status: INVALID_REQUEST — 
+-> 20 results, 9 new (cumulative: 68)
+  (6/6) "IV therapy Scottsdale"   Google Maps API status: INVALID_REQUEST — 
+-> 19 results, 19 new (cumulative: 87)
+
+  De-duped to 87 unique businesses
+
+[2/4] Enriching 87 leads with website + phone details...
+  Filtered to 87 with websites (dropped 0 without)
+
+[3/4] Scanning 87 websites for contact emails (delay 0.7s)...
+  (1/87) Scanning ZONA MED SPA                               http://www.zonamedspa.com/... <no email found>
+  (2/87) Scanning Scottsdale Med Spa                         https://scottsdalemedspa.beauty/?utm_source=GBP... <no email found>
+  (3/87) Scanning The Perfect Secret Med Spa                 https://www.itstheperfectsecret.com/... admin@itstheperfectsecret.com
+  (4/87) Scanning Dolce Medical Spa - Old Town               http://dolcemedicalspas.com/... <no email found>
+  (5/87) Scanning Look Lab Med Spa                           https://looklab.com/locations/scottsdale-az/... <no email found>
+  (6/87) Scanning Zahav Medspa                               https://www.zahavmedspa.com/... scottsdale@zahavmedspa.com
+  (7/87) Scanning Elite Medspa Scottsdale                    https://elitemedspaaz.com/... <no email found>
+  (8/87) Scanning Dolce Medical Spa                          https://www.dolcemedicalspas.com/... <no email found>
+  (9/87) Scanning North Scottsdale Med Spa                   https://northscottsdalemedspa.com/?utm_source=GBP... <no email found>
+  (10/87) Scanning NakedMD Med Spa Scottsdale                 https://www.nakedmd.com/pages/locations-scottsdale... concierge@nakedmd.com
+  (11/87) Scanning Moderne Medical Aesthetics                 http://www.modernemedical.com/... support@modernemedical.com
+  (12/87) Scanning Alani Skin MD                              https://alaniskinmd.com/locations/scottsdale-az/?u... support@alaniskinmd.com
+  (13/87) Scanning DHH Med Spa                                https://dhhmedspa.com/... <no email found>
+  (14/87) Scanning Collab Medspa - Scottsdale                 https://collabmedspa.com/... <no email found>
+  (15/87) Scanning The Well Med Spa                           http://thewellmedspa.com/?utm_source=google&utm_me... info@thewellmedspa.com
+  (16/87) Scanning Lé Nour Aesthetics & Wellness              https://lenourmedspa.com/... info@lenourmedspa.com
+  (17/87) Scanning Skindale Medspa                            http://www.skindalemedspa.com/... mary@skindalemedspa.com
+  (18/87) Scanning MedSpa MANGO                               https://medspamango.com/... <no email found>
+  (19/87) Scanning Inside Out Aesthetics                      https://insideoutaesthetics.com/?y_source=1_MTAwMz... support@insideoutaesthetics.com
+  (20/87) Scanning Blume Skin & Body                          https://blumeskintreatment.com/?utm_source=google&... <no email found>
+  (21/87) Scanning Suddenly Slimmer Med Spa                   https://www.suddenlyslimmer.com/... info@suddenlyslimmer.com
+  (22/87) Scanning NakedMD Med Spa Phoenix                    https://www.nakedmd.com/pages/nakedmd-phoenix-az... concierge@nakedmd.com
+  (23/87) Scanning Look Lab Med Spa                           https://looklab.com/locations/arcadia-az/... <no email found>
+  (24/87) Scanning It's A Secret Med Spa - Phoenix            https://secretmedspa.com/phoenix/... <no email found>
+  (25/87) Scanning Moon Valley Medspa                         https://moonvalleymedspa.com/... info@moonvalleymedspa.com
+  (26/87) Scanning Med 44 Arcadia                             https://www.med44arcadia.com/... <no email found>
+  (27/87) Scanning Innova MedSpa                              http://www.inmedspa.com/... info@inmedspa.com
+  (28/87) Scanning Sculpt AZ Medspa                           https://www.sculptazmedspa.com/... frontdesk@sculptazmedspa.com
+  (29/87) Scanning Units Injection Spa                        http://www.unitsinjectionspa.com/... <no email found>
+  (30/87) Scanning Bellagio Med Spa Cave Creek                https://www.bellagiomedicalspa.com/... cavecreek@bellagiomedicalspa.com
+  (31/87) Scanning Phoenix MedSpa                             https://phxmedspa.com/... <no email found>
+  (32/87) Scanning Uptown Medispa                             http://www.uptownmedispa.com/... <no email found>
+  (33/87) Scanning Bellagio Med Spa Sun City                  https://www.bellagiomedicalspa.com/... cavecreek@bellagiomedicalspa.com
+  (34/87) Scanning MDSkin Lounge and MDSkin Bar - Arcadia     http://www.mdskinlounge.com/... info@mdskinlounge.com
+  (35/87) Scanning Body Beautiful Day and Med Spa             https://bodybeautifulspa.net/... customercare@bodybeautifulspa.net
+  (36/87) Scanning Paradise Medspa and Wellness               https://paradisemedspa.com/?utm_source=GBP... feelpretty@paradisemedspa.com
+  (37/87) Scanning Vibrant Skin Bar                           https://vibrantskinbar.com/... <no email found>
+  (38/87) Scanning Zensken - Phoenix Med Spa & Aesthetic In   https://www.zensken.com/... ashley@zensken.com
+  (39/87) Scanning New Image Med Spa                          http://www.newimagemedspaaz.com/... <no email found>
+  (40/87) Scanning Institute of Aesthetics, Beauty & Wellne   http://instituteofaesthetics.com/... info@instituteofaesthetics.com
+  (41/87) Scanning Skin Savvy Aesthetics Med Spa              https://skinsavvyscottsdale.com/... info@skinsavvyscottsdale.com
+  (42/87) Scanning Nude Aesthetics Med Spa Scottsdale         https://www.nude-aesthetics.com/... contact@nude-aesthetics.com
+  (43/87) Scanning Love Aesthetics & Wellness                 https://www.loveaestheticswellness.com/... info@loveaestheticswellness.com
+  (44/87) Scanning Franco Wellness & Aesthetics - Scottsdal   http://www.adanfranco.co/... <no email found>
+  (45/87) Scanning Aesthetic Assets                           https://aestheticassets.com//?utm_source=google&ut... <no email found>
+  (46/87) Scanning Adam & Eve Medical Aesthetics              https://www.adamandevemedspa.com/... <no email found>
+  (47/87) Scanning Sachi Aesthetics                           https://sachiaesthetics.com/... 20info@sachiaesthetics.com
+  (48/87) Scanning The Old Town Esthetician                   https://theoldtownesthetician.glossgenius.com/... <no email found>
+  (49/87) Scanning Joliet Aesthetics Med Spa Scottsdale       https://www.jolietaestheticsmedspa.com/?utm_source... info@jolietaestheticsmedspa.com
+  (50/87) Scanning Arizona Aesthetics | Hair Restoration &    http://www.arizonaaesthetics.com/... info@arizonaaesthetics.com
+  (51/87) Scanning Profile Aesthetics                         https://profileaesthetics.com/?UTM_source=GBP_list... info@profileaesthetics.com
+  (52/87) Scanning Anatomy of Aesthetics                      http://www.anatomyofaesthetics.com/... <no email found>
+  (53/87) Scanning Wilson MD Aesthetics + Wellness            https://www.wilsonmdaesthetics.com/... info@wilsonmdaesthetics.com
+  (54/87) Scanning MODE Aesthetics and Wellness               https://modescottsdale.com/?utm_source=google&utm_... hello@modescottsdale.com
+  (55/87) Scanning Fresh Start Aesthetics Med Spa             https://www.freshstartaesthetics.com/... <no email found>
+  (56/87) Scanning Aesthetic Design and Wellness              http://www.aestheticdesignandwellness.com/... <no email found>
+  (57/87) Scanning Center for Aesthetic and Laser Medicine    https://www.usdermatologypartners.com/locations/ar... <no email found>
+  (58/87) Scanning All About Me Medical Aesthetics            https://allaboutmeaz.com/?utm_source=gbp&utm_mediu... <no email found>
+  (59/87) Scanning Derma Health Skin & Laser                  http://www.dermahealthinstitute.com/... info@dermahealthinstitute.com
+  (60/87) Scanning The Glam Nurse                             http://theglamnurse.com/... info@theglamnurse.com
+  (61/87) Scanning The Skin Clinic North Scottsdale           https://theskinclinicaz.com/... <no email found>
+  (62/87) Scanning The Flawless Lab - Medspa                  https://theflawlesslab.com/... reception@theflawlesslab.com
+  (63/87) Scanning Injections by Megan                        https://injectionsbymegan.com/... megan@injectionsbymegan.com
+  (64/87) Scanning Clear Dermatology & Aesthetics Center      https://www.cleardermatology.net/... info@cleardermatology.net
+  (65/87) Scanning DS Skin & Lips Medical Spa                 https://www.dsskinandlips.com/... info@dsskinandlips.com
+  (66/87) Scanning MDSkin Lounge                              http://www.mdskinlounge.com/... info@mdskinlounge.com
+  (67/87) Scanning Amplified Beauty                           http://amplified-beauty.com/... <no email found>
+  (68/87) Scanning SkinSpirit Scottsdale                      https://www.skinspirit.com/locations/scottsdale/... annapolis@skinspirit.com
+  (69/87) Scanning AZ IV Medics                               http://www.azivmedics.com/... info@azivmedics.com
+  (70/87) Scanning ASAP IVs                                   https://www.asapivs.com/... taylor@asapivs.com
+  (71/87) Scanning Prime IV Hydration & Wellness - Scottsda   https://primeivhydration.com/locations/arizona/sco... <no email found>
+  (72/87) Scanning Drip Hydration - Mobile IV Therapy - Pho   https://driphydration.com/coverage-areas/phoenix/?... <no email found>
+  (73/87) Scanning IV Revival                                 https://ivrevival.com/... info@ivrevival.com
+  (74/87) Scanning The IV League Drip                         http://www.theivleaguedrip.com/... careers@theivleaguedrip.com
+  (75/87) Scanning Prana IV Therapy                           https://pranaivtherapy.com/... contact@pranaivtherapy.com
+  (76/87) Scanning Viva IV Therapy                            https://www.vivatherapy.com/... info@vivatherapy.com
+  (77/87) Scanning Recovery Room IV Therapy & Wellness        https://www.recoveryroomaz.com/... ivtherapy@recoveryroomaz.com
+  (78/87) Scanning Hydrate IV Bar                             https://hydrateivbar.com/locations/scottsdale/... <no email found>
+  (79/87) Scanning Mobile IV Drip                             https://mobileivdrip.com/... careers@mobileivdrip.com
+  (80/87) Scanning Mobile IV Therapy Phoenix                  https://mobileivtherapyphoenix.com/?utm_campaign=g... <no email found>
+  (81/87) Scanning Restore Hyper Wellness                     https://www.restore.com/locations/az-phoenix-north... <no email found>
+  (82/87) Scanning The DRIPBaR Scottsdale                     https://scottsdale-horizon.thedripbar.com/?utm_sou... ivy.barre@thedripbar.com
+  (83/87) Scanning IV Nutrition                               https://ivnutrition.com/locations/phoenix-az/... <no email found>
+  (84/87) Scanning Aesthetic Revival                          https://www.aestheticrevival.com/... hello@aestheticrevival.com
+  (85/87) Scanning Prime IV Hydration & Wellness - Phoenix    https://primeivhydration.com/locations/arizona/pho... <no email found>
+  (86/87) Scanning Hive Fit Club                              http://hivefitclub.com/... info@hivefitclub.com
+  (87/87) Scanning Hydrate IV Bar                             https://hydrateivbar.com/locations/arcadia/... <no email found>
+  -> 49/87 sites yielded an email
+
+[4/4] Writing CSV: C:\Users\vince\OneDrive\Desktop\VK Personal\AI Automation\Jontri\leads-scottsdale-medspa.csv
+
+=== Done ===
+  Total businesses (deduped): 87
+  With email:                 49
+  Without email:              38  (drop or chase via IG/phone)
+  CSV:                        C:\Users\vince\OneDrive\Desktop\VK Personal\AI Automation\Jontri\leads-scottsdale-medspa.csv
+
+Next: python prospector/main.py --client=scottsdale-medspa --csv=C:\Users\vince\OneDrive\Desktop\VK Personal\AI Automation\Jontri\leads-scottsdale-medspa.csv
+

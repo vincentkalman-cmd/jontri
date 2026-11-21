@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { rateLimit } from "@/lib/ratelimit";
 
-const AI_SEO_PROMPT = `You are an AI search optimization expert. Analyze this business's web presence for visibility in AI-powered search engines (ChatGPT, Perplexity, Google AI Overviews, Bing Copilot).
+const AI_SEO_SYSTEM = `You are an AI search optimization expert. Analyze a business's web presence for visibility in AI-powered search engines (ChatGPT, Perplexity, Google AI Overviews, Bing Copilot).
 
-Business: {business_name}
-Website: {website_url}
-Industry: {industry}
-Target AI Queries: {target_queries}
-
-Website Content:
-{content}
-
-Analyze and return a JSON object with:
+Return a JSON object with these exact keys:
 - "overall_score": integer 1-10 (10 = fully optimized for AI search)
 - "structured_data": { "present": boolean, "types_found": string[], "missing": string[], "score": integer 1-10 }
 - "content_citability": { "score": integer 1-10, "issues": string[], "recommendations": string[] }
@@ -30,6 +23,9 @@ Return ONLY valid JSON, no markdown fences.`;
 
 // POST /api/ai-seo — analyze a website for AI search optimization
 export async function POST(request: NextRequest) {
+  const limited = rateLimit(request, { limit: 10, windowMs: 60_000 });
+  if (limited) return limited;
+
   const body = await request.json();
   const { businessName, websiteUrl, targetQueries, industry } = body;
 
@@ -83,17 +79,26 @@ export async function POST(request: NextRequest) {
       // Not found
     }
 
-    const prompt = AI_SEO_PROMPT.replace("{business_name}", businessName || "")
-      .replace("{website_url}", websiteUrl)
-      .replace("{industry}", industry || "")
-      .replace("{target_queries}", targetQueries || "")
-      .replace("{content}", content.slice(0, 5000));
+    const userPrompt = `Business: ${businessName || ""}
+Website: ${websiteUrl}
+Industry: ${industry || ""}
+Target AI Queries: ${targetQueries || ""}
+
+Website Content:
+${content.slice(0, 5000)}`;
 
     const anthropic = new Anthropic({ apiKey: anthropicKey });
     const resp = await anthropic.messages.create({
       model: "claude-sonnet-4-6",
       max_tokens: 2000,
-      messages: [{ role: "user", content: prompt }],
+      system: [
+        {
+          type: "text",
+          text: AI_SEO_SYSTEM,
+          cache_control: { type: "ephemeral" },
+        },
+      ],
+      messages: [{ role: "user", content: userPrompt }],
     });
 
     const text = resp.content[0].type === "text" ? resp.content[0].text : "";

@@ -13,6 +13,7 @@ from gmaps_scraper import load_leads_from_gmaps
 from site_scorer import score_website, filter_by_score
 from site_generator import generate_and_save
 from deployer import deploy_demo
+from state import already_sent, mark_sent
 import config
 
 
@@ -31,11 +32,17 @@ def run_prospecting(
 
     # Step 1: Load leads from Apollo CSV
     print("[1/4] Loading leads from Apollo CSV...")
-    leads = load_leads_from_csv(csv_path)
-    print(f"  Found {len(leads)} leads\n")
+    raw_leads = load_leads_from_csv(csv_path)
+    print(f"  Found {len(raw_leads)} leads in CSV")
+
+    leads = [l for l in raw_leads if not already_sent(l.get("email", ""))]
+    skipped = len(raw_leads) - len(leads)
+    if skipped:
+        print(f"  Skipping {skipped} leads already pushed in a previous run")
+    print(f"  {len(leads)} new leads to process\n")
 
     if not leads:
-        print("No leads found. Export a CSV from Apollo and place it in the project folder.")
+        print("No new leads to process. Export a fresh CSV or clear prospector/output/.sent_emails.json to retry.")
         return
 
     # Step 2: Qualify leads with AI
@@ -65,7 +72,7 @@ def run_prospecting(
     print("[3/4] Generating personalized emails...")
     for i, lead in enumerate(qualified):
         print(f"  ({i+1}/{len(qualified)}) Drafting email for {lead['first_name']} {lead['last_name']}...")
-        email_data = generate_email(lead, lead["_qualification"])
+        email_data = generate_email(lead, lead["_qualification"], lead_index=i)
         if email_data:
             lead["email_subject"] = email_data.get("subject", "")
             lead["email_body"] = email_data.get("body", "")
@@ -82,6 +89,7 @@ def run_prospecting(
         if success and not dry_run:
             for lead in qualified:
                 lead["email_sent"] = True
+            mark_sent([l.get("email", "") for l in qualified])
     else:
         print("\n[4/4] Skipping Instantly push (use --send-emails to enable)")
 

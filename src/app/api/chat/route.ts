@@ -1,7 +1,7 @@
-// TODO: Add rate limiting via Vercel's config or @upstash/ratelimit to prevent abuse
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { getSupabase } from "@/lib/supabase";
+import { rateLimit } from "@/lib/ratelimit";
 
 function getAllowedOrigin(requestOrigin: string | null): string | null {
   const allowedRaw = process.env.ALLOWED_ORIGINS || "https://jontri.com,https://www.jontri.com";
@@ -39,6 +39,13 @@ async function getClientConfig(slug: string) {
 }
 
 export async function POST(request: NextRequest) {
+  const limited = rateLimit(request, { limit: 20, windowMs: 60_000 });
+  if (limited) {
+    const cors = corsHeaders(request);
+    for (const [k, v] of Object.entries(cors)) limited.headers.set(k, v);
+    return limited;
+  }
+
   const { slug, message, history } = await request.json();
 
   if (!slug || !message) {
@@ -95,7 +102,13 @@ ${knowledge ? `Here is detailed information about the business scraped from thei
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 300,
-      system: systemPrompt,
+      system: [
+        {
+          type: "text",
+          text: systemPrompt,
+          cache_control: { type: "ephemeral" },
+        },
+      ],
       messages,
     });
 

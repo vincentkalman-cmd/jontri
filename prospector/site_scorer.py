@@ -9,6 +9,22 @@ import config
 
 client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
+
+def _extract_json(text: str) -> dict:
+    """Parse model JSON robustly. Haiku 4.5 wraps output in ```json fences
+    despite instructions not to, which breaks a bare json.loads. Strip
+    fences / surrounding prose, then parse the outermost object.
+    """
+    t = (text or "").strip()
+    if t.startswith("```"):
+        t = re.sub(r"^```[a-zA-Z]*\s*", "", t)
+        t = re.sub(r"\s*```$", "", t).strip()
+    if not t.startswith("{"):
+        a, b = t.find("{"), t.rfind("}")
+        if a != -1 and b != -1:
+            t = t[a : b + 1]
+    return json.loads(t)
+
 SCORE_PROMPT = """\
 You are a web design expert evaluating a local business website for quality and modernity.
 
@@ -106,15 +122,11 @@ def score_website(url: str, business_name: str, industry: str) -> dict | None:
         return None
 
     if scraped.get("error"):
-        print(f"    Scrape error for {url}: {scraped['error']}")
-        return {
-            "score": 1,
-            "issues": ["Website unreachable or returned an error"],
-            "worth_redesigning": True,
-            "summary": "Website could not be loaded — likely broken or offline.",
-            "strengths": [],
-            "scraped": scraped,
-        }
+        # A 403/bot-block is NOT evidence the site is bad — it usually means
+        # a WAF rejected our scraper (often the better-built sites). Treat as
+        # "cannot assess" → skip, rather than a false-positive qualifying lead.
+        print(f"    Scrape error for {url}: {scraped['error']} — skipping (cannot assess)")
+        return None
 
     prompt = SCORE_PROMPT.format(
         business_name=business_name,
@@ -131,7 +143,7 @@ def score_website(url: str, business_name: str, industry: str) -> dict | None:
             max_tokens=500,
             messages=[{"role": "user", "content": prompt}],
         )
-        result = json.loads(resp.content[0].text)
+        result = _extract_json(resp.content[0].text)
         result["scraped"] = scraped
         return result
     except Exception as e:

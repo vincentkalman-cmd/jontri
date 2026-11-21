@@ -1,5 +1,5 @@
-// TODO: Add rate limiting via Vercel's config or @upstash/ratelimit to prevent abuse
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "@/lib/ratelimit";
 
 // Strip HTML tags and normalize whitespace
 function extractText(html: string): string {
@@ -93,6 +93,9 @@ function isPrivateOrDisallowedUrl(urlStr: string): boolean {
 }
 
 export async function POST(request: NextRequest) {
+  const limited = rateLimit(request, { limit: 10, windowMs: 60_000 });
+  if (limited) return limited;
+
   const { url } = await request.json();
 
   if (!url) {

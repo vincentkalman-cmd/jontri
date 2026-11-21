@@ -1,0 +1,974 @@
+Scottsdale Med Spa Outreach — 42 emails to send
+================================================================================
+
+INSTRUCTIONS:
+- For each lead below, paste the Subject and Body into Instantly (or send manually).
+- Send order is sorted by AI score (highest scorers first).
+- Recommend 20-25 sends per day from one warmed mailbox. Spread over 2 days.
+
+================================================================================
+
+--- LEAD 1 of 42 ---
+Company:   The Perfect Secret Med Spa
+To:        admin@itstheperfectsecret.com
+Phone:     (480) 647-8991
+Website:   https://www.itstheperfectsecret.com/
+AI Score:  8/10
+
+SUBJECT:
+perfect secret — mobile load
+
+BODY:
+Was looking at The Perfect Secret's site this morning and noticed the mobile load time is sitting well above Google's 2.5-second threshold for a 'good' experience — and that matters a lot when someone taps your link from Google Maps expecting a luxury vibe instantly.
+
+According to Think with Google, 53% of mobile visitors bail if a page takes more than 3 seconds. For a brand built around exclusivity, that first impression gap is quietly costing you bookings before anyone even sees your services.
+
+I can record a quick walkthrough showing exactly where the slowdown is happening and flag a couple other things I spotted.
+
+Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 2 of 42 ---
+Company:   Zahav Medspa
+To:        scottsdale@zahavmedspa.com
+Phone:     (480) 319-5765
+Website:   https://www.zahavmedspa.com/
+AI Score:  8/10
+
+SUBJECT:
+zahav — booking flow friction
+
+BODY:
+Hey — quick note on Zahav. The booking flow on your site is adding friction right at the moment someone is ready to commit.
+
+Your brand presence earns real attention, but if your booking tool is a generic Wix or Squarespace embed, you're likely bleeding appointments at the final step — industry research shows each additional step in a mobile booking flow drops completion by roughly 10%. A 3-step flow can quietly cost you 30% of warm leads before they ever confirm.
+
+I can record a quick walkthrough showing exactly where it's happening on your site, plus a couple other things worth knowing.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 3 of 42 ---
+Company:   NakedMD Med Spa Scottsdale
+To:        concierge@nakedmd.com
+Phone:     (480) 300-4732
+Website:   https://www.nakedmd.com/pages/locations-scottsdale-az
+AI Score:  8/10
+
+SUBJECT:
+nakedmd — your maps listing
+
+BODY:
+Spotted something on NakedMD worth flagging — your Google Maps listing is likely leaving visibility on the table.
+
+You've clearly built a strong brand presence in Scottsdale, but if your site is missing LocalBusiness schema markup, your listing competes as a plain text entry against competitors whose results render with rich details — hours, reviews, service types — right inside the Maps panel. That gap quietly costs you clicks before anyone even reaches your booking page.
+
+I can record a quick walkthrough showing exactly where the gap is, plus a couple other things I noticed.
+
+Worth a watch?
+
+— Vince
+Jontri Consulting
+
+--------------------------------------------------------------------------------
+
+--- LEAD 4 of 42 ---
+Company:   Moderne Medical Aesthetics
+To:        support@modernemedical.com
+Phone:     (480) 477-7726
+Website:   http://www.modernemedical.com/
+AI Score:  8/10
+
+SUBJECT:
+moderne — mobile load time
+
+BODY:
+Took a quick look at Moderne Medical Aesthetics this week. One thing stood out: page weight.
+
+Moderne has the brand presence to attract high-value clients in Scottsdale, but if Instagram visitors are clicking your link-in-bio and waiting on images to load, most are gone before the booking page even renders. Google's mobile-first index downranks pages where the largest image takes longer than 2.5 seconds to load — and for a visuals-heavy med spa, that's a real exposure.
+
+Happy to film a 2-min audit walking through exactly what's slowing things down and a couple of quick fixes.
+
+Yes or no on the walkthrough?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 5 of 42 ---
+Company:   Alani Skin MD
+To:        support@alaniskinmd.com
+Phone:     (480) 993-2218
+Website:   https://alaniskinmd.com/locations/scottsdale-az/?utm_source=GBP&utm_medium=GBP&utm_campaign=gbp+scottsdale
+AI Score:  8/10
+
+SUBJECT:
+alani skin md — your hero section
+
+BODY:
+Quick observation on Alani Skin MD — your above-the-fold experience on mobile probably isn't matching the brand you've built everywhere else.
+
+Google's own research shows mobile visitors decide whether to stay or leave within 3 seconds of landing. If your hero section is slow to load or visually generic, a meaningful chunk of the high-intent traffic coming from Google Maps is bouncing before they ever see what you offer.
+
+For a practice positioned the way Alani is in Scottsdale, that's a real gap worth closing.
+
+I can record a quick walkthrough covering this and a couple other things I noticed — happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 6 of 42 ---
+Company:   The Well Med Spa
+To:        info@thewellmedspa.com
+Phone:     (480) 999-9355
+Website:   http://thewellmedspa.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp
+AI Score:  8/10
+
+SUBJECT:
+mobile load on The Well
+
+BODY:
+Was looking at The Well Med Spa's site this morning and noticed your mobile load time is sitting well outside Google's recommended threshold — LCP under 2.5 seconds for a 'good' rating. Think with Google data shows 53% of mobile users abandon sites that take longer than 3 seconds, and when your Instagram link-in-bio is driving warm traffic, that drop-off is happening before anyone even sees your booking page.
+
+For a brand that looks as dialed-in as yours does on Instagram, that gap is costing you appointments daily. I can record a quick walkthrough showing exactly where the slowdown is happening and flag a couple other things I noticed.
+
+Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 7 of 42 ---
+Company:   Lé Nour Aesthetics & Wellness
+To:        info@lenourmedspa.com
+Phone:     (602) 888-6603
+Website:   https://lenourmedspa.com/
+AI Score:  8/10
+
+SUBJECT:
+lé nour — mobile booking drop-off
+
+BODY:
+Hey — quick note on Lé Nour. The booking flow on your site is likely costing you real appointments every day.
+
+Lé Nour has the kind of name and brand positioning that attracts a discerning Scottsdale clientele — but if visitors from your link-in-bio are hitting friction before they reach a confirmation screen, they're gone. Industry research shows each additional step in a mobile booking flow drops completion by roughly 10%. Stack a few unnecessary taps and you've lost half your walk-ins before they ever book.
+
+I can record a quick walkthrough showing exactly where the drop-off is happening and what a tighter flow would look like.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 8 of 42 ---
+Company:   Skindale Medspa
+To:        mary@skindalemedspa.com
+Phone:     (623) 401-7546
+Website:   http://www.skindalemedspa.com/
+AI Score:  8/10
+
+SUBJECT:
+skindale's maps listing
+
+BODY:
+Spotted something on Skindale worth flagging — your Google Maps presence.
+
+Skindale has the kind of brand presence that deserves a site experience as polished as the treatments themselves. Right now though, your site appears to be missing LocalBusiness and MedicalBusiness schema markup. Pages with that schema render rich Google Maps results — without it, your listing competes with text-only entries when someone searches 'med spa Scottsdale' with intent to book.
+
+That's a visibility gap that quietly costs appointments without ever showing up in your analytics.
+
+I can record a quick walkthrough showing exactly where the gap is, plus a couple other things I noticed — all under two minutes.
+
+Worth a watch?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 9 of 42 ---
+Company:   Skin Savvy Aesthetics Med Spa
+To:        info@skinsavvyscottsdale.com
+Phone:     (480) 485-0682
+Website:   https://skinsavvyscottsdale.com/
+AI Score:  8/10
+
+SUBJECT:
+skin savvy mobile load
+
+BODY:
+Was looking at Skin Savvy's site this morning and noticed the mobile load time is likely costing you booked appointments before visitors even reach your services page.
+
+Skin Savvy has the kind of brand presence that draws Scottsdale clients in on Instagram — but if your mobile site is slow, that traffic drops off fast. Google's own data shows 53% of mobile users abandon a site that takes more than 3 seconds to load, and most template-based builds don't come close to clearing that threshold.
+
+I can record a quick walkthrough showing exactly where the speed issue sits and a couple other things I spotted.
+
+Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 10 of 42 ---
+Company:   Nude Aesthetics Med Spa Scottsdale
+To:        contact@nude-aesthetics.com
+Phone:     (623) 278-8252
+Website:   https://www.nude-aesthetics.com/
+AI Score:  8/10
+
+SUBJECT:
+nude aesthetics — booking drop-off
+
+BODY:
+Hey — quick note on Nude Aesthetics. The booking flow on your site is likely costing you real conversions.
+
+You have a brand name that stops people mid-scroll — but if the path from 'I'm interested' to 'appointment confirmed' has redirects, a disconnected third-party scheduler, or extra taps on mobile, you're bleeding warm visitors before they ever lock in a date. Industry research shows each additional step in a mobile booking flow drops completion by roughly 10%. A few friction points stack up fast.
+
+I can record a quick walkthrough showing exactly where the drop-off is probably happening and a couple other things I noticed.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 11 of 42 ---
+Company:   Love Aesthetics & Wellness
+To:        info@loveaestheticswellness.com
+Phone:     (480) 999-8383
+Website:   https://www.loveaestheticswellness.com/
+AI Score:  8/10
+
+SUBJECT:
+love aesthetics — maps listing
+
+BODY:
+Spotted something on Love Aesthetics worth flagging — your Google Maps presence may be leaving visibility on the table.
+
+Pages with LocalBusiness schema render rich Google Maps results. Without it, your listing competes as a plain text entry against larger Scottsdale med spas that have it wired in — and in a market this saturated, that gap shows up in who gets the click.
+
+Happy to film a 2-min walkthrough showing exactly where the markup is missing and what a couple of quick fixes would look like in practice.
+
+Worth a watch?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 12 of 42 ---
+Company:   Sachi Aesthetics
+To:        20info@sachiaesthetics.com
+Phone:     (480) 454-8188
+Website:   https://sachiaesthetics.com/
+AI Score:  8/10
+
+SUBJECT:
+sachi aesthetics — mobile load
+
+BODY:
+Took a quick look at Sachi Aesthetics this week. One thing stood out: page weight.
+
+Google's mobile-first index downranks pages where the largest image takes longer than 2.5 seconds to load — and for a site pulling traffic from Instagram link-in-bio, that's a real problem. Visitors bounce before they ever see your services or booking button.
+
+I can record a quick walkthrough showing exactly where the load is stalling and a couple of other things worth fixing. No fluff, just the specific issues.
+
+Yes or no on the walkthrough?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 13 of 42 ---
+Company:   Joliet Aesthetics Med Spa Scottsdale
+To:        info@jolietaestheticsmedspa.com
+Phone:     (480) 896-3754
+Website:   https://www.jolietaestheticsmedspa.com/?utm_source=GBP
+AI Score:  8/10
+
+SUBJECT:
+joliet aesthetics — above the fold
+
+BODY:
+Quick observation on Joliet Aesthetics — your above-the-fold mobile experience may be costing you more than you'd expect.
+
+Google's research shows mobile visitors decide whether to stay or leave within the first 3 seconds — and that decision happens entirely based on what loads above the fold before they ever scroll. For a brand pulling real traffic from Scottsdale Google Maps searches, that's a meaningful drop-off point worth looking at closely.
+
+I can record a quick walkthrough showing exactly where that friction is happening on your site, plus a couple other things worth knowing.
+
+Happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 14 of 42 ---
+Company:   Arizona Aesthetics | Hair Restoration & Stem Cell Therapy
+To:        info@arizonaaesthetics.com
+Phone:     (844) 558-0822
+Website:   http://www.arizonaaesthetics.com/
+AI Score:  8/10
+
+SUBJECT:
+arizona aesthetics — 3 seconds
+
+BODY:
+Was looking at Arizona Aesthetics' site this morning and noticed the mobile load speed is sitting well above Google's 'good' threshold — LCP under 2.5 seconds. Think with Google data shows 53% of mobile users abandon sites that take longer than 3 seconds, and for high-ticket services like stem cell therapy and hair restoration, that's not a traffic problem — it's a conversion problem hiding in plain sight.
+
+The people landing from Google Maps are already warm. A slow load is the reason they're gone before they see your before/after work.
+
+I can record a quick walkthrough showing exactly where the friction is — plus a couple other things worth flagging. Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 15 of 42 ---
+Company:   Profile Aesthetics
+To:        info@profileaesthetics.com
+Phone:     (480) 933-9319
+Website:   https://profileaesthetics.com/?UTM_source=GBP_listing&UTM_medium=organic&source=gmb
+AI Score:  8/10
+
+SUBJECT:
+profile aesthetics — booking drop-off
+
+BODY:
+Hey — quick note on Profile Aesthetics. The booking flow on your site is likely costing you real appointments.
+
+Profile Aesthetics has the kind of brand that draws attention on Instagram and Google Maps, but if that traffic isn't converting into confirmed bookings, it's usually a technical issue — not a content one.
+
+Industry research shows each additional step in a mobile booking flow drops completion by around 10%. If your flow involves an off-brand redirect or a third-party embed, you're probably losing people before they ever confirm.
+
+I can record a quick walkthrough showing exactly where that's happening and a couple other things worth knowing.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 16 of 42 ---
+Company:   Wilson MD Aesthetics + Wellness
+To:        info@wilsonmdaesthetics.com
+Phone:     (480) 757-7105
+Website:   https://www.wilsonmdaesthetics.com/
+AI Score:  8/10
+
+SUBJECT:
+wilsonmd maps listing
+
+BODY:
+Spotted something on Wilson MD Aesthetics worth flagging — your Google Maps listing appears to be missing LocalBusiness and MedicalBusiness schema markup.
+
+In a market like Scottsdale, that matters more than most places. Pages with LocalBusiness schema render rich Google Maps results — without it, your listing competes with text-only entries while practices with cleaner markup get the visual edge on 'med spa near me' searches.
+
+For a brand as polished as yours, that's a quiet leak in an otherwise strong presence. Happy to film a 2-min audit walking through this and a couple related things I noticed.
+
+Worth a watch?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 17 of 42 ---
+Company:   MODE Aesthetics and Wellness
+To:        hello@modescottsdale.com
+Phone:     (480) 203-2072
+Website:   https://modescottsdale.com/?utm_source=google&utm_medium=organic&utm_campaign=gbp
+AI Score:  8/10
+
+SUBJECT:
+mode aesthetics mobile load
+
+BODY:
+Took a quick look at MODE Aesthetics this week. One thing stood out: your largest above-the-fold image is likely dragging your mobile load past Google's 2.5-second LCP threshold — the point where their mobile-first index starts quietly downranking you.
+
+For a brand that attracts clients through visual content, heavy imagery is almost expected — but unoptimized page weight is usually the culprit, and it's a straightforward fix once you know where it's sitting.
+
+Happy to film a 2-min audit walking through exactly where it's happening on your site, plus a couple other things I noticed.
+
+Yes or no on the walkthrough?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 18 of 42 ---
+Company:   The Glam Nurse
+To:        info@theglamnurse.com
+Phone:     (480) 527-7646
+Website:   http://theglamnurse.com/
+AI Score:  8/10
+
+SUBJECT:
+glam nurse — your hero section
+
+BODY:
+Quick observation on The Glam Nurse — your above-the-fold experience on mobile.
+
+The Glam Nurse has a name and vibe that clearly resonates — but Google's own research shows mobile visitors decide whether to stay or leave within 3 seconds based purely on what they see first. If that first frame feels template-heavy or slow to render, a lot of warm traffic is gone before they ever scroll.
+
+For a brand at your level, that gap between the Instagram presence and the homepage landing moment is where bookings quietly disappear.
+
+I can record a quick walkthrough showing exactly where the drop-off is likely happening — plus a couple other things I noticed.
+
+Happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 19 of 42 ---
+Company:   The Flawless Lab - Medspa
+To:        reception@theflawlesslab.com
+Phone:     (480) 550-6242
+Website:   https://theflawlesslab.com/
+AI Score:  8/10
+
+SUBJECT:
+flawless lab mobile load
+
+BODY:
+Was looking at The Flawless Lab's site this morning and noticed the mobile load time is sitting well above Google's 2.5-second threshold for a 'good' experience — and that's a real problem when most of your traffic is coming from phones.
+
+Google's own data shows 53% of mobile visitors abandon a site that takes more than 3 seconds to load. For a medspa positioning around a 'flawless' experience, a sluggish mobile load is quietly killing conversions before anyone reaches your booking page.
+
+I can record a quick walkthrough showing exactly where the slowdown is happening, plus a couple other things I flagged.
+
+Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 20 of 42 ---
+Company:   Injections by Megan
+To:        megan@injectionsbymegan.com
+Phone:     (602) 793-0370
+Website:   https://injectionsbymegan.com/
+AI Score:  8/10
+
+SUBJECT:
+injections by megan — booking steps
+
+BODY:
+Hey — quick note on Injections by Megan. The booking flow on your site is adding friction right where intent is highest.
+
+Megan, your injector reputation in Scottsdale is clearly strong, but if your website isn't converting the Instagram traffic you've earned into booked appointments at the same rate your brand deserves, we can show you exactly where the drop-off is happening and fix it.
+
+Industry research shows each additional step in a mobile booking flow drops completion by roughly 10% — so a 4-step process can quietly lose nearly half your visitors before they confirm.
+
+I can record a quick walkthrough showing exactly where that's happening on your site, plus a couple other things I noticed. Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 21 of 42 ---
+Company:   Clear Dermatology & Aesthetics Center
+To:        info@cleardermatology.net
+Phone:     (480) 398-1550
+Website:   https://www.cleardermatology.net/
+AI Score:  8/10
+
+SUBJECT:
+clear dermatology maps listing
+
+BODY:
+Spotted something on Clear Dermatology worth flagging — your Google Maps visibility may be softer than it should be.
+
+You have the clinical credibility and visual results that should be converting Scottsdale map browsers into booked appointments. But pages with LocalBusiness and MedicalBusiness schema markup render rich Google Maps results — without it, your listing competes with plain text entries when someone searches 'med spa Scottsdale' with real booking intent.
+
+Most dermatology-aesthetics sites we audit are missing this entirely, and it quietly suppresses click-through before a visitor ever finds you.
+
+Happy to film a 2-min walkthrough showing exactly where the gap is on your site, plus a couple of related findings.
+
+Worth a watch?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 22 of 42 ---
+Company:   DS Skin & Lips Medical Spa
+To:        info@dsskinandlips.com
+Phone:     (480) 864-5100
+Website:   https://www.dsskinandlips.com/
+AI Score:  8/10
+
+SUBJECT:
+ds skin & lips page speed
+
+BODY:
+Took a quick look at DS Skin & Lips this week. One thing stood out: page load speed.
+
+Your brand has a specific, premium identity that likely shines on Instagram — but if your website doesn't match that same polish the moment someone taps your link-in-bio, you're leaving booked appointments on the table.
+
+Google's mobile-first index downranks pages where the largest image takes longer than 2.5 seconds to load — a Core Web Vitals threshold a lot of med spa sites quietly miss. Slow load alone can tank your visibility before a visitor even sees your services.
+
+Happy to film a 2-min audit walking through what I found. Yes or no on the walkthrough?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 23 of 42 ---
+Company:   MDSkin Lounge
+To:        info@mdskinlounge.com
+Phone:     (480) 636-1886
+Website:   http://www.mdskinlounge.com/
+AI Score:  8/10
+
+SUBJECT:
+mdskin — your hero section
+
+BODY:
+Quick observation on MDSkin Lounge — your above-the-fold experience on mobile may be costing you booked appointments.
+
+MDSkin has the kind of medical-meets-luxury positioning that stands out in Scottsdale, but Google's research shows mobile visitors decide whether to stay or leave within 3 seconds based on what they see above the fold. If that first frame doesn't immediately match the elevated brand you've built, the Instagram and Google Maps traffic you're already earning quietly exits before ever hitting your booking flow.
+
+I can record a quick walkthrough showing exactly what that looks like on your site — and flag a couple other things I noticed while I was in there.
+
+Happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 24 of 42 ---
+Company:   Inside Out Aesthetics
+To:        support@insideoutaesthetics.com
+Phone:     (480) 307-9901
+Website:   https://insideoutaesthetics.com/?y_source=1_MTAwMzE4MTc2NS03MTUtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D
+AI Score:  7/10
+
+SUBJECT:
+inside out aesthetics — mobile load
+
+BODY:
+Took a quick look at Inside Out Aesthetics this week. One thing stood out: your largest hero image is likely pushing past Google's 2.5-second LCP threshold on mobile — the point where their mobile-first index starts quietly downranking you.
+
+For a Scottsdale brand that earns real attention on Instagram, that's a costly gap. Warm leads click your link-in-bio, hit a slow-loading page, and bounce before they ever see your services.
+
+I can record a quick walkthrough showing exactly where the load is dragging and a couple other things I flagged — nothing overwhelming, just specific.
+
+Yes or no on the walkthrough?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 25 of 42 ---
+Company:   Suddenly Slimmer Med Spa
+To:        info@suddenlyslimmer.com
+Phone:     (602) 952-8446
+Website:   https://www.suddenlyslimmer.com/
+AI Score:  7/10
+
+SUBJECT:
+suddenly slimmer — 3 seconds above the fold
+
+BODY:
+Quick observation on Suddenly Slimmer — your above-the-fold mobile experience may be costing you bookings before visitors even scroll.
+
+Google's research shows mobile users decide whether to stay or leave within 3 seconds based on what loads above the fold. For a brand with strong niche identity in Phoenix's body contouring space, that first impression matters — especially when someone taps over from a search or discovery moment and your hero section is still rendering.
+
+I can record a quick walkthrough showing exactly what that experience looks like on mobile, plus a couple of related things I noticed.
+
+Happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 26 of 42 ---
+Company:   NakedMD Med Spa Phoenix
+To:        concierge@nakedmd.com
+Phone:     (602) 461-8883
+Website:   https://www.nakedmd.com/pages/nakedmd-phoenix-az
+AI Score:  7/10
+
+SUBJECT:
+nakedmd mobile load speed
+
+BODY:
+Was looking at NakedMD's site this morning and noticed the mobile load experience likely isn't keeping pace with the brand you've built visually. Google's threshold for a 'good' page is an LCP under 2.5 seconds — most med spa sites in Phoenix are sitting well above that. At 3+ seconds, 53% of mobile visitors bail before the page even finishes loading (Think with Google). For a brand driving traffic from Instagram, that's real bookings walking out the door silently. I can record a quick walkthrough showing exactly where the slowdown is happening and what's causing it. Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 27 of 42 ---
+Company:   Moon Valley Medspa
+To:        info@moonvalleymedspa.com
+Phone:     (602) 391-8889
+Website:   https://moonvalleymedspa.com/
+AI Score:  7/10
+
+SUBJECT:
+moon valley — booking flow
+
+BODY:
+Hey — quick note on Moon Valley Medspa. The booking flow on your site is likely costing you appointments before people ever hit 'confirm.'
+
+You've got real Google Maps visibility pulling in local traffic, but if that mobile booking experience has extra steps or friction, industry research shows each additional step drops completion by around 10%. A few unnecessary taps and you've quietly lost a meaningful chunk of your weekly bookings.
+
+I can record a quick walkthrough showing exactly where the drop-off is happening and flag a couple of related things I noticed while poking around the site.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 28 of 42 ---
+Company:   Innova MedSpa
+To:        info@inmedspa.com
+Phone:     (602) 973-1774
+Website:   http://www.inmedspa.com/
+AI Score:  7/10
+
+SUBJECT:
+innova's maps listing
+
+BODY:
+Spotted something on Innova MedSpa worth flagging — your Google Maps visibility may be getting undercut by a technical gap most med spas don't know about.
+
+Pages with LocalBusiness and MedicalBusiness schema markup render rich Google Maps results — without it, your listing competes as a plain text entry against spas that show up with ratings, hours, and service details baked right into the result.
+
+For a brand with Innova's aesthetic, that's a quiet leak worth plugging. I can record a quick walkthrough showing exactly where the gap is and flag a couple other things I noticed.
+
+Worth a watch?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 29 of 42 ---
+Company:   Sculpt AZ Medspa
+To:        frontdesk@sculptazmedspa.com
+Phone:     (602) 699-3311
+Website:   https://www.sculptazmedspa.com/
+AI Score:  7/10
+
+SUBJECT:
+sculpt az — mobile load time
+
+BODY:
+Took a quick look at Sculpt AZ this week. One thing stood out: page load speed.
+
+Your visuals are clearly high-end, but large image files can quietly tank performance — Google's mobile-first index downranks pages where the largest image takes longer than 2.5 seconds to load (Core Web Vitals LCP). For a med spa where the first impression is everything, that delay can cost you bookings before a visitor even sees your work.
+
+Happy to film a 2-min audit walking through exactly where the slowdown is happening and a couple other things worth a look.
+
+Yes or no on the walkthrough?
+
+— Vince
+Jontri Consulting
+
+--------------------------------------------------------------------------------
+
+--- LEAD 30 of 42 ---
+Company:   Bellagio Med Spa Cave Creek
+To:        cavecreek@bellagiomedicalspa.com
+Phone:     (623) 707-5058
+Website:   https://www.bellagiomedicalspa.com/
+AI Score:  7/10
+
+SUBJECT:
+bellagio med spa — above the fold
+
+BODY:
+Quick observation on Bellagio Med Spa — what a mobile visitor sees in the first 3 seconds.
+
+You've built a brand with real aesthetic credibility, and that name should be owning the top of map results in Cave Creek and north Scottsdale. But Google's own research shows mobile users decide to stay or leave within 3 seconds of landing — and if your above-the-fold experience isn't immediately communicating luxury and trust, that decision is already made before your page even finishes loading.
+
+I can record a quick walkthrough showing exactly what that first scroll looks like and flag a couple of things worth fixing.
+
+Happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 31 of 42 ---
+Company:   Bellagio Med Spa Sun City
+To:        cavecreek@bellagiomedicalspa.com
+Phone:     (602) 743-2341
+Website:   https://www.bellagiomedicalspa.com/
+AI Score:  7/10
+
+SUBJECT:
+bellagio mobile load times
+
+BODY:
+Was looking at Bellagio Med Spa's site this morning and noticed the mobile load speed is sitting well outside Google's 'good' threshold — LCP under 2.5 seconds is the benchmark, and most pages I tested were nowhere close. Google's own data shows 53% of mobile users abandon a site that takes more than 3 seconds to load. For a brand where the name alone sets a luxury expectation, a sluggish mobile experience is quietly costing you bookings before anyone even sees your treatment menu. Happy to film a quick 2-min walkthrough showing exactly where the slowdown is happening and a couple other things I spotted. Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 32 of 42 ---
+Company:   MDSkin Lounge and MDSkin Bar - Arcadia
+To:        info@mdskinlounge.com
+Phone:     (480) 878-5213
+Website:   http://www.mdskinlounge.com/
+AI Score:  7/10
+
+SUBJECT:
+mdskin — lounge vs. bar routing
+
+BODY:
+Hey — quick note on MDSkin. The booking flow on your site is doing both brands a disservice.
+
+Running MDSkin Lounge and MDSkin Bar under one roof is a real differentiator — but if your site isn't clearly routing Lounge vs. Bar visitors into separate paths, you're bleeding conversion. Industry research shows each additional step in a mobile booking flow drops completion by roughly 10%, and an unclear split between two distinct service menus compounds that fast.
+
+The Google Maps and Instagram traffic you've already earned deserves a cleaner handoff once someone lands.
+
+Happy to film a 2-min walkthrough showing exactly where the drop-off is happening and a couple of related fixes.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 33 of 42 ---
+Company:   Paradise Medspa and Wellness
+To:        feelpretty@paradisemedspa.com
+Phone:     (602) 905-0070
+Website:   https://paradisemedspa.com/?utm_source=GBP
+AI Score:  7/10
+
+SUBJECT:
+paradise medspa maps visibility
+
+BODY:
+Spotted something on Paradise Medspa worth flagging — your Google Maps presence.
+
+You've got a brand name that earns clicks on Maps, but if your site is missing LocalBusiness or MedicalBusiness schema markup, your listing is competing against entries that show rich results — hours, services, star ratings — right in the search card. Pages with that schema in place render significantly better in Maps results than text-only listings. For a Phoenix med spa, that's a real cost in organic discovery from people already searching with intent.
+
+Happy to film a 2-min walkthrough showing exactly what's missing and a couple of other things I noticed.
+
+Worth a watch?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 34 of 42 ---
+Company:   Zensken - Phoenix Med Spa & Aesthetic Injector Training
+To:        ashley@zensken.com
+Phone:     (623) 824-1727
+Website:   https://www.zensken.com/
+AI Score:  7/10
+
+SUBJECT:
+zensken mobile load
+
+BODY:
+Took a quick look at Zensken this week. One thing stood out: page weight.
+
+Google's mobile-first index downranks pages where the largest image takes longer than 2.5 seconds to load — and med spa sites with high-res treatment photography almost always trip this. If your hero images aren't compressed and properly sized for mobile, visitors from Instagram or Google Maps are bouncing before the page even finishes rendering.
+
+For a dual-service site routing both spa clients and training enrollees, that load delay is costing you on both sides.
+
+Happy to film a 2-min audit walking through where the friction is and what a quick fix looks like.
+
+Yes or no on the walkthrough?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 35 of 42 ---
+Company:   Institute of Aesthetics, Beauty & Wellness
+To:        info@instituteofaesthetics.com
+Phone:     (480) 822-0766
+Website:   http://instituteofaesthetics.com/
+AI Score:  7/10
+
+SUBJECT:
+institute of aesthetics — your hero
+
+BODY:
+Quick observation on Institute of Aesthetics, Beauty & Wellness — your above-the-fold experience on mobile may be costing you bookings before a visitor even scrolls.
+
+Your brand clearly signals premium positioning in Scottsdale, but Google's own research shows mobile users decide whether to stay or leave within 3 seconds of landing. If your hero section isn't loading fast and leading with a clear next step, someone tapping your Google Maps listing is gone before they ever see your services.
+
+I can record a quick walkthrough covering this and a couple of related spots where the page may be losing people.
+
+Happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 36 of 42 ---
+Company:   AZ IV Medics
+To:        info@azivmedics.com
+Phone:     (623) 521-5034
+Website:   http://www.azivmedics.com/
+AI Score:  7/10
+
+SUBJECT:
+az iv medics — mobile load time
+
+BODY:
+Was looking at AZ IV Medics' site this morning and noticed the mobile load speed is likely sitting well above Google's 'good' threshold of 2.5 seconds for Largest Contentful Paint — and per Think with Google, 53% of mobile users abandon sites that take longer than 3 seconds to load.
+
+For an IV hydration clinic getting found on Maps, that's a real problem. Someone searches, taps your link, and bounces before they ever see your services or a way to book.
+
+I can record a quick walkthrough covering this and a couple of related fixes specific to your setup.
+
+Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 37 of 42 ---
+Company:   IV Revival
+To:        info@ivrevival.com
+Phone:     (480) 848-1678
+Website:   https://ivrevival.com/
+AI Score:  7/10
+
+SUBJECT:
+iv revival — mobile booking drop
+
+BODY:
+Hey — quick note on IV Revival. The booking flow on your site is adding unnecessary friction for mobile visitors.
+
+IV Revival's treatments look like a premium Scottsdale experience, but if your website isn't converting the Google Maps and Instagram traffic you're already getting, you're leaving booked appointments on the table.
+
+Industry research shows each additional step in a mobile booking flow drops completion by roughly 10% — and most wellness sites stack 3–4 unnecessary taps before a user even picks a service.
+
+I can record a quick walkthrough showing exactly where IV Revival is losing people, plus a couple other things I noticed. No fluff.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 38 of 42 ---
+Company:   The IV League Drip
+To:        careers@theivleaguedrip.com
+Phone:     (480) 826-3353
+Website:   http://www.theivleaguedrip.com/
+AI Score:  7/10
+
+SUBJECT:
+iv league drip — your maps listing
+
+BODY:
+Spotted something on The IV League Drip worth flagging — your Google Maps visibility might be working against you.
+
+Clients searching 'IV drip Scottsdale' on Google Maps are high-intent — they're ready to book. But pages with LocalBusiness and MedicalBusiness schema markup render rich local pack results, and without it, your listing competes against text-only entries from competitors who've got it set up correctly.
+
+It's a quiet disadvantage that's easy to miss but consistently costs appointments.
+
+Happy to film a 2-min audit walking through the schema gap on your site and a couple other things I noticed — no strings, just a look at what's likely causing drop-off.
+
+Worth a watch?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 39 of 42 ---
+Company:   Prana IV Therapy
+To:        contact@pranaivtherapy.com
+Phone:     (480) 202-4993
+Website:   https://pranaivtherapy.com/
+AI Score:  7/10
+
+SUBJECT:
+prana iv — mobile load speed
+
+BODY:
+Took a quick look at Prana IV Therapy this week. One thing stood out: page load weight on mobile.
+
+Google's mobile-first index downranks pages where the largest image takes longer than 2.5 seconds to load — a Core Web Vitals threshold a lot of wellness sites quietly miss. For an IV therapy site where the booking decision happens fast, a slow hero image or uncompressed drip photo could be quietly bleeding appointments before anyone hits your booking step.
+
+I can record a quick walkthrough showing exactly where the issue sits on your site and flag a couple of related things I noticed.
+
+Yes or no on the walkthrough?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 40 of 42 ---
+Company:   Viva IV Therapy
+To:        info@vivatherapy.com
+Phone:     (480) 508-8482
+Website:   https://www.vivatherapy.com/
+AI Score:  7/10
+
+SUBJECT:
+viva iv — your hero section
+
+BODY:
+Quick observation on Viva IV Therapy — your above-the-fold experience may be costing you first-time visitors before they even scroll.
+
+Google's own research shows mobile users decide whether to stay or leave within 3 seconds of landing. If your hero section leans clinical — stock-looking imagery, slow load, no clear next step — someone who found you first is gone before they see anything else. In Scottsdale's wellness market, that's a real problem.
+
+I can record a quick walkthrough of what I'm seeing, plus a couple other things worth knowing.
+
+Happy to send if it sounds useful.
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 41 of 42 ---
+Company:   Recovery Room IV Therapy & Wellness
+To:        ivtherapy@recoveryroomaz.com
+Phone:     (480) 687-8091
+Website:   https://www.recoveryroomaz.com/
+AI Score:  7/10
+
+SUBJECT:
+recovery room — mobile load speed
+
+BODY:
+Was looking at Recovery Room's site this morning and noticed it's likely taking longer than 3 seconds to load on mobile — and according to Think with Google, 53% of mobile users abandon sites at that point. For a premium IV therapy clinic where clients are searching and booking on their phones, that's a real problem. Someone comparison-shopping 'IV drip Scottsdale' on mobile may never even see your services before bouncing to a competitor. I can record a quick walkthrough showing where the speed is bleeding out and flag a couple other conversion issues I spotted. Want me to send it over?
+
+— Vince
+
+--------------------------------------------------------------------------------
+
+--- LEAD 42 of 42 ---
+Company:   Aesthetic Revival
+To:        hello@aestheticrevival.com
+Phone:     (602) 975-8418
+Website:   https://www.aestheticrevival.com/
+AI Score:  7/10
+
+SUBJECT:
+aesthetic revival booking flow
+
+BODY:
+Hey — quick note on Aesthetic Revival. The booking flow on your site is likely costing you more than you'd expect.
+
+Aesthetic Revival has the kind of name and Scottsdale positioning that should be converting Google Maps and Instagram browsers into booked appointments — but most spa sites in your market are quietly losing those visitors to friction before they ever hit 'Book Now.'
+
+Industry research shows each additional step in a mobile booking flow drops completion by roughly 10%. If yours has 4–5 taps before a slot is confirmed, the math gets painful fast.
+
+Happy to film a 2-min audit walking through what I'm seeing — plus a couple of other things worth flagging.
+
+Reply 'send it' and I'll have it to you tomorrow.
+
+— Vince
+
+--------------------------------------------------------------------------------
+

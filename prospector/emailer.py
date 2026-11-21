@@ -2,6 +2,7 @@
 
 import requests
 from config import INSTANTLY_API_KEY
+import config as app_config
 
 BASE_URL = "https://api.instantly.ai/api/v2"
 HEADERS = {
@@ -12,15 +13,21 @@ HEADERS = {
 
 def create_campaign(name: str) -> str | None:
     """Create a new Instantly campaign and return its ID."""
+    sched_cfg = app_config.INSTANTLY_CONFIG.get("schedule", {}) or {}
+    days_list = sched_cfg.get("days", [1, 2, 3, 4, 5])
+    days_dict = {str(d): True for d in days_list}
     payload = {
         "name": name,
         "campaign_schedule": {
             "schedules": [
                 {
                     "name": "Default",
-                    "timing": {"from": "09:00", "to": "17:00"},
-                    "days": {"1": True, "2": True, "3": True, "4": True, "5": True},
-                    "timezone": "America/Denver",
+                    "timing": {
+                        "from": sched_cfg.get("from", "09:00"),
+                        "to": sched_cfg.get("to", "17:00"),
+                    },
+                    "days": days_dict,
+                    "timezone": sched_cfg.get("timezone", "America/Denver"),
                 }
             ],
         },
