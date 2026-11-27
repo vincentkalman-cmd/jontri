@@ -19,7 +19,7 @@ export const SERVICES = [
     icon: "Crosshair" as const,
     title: "AI Lead Prospecting",
     description:
-      "Daily lists of qualified local prospects, found, researched, and scored by AI, with personalized outreach written and sent for you.",
+      "Daily lists of qualified prospects, found, researched, and scored by AI, with personalized outreach written and sent for you.",
   },
   {
     icon: "MessagesSquare" as const,

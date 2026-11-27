@@ -105,8 +105,6 @@ export const HERO_SCENES: Scene[] = [
   },
 ];
 
-export const INDUSTRIES = ["HVAC", "Plumbing", "Roofing", "Electrical", "Med Spa", "Landscaping", "Auto Repair", "Pest Control"];
-
 export const JOURNEY = [
   { title: "Gets found", text: "Shows up on Google and in ChatGPT answers." },
   { title: "Chats", text: "Website bot answers questions at midnight." },
@@ -117,7 +115,7 @@ export const JOURNEY = [
 ];
 
 export const SETUP_STEPS = [
-  { title: "Discovery call", text: "We learn how your shop runs and where leads slip through." },
+  { title: "Discovery call", text: "We learn how your business runs and where leads slip through." },
   { title: "We build it", text: "Your AI crew, trained on your services, prices, and hours." },
   { title: "You approve it", text: "Call it, test it, tweak it. Nothing goes live until you're happy." },
   { title: "We run & tune it", text: "Monthly monitoring, improvements, and a clear report." },
@@ -134,7 +132,7 @@ export const FAQS = [
   },
   {
     q: "Does it work with my scheduling software or CRM?",
-    a: "Usually, yes. We connect to common calendars, CRMs, and field-service tools. If something has no direct integration, we build a custom workflow for it.",
+    a: "Usually, yes. We connect to common calendars, CRMs, and business tools. If something has no direct integration, we build a custom workflow for it.",
   },
   {
     q: "How long does setup take?",

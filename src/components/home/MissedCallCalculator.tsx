@@ -41,7 +41,7 @@ export function MissedCallCalculator() {
           <span className="kicker">The cost of voicemail</span>
           <h2 className="display h">What are missed calls costing you?</h2>
           <p className="lede">
-            Most callers who hit voicemail don&apos;t leave a message. They call the next shop on Google. Move the
+            Most callers who hit voicemail don&apos;t leave a message. They call the next business on Google. Move the
             sliders to match your business.
           </p>
           <div className="panel" style={{ marginTop: "var(--s6)" }}>

@@ -4,7 +4,7 @@
 
 ## Services
 - AI Voice Agent: a 24/7 AI receptionist that answers calls, qualifies callers, books appointments, and transfers urgent calls.
-- AI Lead Prospecting: daily lists of qualified local prospects, researched and scored by AI, with personalized outreach.
+- AI Lead Prospecting: daily lists of qualified prospects, researched and scored by AI, with personalized outreach.
 - AI Website Chatbot: a chatbot trained on the business that answers questions and captures leads after hours.
 - Review Management: automated review requests and AI-drafted review replies.
 - SEO & AI Search Visibility: Google SEO plus visibility in ChatGPT, Perplexity, and Google AI Overviews.

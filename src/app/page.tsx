@@ -10,7 +10,7 @@ import { RevealObserver } from "@/components/home/RevealObserver";
 import { Icon, Wave } from "@/components/home/Icons";
 import { BOOKING_URL, SERVICES } from "@/lib/constants";
 import { TIERS } from "@/lib/tiers";
-import { FAQS, INDUSTRIES, JOURNEY, SETUP_STEPS } from "@/lib/home-content";
+import { FAQS, JOURNEY, SETUP_STEPS } from "@/lib/home-content";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -38,7 +38,7 @@ const jsonLd = {
       name: "Jontri",
       url: "https://jontri.com",
       description:
-        "Done-for-you AI automation for local service businesses: AI voice receptionists, lead prospecting, website chatbots, review management, SEO and AI search visibility, and follow-up automation.",
+        "Done-for-you AI automation for businesses: AI voice receptionists, lead prospecting, website chatbots, review management, SEO and AI search visibility, and follow-up automation.",
       provider: { "@id": "https://jontri.com/#organization" },
       hasOfferCatalog: {
         "@type": "OfferCatalog",
@@ -84,7 +84,7 @@ export default function Home() {
           <div className="gridlines" aria-hidden />
           <div className="wrap hero-grid">
             <div>
-              <span className="kicker">Done-for-you AI for local businesses</span>
+              <span className="kicker">Done-for-you AI for growing businesses</span>
               <h1 className="display">
                 One AI crew.
                 <br />
@@ -111,16 +111,6 @@ export default function Home() {
             <HeroConsole />
           </div>
         </section>
-
-        <div className="ind" aria-label="Industries we serve">
-          <div className="ticker">
-            {[...INDUSTRIES, ...INDUSTRIES].map((x, i) => (
-              <span key={i} aria-hidden={i >= INDUSTRIES.length}>
-                {x.toUpperCase()}
-              </span>
-            ))}
-          </div>
-        </div>
 
         <MissedCallCalculator />
 
@@ -154,7 +144,7 @@ export default function Home() {
               <div className="tile t-b reveal">
                 <div className="ico"><Icon name="target" /></div>
                 <h3>AI Lead Prospecting</h3>
-                <p>Every morning, a fresh list of local businesses that need what you sell, researched, scored, and sent a personal email.</p>
+                <p>Every morning, a fresh list of qualified prospects who need what you sell, researched, scored, and sent a personal email.</p>
                 <div className="vig" style={{ display: "grid", gap: 6 }}>
                   <div className="lead"><span>Peak Property Mgmt<small>Denver · 140 units</small></span><span className="tagx">email sent</span><span className="score">94</span></div>
                   <div className="lead"><span>Alpine Dental Group<small>Lakewood · 3 offices</small></span><span className="tagx">drafted</span><span className="score">88</span></div>
@@ -276,7 +266,7 @@ export default function Home() {
               <div className="mark" aria-hidden>&ldquo;</div>
               <figure style={{ margin: 0 }}>
                 <blockquote>
-                  I started Jontri because the best local businesses I know lose jobs for the dumbest reason: nobody
+                  I started Jontri because the best businesses I know lose customers for the dumbest reason: nobody
                   picked up the phone. I build every system myself, test it on real calls before it goes live, and keep
                   tuning it after. You&apos;ll always talk to the person who built your AI, not a support queue.
                 </blockquote>
