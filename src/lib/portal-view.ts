@@ -33,9 +33,8 @@ export function buildServiceViews(
   const views: Record<string, PortalServiceView> = {};
   for (const [key, svc] of Object.entries(services || {})) {
     const cfg = obj(config[key]);
+    // svc.detail is written for the owner (e.g. "VAPI_API_KEY isn't set") — clients only see the status.
     const v: PortalServiceView = { status: str(svc?.status, 30) || "pending" };
-    const detail = str(svc?.detail, 400);
-    if (detail) v.detail = detail;
 
     if (key === "voice-agent") {
       v.businessPhone = str(cfg.businessPhone, 40);

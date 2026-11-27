@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "We couldn't save your sign-up. Please try again or email hello@jontri.com." }, { status: 500 });
   }
 
-  await supabase.from("client_configs").upsert({
+  const { error: configError } = await supabase.from("client_configs").upsert({
     slug,
     updated_at: now,
     config: {
@@ -72,6 +72,13 @@ export async function POST(request: NextRequest) {
       onboarding: { package: d.packageId, details: d.details, website: d.website, terms_version: d.termsVersion, submitted_at: now },
     },
   });
+
+  if (configError) {
+    // Without the config the client can't be set up; undo the client row so a retry starts clean.
+    console.error("onboarding config save failed:", configError.message);
+    await supabase.from("clients").delete().eq("slug", slug);
+    return NextResponse.json({ error: "We couldn't save your sign-up. Please try again or email hello@jontri.com." }, { status: 500 });
+  }
 
   const origin = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
   const link = portalUrl(origin, token);

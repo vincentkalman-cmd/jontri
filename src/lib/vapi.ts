@@ -120,3 +120,34 @@ export async function buyPhoneNumber(
     return { ok: false, error: e instanceof Error ? e.message : "Could not reach Vapi" };
   }
 }
+
+export type PhonePlan =
+  | { action: "existing"; number: string }
+  | { action: "refresh"; id: string }
+  | { action: "buy"; assistantId: string }
+  | { action: "error"; error: string };
+
+/** Decide what "Get phone number" should do. Once Vapi gave us an id, we never buy again. */
+export function phoneNumberPlan(voice: Record<string, unknown>): PhonePlan {
+  const number = typeof voice.phoneNumber === "string" ? voice.phoneNumber : "";
+  const id = typeof voice.phoneNumberId === "string" ? voice.phoneNumberId : "";
+  if (number) return { action: "existing", number };
+  if (id) return { action: "refresh", id };
+  if (typeof voice.assistantId === "string" && voice.assistantId) return { action: "buy", assistantId: voice.assistantId };
+  return { action: "error", error: "Set up the voice agent first (Set up all), then get a number." };
+}
+
+/** Look up a number Vapi already created (its digits can arrive a little after purchase). */
+export async function getPhoneNumber(apiKey: string, id: string): Promise<{ ok: true; id: string; number: string } | { ok: false; error: string }> {
+  try {
+    const res = await fetch(`${VAPI_BASE}/phone-number/${encodeURIComponent(id)}`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: AbortSignal.timeout(20_000),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.id) return { ok: true, id: String(data.id), number: String(data.number || "") };
+    return { ok: false, error: String(data.message || data.error || `Vapi error ${res.status}`) };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not reach Vapi" };
+  }
+}

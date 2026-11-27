@@ -16,3 +16,27 @@ export async function runSetupAll(
     }),
   );
 }
+
+type ServiceStatus = { status: string; updated_at: string; detail?: string };
+
+/**
+ * Apply setup results onto a FRESH read of the client's config/services (taken after provisioning),
+ * so anything changed while setup ran (feedback, a bought number, other edits) is kept.
+ */
+export function mergeSetupResults(
+  freshConfig: Record<string, unknown>,
+  freshServices: Record<string, ServiceStatus>,
+  results: ProvisionResult[],
+  now: string,
+): { config: Record<string, unknown>; services: Record<string, ServiceStatus> } {
+  const config: Record<string, unknown> = { ...freshConfig };
+  const services: Record<string, ServiceStatus> = { ...freshServices };
+  for (const r of results) {
+    if (r.configPatch) {
+      const cur = config[r.service];
+      config[r.service] = { ...(cur && typeof cur === "object" ? (cur as Record<string, unknown>) : {}), ...r.configPatch };
+    }
+    services[r.service] = { status: r.status, detail: r.detail, updated_at: now };
+  }
+  return { config, services };
+}

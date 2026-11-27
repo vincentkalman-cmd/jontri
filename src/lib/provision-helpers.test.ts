@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildVoicePrompt, buildAssistantPayload, buyPhoneNumber, resolveVapiKey } from "./vapi.ts";
+import { buildVoicePrompt, buildAssistantPayload, buyPhoneNumber, resolveVapiKey, phoneNumberPlan, getPhoneNumber } from "./vapi.ts";
 
 test("voice prompt includes business facts and honesty rule", () => {
   const p = buildVoicePrompt({
@@ -65,6 +65,29 @@ test("buyPhoneNumber reports Vapi errors and rejects bad area codes", async () =
   try {
     assert.deepEqual(await buyPhoneNumber("key", "asst_1", { areaCode: "720" }), { ok: false, error: "Area code not available" });
     assert.equal((await buyPhoneNumber("key", "asst_1", { areaCode: "72a" })).ok, false);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("phoneNumberPlan never buys twice: existing id means refresh, not buy", () => {
+  assert.deepEqual(phoneNumberPlan({ phoneNumberId: "pn_1", phoneNumber: "+1720" }), { action: "existing", number: "+1720" });
+  assert.deepEqual(phoneNumberPlan({ phoneNumberId: "pn_1", phoneNumber: "" }), { action: "refresh", id: "pn_1" });
+  assert.deepEqual(phoneNumberPlan({ phoneNumber: "+1720" }), { action: "existing", number: "+1720" });
+  assert.equal(phoneNumberPlan({}).action, "error");
+  assert.deepEqual(phoneNumberPlan({ assistantId: "asst_1" }), { action: "buy", assistantId: "asst_1" });
+});
+
+test("getPhoneNumber reads the number Vapi assigned later", async () => {
+  const realFetch = globalThis.fetch;
+  let url = "";
+  globalThis.fetch = (async (u: string) => {
+    url = u;
+    return new Response(JSON.stringify({ id: "pn_1", number: "+17205550199" }), { status: 200 });
+  }) as typeof fetch;
+  try {
+    assert.deepEqual(await getPhoneNumber("key", "pn_1"), { ok: true, id: "pn_1", number: "+17205550199" });
+    assert.equal(url, "https://api.vapi.ai/phone-number/pn_1");
   } finally {
     globalThis.fetch = realFetch;
   }

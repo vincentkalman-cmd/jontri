@@ -45,3 +45,15 @@ test("bad stored values are ignored, not echoed", () => {
   assert.match(v.chatbot.embedCode || "", /color=%233B82F6/);
   assert.equal(v["voice-agent"].phoneNumber, undefined);
 });
+
+test("internal ops messages (service detail) never reach the client portal", () => {
+  const v = buildServiceViews(
+    { "voice-agent": { status: "needs_setup", detail: "VAPI_API_KEY isn't set in Vercel yet." }, chatbot: { status: "error", detail: "fetch failed: ECONNREFUSED" } },
+    {},
+    "s",
+    "https://jontri.com",
+  );
+  assert.equal(JSON.stringify(v).includes("VAPI_API_KEY"), false);
+  assert.equal(JSON.stringify(v).includes("ECONNREFUSED"), false);
+  assert.equal(v["voice-agent"].detail, undefined);
+});
