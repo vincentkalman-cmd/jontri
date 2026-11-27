@@ -1,259 +1,267 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Button } from "./Button";
+import { LuCheck, LuArrowRight, LuArrowLeft } from "react-icons/lu";
+import { TIERS, getTierServices } from "@/lib/tiers";
+import { TERMS, TERMS_VERSION } from "@/lib/terms";
+import { detailFieldsFor, type DetailField, type PackageId, type SetupDetails } from "@/lib/onboarding-intake";
+import { inputCls, primaryBtn, ghostBtn } from "@/components/site/ui";
 
-interface OnboardingData {
-  clientName: string;
-  businessName: string;
-  email: string;
-  phone: string;
-  address: string;
-  industry: string;
-  services: string[];
-  projectDescription: string;
-  currentTools: string;
-  monthlyBudget: string;
-  timeline: string;
-  goals: string;
-  specialRequirements: string;
-}
+const STEPS = ["Your business", "Package", "Setup details", "Review & accept"] as const;
+const focusRing = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
-const SERVICE_OPTIONS = [
-  "AI Chatbot / Virtual Assistant",
-  "AI Voice Agent",
-  "Automated Lead Capture & Nurture",
-  "Smart Scheduling & Dispatch",
-  "Review & Reputation Management",
-  "Workflow & Back-Office Automation",
-  "Social Media Automation",
-  "Custom AI Solution",
+const FIELD_META: Record<DetailField, { label: string; placeholder: string; textarea?: boolean; type?: string }> = {
+  servicesOffered: { label: "What services do you offer?", placeholder: "e.g. Open and enclosed car shipping, dealer transfers, snowbird moves", textarea: true },
+  businessHours: { label: "Business hours", placeholder: "e.g. Mon–Sat 8am–6pm" },
+  bookingUrl: { label: "Booking or quote link (optional)", placeholder: "https://…", type: "url" },
+  transferNumber: { label: "Number to transfer urgent calls to (optional)", placeholder: "+1 720 555 0100", type: "tel" },
+  leadEmail: { label: "Where should new leads be emailed? (optional)", placeholder: "Defaults to your email", type: "email" },
+  brandColor: { label: "Brand color (optional)", placeholder: "#35E0C2" },
+  googleBusinessUrl: { label: "Google Business Profile link (optional)", placeholder: "https://g.page/…", type: "url" },
+  targetArea: { label: "Area you serve", placeholder: "e.g. Denver metro, Colorado" },
+};
+
+const emptyDetails: SetupDetails = { servicesOffered: "", businessHours: "", bookingUrl: "", transferNumber: "", leadEmail: "", brandColor: "", googleBusinessUrl: "", targetArea: "" };
+
+const PACKAGE_OPTIONS: { id: PackageId; name: string; price: string; sub: string }[] = [
+  ...TIERS.map((t) => ({ id: t.id as PackageId, name: t.name, price: t.id === "tier-3" ? "Custom pricing" : `${t.price}/mo`, sub: t.subtitle })),
+  { id: "custom", name: "Just one or two services", price: "Quoted for you", sub: "Pick what you need on a call" },
 ];
 
-const INDUSTRY_OPTIONS = ["HVAC", "Plumbing", "Spa & Wellness", "Construction", "Veterinary Services", "Other"];
-const BUDGET_OPTIONS = ["Under $1,000/mo", "$1,000 - $2,500/mo", "$2,500 - $5,000/mo", "$5,000 - $10,000/mo", "$10,000+/mo"];
-const TIMELINE_OPTIONS = ["ASAP", "Within 2 weeks", "Within 1 month", "Within 3 months", "Flexible"];
-
-type FormErrors = Partial<Record<keyof OnboardingData, string>>;
-
 export function OnboardingForm() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
+  const [biz, setBiz] = useState({ contactName: "", businessName: "", email: "", phone: "", website: "", industry: "" });
+  const [packageId, setPackageId] = useState<PackageId | "">("");
+  const [details, setDetails] = useState<SetupDetails>(emptyDetails);
+  const [acceptName, setAcceptName] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [formData, setFormData] = useState<OnboardingData>({
-    clientName: "", businessName: "", email: "", phone: "", address: "",
-    industry: "", services: [], projectDescription: "", currentTools: "",
-    monthlyBudget: "", timeline: "", goals: "", specialRequirements: "",
-  });
+  const [done, setDone] = useState<{ portalUrl: string; stage: string } | null>(null);
 
-  const inputClasses = "w-full bg-bg-card border border-border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors";
-  const selectClasses = `${inputClasses} appearance-none cursor-pointer`;
+  const services = packageId && packageId !== "custom" ? getTierServices(packageId) : [];
+  const fields = detailFieldsFor(services);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof OnboardingData]) setErrors((prev) => ({ ...prev, [name]: undefined }));
-  }
-
-  function handleServiceToggle(service: string) {
-    setFormData((prev) => ({
-      ...prev,
-      services: prev.services.includes(service) ? prev.services.filter((s) => s !== service) : [...prev.services, service],
-    }));
-    if (errors.services) setErrors((prev) => ({ ...prev, services: undefined }));
-  }
-
-  function validateStep(s: number): boolean {
-    const newErrors: FormErrors = {};
-    if (s === 1) {
-      if (!formData.clientName.trim()) newErrors.clientName = "Full name is required";
-      if (!formData.businessName.trim()) newErrors.businessName = "Business name is required";
-      if (!formData.email.trim()) { newErrors.email = "Email is required"; }
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) { newErrors.email = "Please enter a valid email"; }
-      if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-      if (!formData.industry) newErrors.industry = "Please select your industry";
+  function check(s: number): string {
+    if (s === 0) {
+      if (!biz.contactName.trim() || !biz.businessName.trim() || !biz.phone.trim() || !biz.industry.trim()) return "Please fill in your name, business, phone and industry.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(biz.email.trim())) return "Please enter a valid email address.";
     }
+    if (s === 1 && !packageId) return "Please choose a package.";
     if (s === 2) {
-      if (formData.services.length === 0) newErrors.services = "Select at least one service";
-      if (!formData.projectDescription.trim()) newErrors.projectDescription = "Please describe your project";
+      if (fields.includes("servicesOffered") && !details.servicesOffered.trim()) return "Tell us what services you offer so your AI can answer correctly.";
+      if (fields.includes("businessHours") && !details.businessHours.trim()) return "Please add your business hours.";
     }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (s === 3 && (!agreed || acceptName.trim().length < 2)) return "Type your full name and check the box to accept.";
+    return "";
   }
 
-  function nextStep() { if (validateStep(step)) setStep((s) => s + 1); }
-  function prevStep() { setStep((s) => s - 1); }
+  function next() {
+    const e = check(step);
+    setError(e);
+    if (!e) setStep((s) => Math.min(s + 1, STEPS.length - 1));
+  }
 
-  async function handleSubmit(e: FormEvent) {
+  async function submit(e: FormEvent) {
     e.preventDefault();
-    if (!validateStep(step)) return;
+    if (step < STEPS.length - 1) {
+      next();
+      return;
+    }
+    const msg = check(3);
+    if (msg) {
+      setError(msg);
+      return;
+    }
     setSubmitting(true);
+    setError("");
     try {
-      const res = await fetch("/api/onboarding", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(formData) });
-      if (!res.ok) throw new Error("Failed");
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `Jontri_Contract_${formData.businessName.replace(/\s+/g, "_")}.docx`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      setStep(4);
-    } catch { setErrors({ specialRequirements: "Something went wrong. Please try again." }); }
-    finally { setSubmitting(false); }
+      const res = await fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...biz, packageId, details, acceptName, agreed, termsVersion: TERMS_VERSION }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+      setDone(data);
+    } catch {
+      setError("Couldn't reach us. Check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
-  if (step === 4) {
+  if (done) {
     return (
-      <div className="rounded-xl bg-bg-card border border-border p-8 text-center">
-        <div className="text-4xl mb-4">&#10003;</div>
-        <h3 className="text-2xl font-bold text-accent mb-2">Contract Generated!</h3>
-        <p className="text-text-secondary mb-4">Your contract has been downloaded. We&apos;ll also send a copy to{" "}<span className="text-text-primary">{formData.email}</span>.</p>
-        <p className="text-text-muted text-sm">A team member will reach out within 24 hours to review the agreement.</p>
+      <div className="text-center py-6" role="status">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-accent-ink">
+          <LuCheck size={28} aria-hidden />
+        </div>
+        <h2 className="text-3xl font-extrabold tracking-[-0.03em] text-text-primary mb-3">You&apos;re in.</h2>
+        <p className="text-text-secondary mb-6 max-w-md mx-auto">
+          {done.stage === "proposal" ? "We'll put together your custom proposal. " : "Next step: book your kickoff call. "}
+          We just emailed your private portal link. You can also open it now and bookmark it.
+        </p>
+        <a href={done.portalUrl} className={`${primaryBtn} ${focusRing}`}>
+          Open my portal <LuArrowRight size={18} aria-hidden />
+        </a>
       </div>
     );
   }
 
-  const stepIndicator = (
-    <div className="flex items-center justify-center gap-2 mb-8">
-      {[1, 2, 3].map((s) => (
-        <div key={s} className="flex items-center gap-2">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${s === step ? "bg-accent text-accent-ink" : s < step ? "bg-accent/30 text-accent" : "bg-bg-card border border-border text-text-muted"}`}>{s < step ? "✓" : s}</div>
-          {s < 3 && <div className={`w-12 h-0.5 ${s < step ? "bg-accent/50" : "bg-border"}`} />}
-        </div>
-      ))}
+  const bizField = (name: keyof typeof biz, label: string, type = "text", autoComplete?: string) => (
+    <div>
+      <label htmlFor={`ob-${name}`} className="block text-sm font-medium text-text-secondary mb-1.5">
+        {label}
+      </label>
+      <input id={`ob-${name}`} type={type} autoComplete={autoComplete} value={biz[name]} onChange={(e) => setBiz({ ...biz, [name]: e.target.value })} className={inputCls} />
     </div>
   );
 
-  const stepLabels = ["Client Information", "Project Details", "Goals & Review"];
-
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
-      {stepIndicator}
-      <p className="text-center text-text-secondary text-sm mb-6">Step {step} of 3 &mdash; {stepLabels[step - 1]}</p>
+    <form onSubmit={submit} noValidate>
+      <ol className="flex items-center justify-center gap-2 mb-8" aria-label="Sign-up steps">
+        {STEPS.map((label, i) => (
+          <li key={label} className="flex items-center gap-2">
+            <span
+              aria-current={i === step ? "step" : undefined}
+              className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
+                i === step ? "bg-accent text-accent-ink" : i < step ? "bg-accent/25 text-accent" : "bg-white/[.04] text-text-muted"
+              }`}
+            >
+              {i < step ? <LuCheck size={14} aria-hidden /> : i + 1}
+            </span>
+            <span className={`hidden sm:inline text-xs ${i === step ? "text-text-primary" : "text-text-muted"}`}>{label}</span>
+            {i < STEPS.length - 1 && <span className="w-4 sm:w-6 h-px bg-white/15" aria-hidden />}
+          </li>
+        ))}
+      </ol>
+      <p className="sm:hidden text-center text-sm text-text-secondary -mt-4 mb-6">
+        Step {step + 1} of {STEPS.length}: {STEPS[step]}
+      </p>
 
-      {step === 1 && (
-        <div className="space-y-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label htmlFor="ob-clientName" className="block text-sm font-medium text-text-primary mb-1.5">Full Name <span className="text-accent">*</span></label>
-              <input type="text" id="ob-clientName" name="clientName" value={formData.clientName} onChange={handleChange} placeholder="John Smith" className={inputClasses} />
-              {errors.clientName && <p className="mt-1 text-sm text-red-400">{errors.clientName}</p>}
-            </div>
-            <div>
-              <label htmlFor="ob-businessName" className="block text-sm font-medium text-text-primary mb-1.5">Business Name <span className="text-accent">*</span></label>
-              <input type="text" id="ob-businessName" name="businessName" value={formData.businessName} onChange={handleChange} placeholder="ABC Plumbing LLC" className={inputClasses} />
-              {errors.businessName && <p className="mt-1 text-sm text-red-400">{errors.businessName}</p>}
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label htmlFor="ob-email" className="block text-sm font-medium text-text-primary mb-1.5">Email <span className="text-accent">*</span></label>
-              <input type="email" id="ob-email" name="email" value={formData.email} onChange={handleChange} placeholder="john@abcplumbing.com" className={inputClasses} />
-              {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email}</p>}
-            </div>
-            <div>
-              <label htmlFor="ob-phone" className="block text-sm font-medium text-text-primary mb-1.5">Phone <span className="text-accent">*</span></label>
-              <input type="tel" id="ob-phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="(555) 123-4567" className={inputClasses} />
-              {errors.phone && <p className="mt-1 text-sm text-red-400">{errors.phone}</p>}
-            </div>
-          </div>
-          <div>
-            <label htmlFor="ob-address" className="block text-sm font-medium text-text-primary mb-1.5">Business Address</label>
-            <input type="text" id="ob-address" name="address" value={formData.address} onChange={handleChange} placeholder="123 Main St, City, State ZIP" className={inputClasses} />
-          </div>
-          <div>
-            <label htmlFor="ob-industry" className="block text-sm font-medium text-text-primary mb-1.5">Industry <span className="text-accent">*</span></label>
-            <select id="ob-industry" name="industry" value={formData.industry} onChange={handleChange} className={selectClasses}>
-              <option value="">Select your industry</option>
-              {INDUSTRY_OPTIONS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
-            </select>
-            {errors.industry && <p className="mt-1 text-sm text-red-400">{errors.industry}</p>}
-          </div>
-          <div className="flex justify-end"><Button type="button" onClick={nextStep}>Next Step &rarr;</Button></div>
+      {step === 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {bizField("contactName", "Your full name", "text", "name")}
+          {bizField("businessName", "Business name", "text", "organization")}
+          {bizField("email", "Email", "email", "email")}
+          {bizField("phone", "Phone", "tel", "tel")}
+          {bizField("website", "Website (optional)", "url", "url")}
+          {bizField("industry", "Industry", "text")}
         </div>
       )}
 
+      {step === 1 && (
+        <fieldset>
+          <legend className="sr-only">Choose a package</legend>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {PACKAGE_OPTIONS.map((p) => (
+              <label
+                key={p.id}
+                className={`cursor-pointer rounded-2xl p-5 transition-[box-shadow,background-color,transform] duration-200 ease-[cubic-bezier(.34,1.56,.64,1)] hover:-translate-y-0.5 active:scale-[.99] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
+                  packageId === p.id ? "bg-accent/10 shadow-[inset_0_0_0_2px_var(--color-accent)]" : "bg-white/[.03] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12)] hover:bg-white/[.05]"
+                }`}
+              >
+                <input type="radio" name="package" value={p.id} checked={packageId === p.id} onChange={() => setPackageId(p.id)} className="sr-only" />
+                <span className="block text-text-primary font-bold">{p.name}</span>
+                <span className="block text-accent font-semibold text-sm mt-1">{p.price}</span>
+                <span className="block text-text-muted text-xs mt-1">{p.sub}</span>
+              </label>
+            ))}
+          </div>
+          {(packageId === "tier-3" || packageId === "custom") && <p className="mt-4 text-sm text-text-secondary">No payment today. We&apos;ll send a proposal after a quick call.</p>}
+        </fieldset>
+      )}
+
       {step === 2 && (
-        <div className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-3">Services Needed <span className="text-accent">*</span></label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {SERVICE_OPTIONS.map((service) => (
-                <button key={service} type="button" onClick={() => handleServiceToggle(service)} className={`text-left px-4 py-3 rounded-lg border transition-colors text-sm ${formData.services.includes(service) ? "border-accent bg-accent/10 text-accent" : "border-border bg-bg-card text-text-secondary hover:border-text-muted"}`}>
-                  {formData.services.includes(service) ? "✓ " : ""}{service}
-                </button>
-              ))}
-            </div>
-            {errors.services && <p className="mt-1 text-sm text-red-400">{errors.services}</p>}
-          </div>
-          <div>
-            <label htmlFor="ob-projectDescription" className="block text-sm font-medium text-text-primary mb-1.5">Describe Your Project <span className="text-accent">*</span></label>
-            <textarea id="ob-projectDescription" name="projectDescription" value={formData.projectDescription} onChange={handleChange} placeholder="Tell us what you are looking to automate..." rows={4} className={`${inputClasses} resize-none`} />
-            {errors.projectDescription && <p className="mt-1 text-sm text-red-400">{errors.projectDescription}</p>}
-          </div>
-          <div>
-            <label htmlFor="ob-currentTools" className="block text-sm font-medium text-text-primary mb-1.5">Current Tools / Software</label>
-            <input type="text" id="ob-currentTools" name="currentTools" value={formData.currentTools} onChange={handleChange} placeholder="e.g., ServiceTitan, Jobber, QuickBooks..." className={inputClasses} />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label htmlFor="ob-monthlyBudget" className="block text-sm font-medium text-text-primary mb-1.5">Monthly Budget</label>
-              <select id="ob-monthlyBudget" name="monthlyBudget" value={formData.monthlyBudget} onChange={handleChange} className={selectClasses}>
-                <option value="">Select budget range</option>
-                {BUDGET_OPTIONS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="ob-timeline" className="block text-sm font-medium text-text-primary mb-1.5">Desired Timeline</label>
-              <select id="ob-timeline" name="timeline" value={formData.timeline} onChange={handleChange} className={selectClasses}>
-                <option value="">Select timeline</option>
-                {TIMELINE_OPTIONS.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
-              </select>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <Button type="button" variant="secondary" onClick={prevStep}>&larr; Back</Button>
-            <Button type="button" onClick={nextStep}>Next Step &rarr;</Button>
-          </div>
+        <div className="space-y-4">
+          {fields.length === 0 && <p className="text-text-secondary text-sm">Nothing else needed right now. We&apos;ll go over the details on your call.</p>}
+          {fields.map((f) => {
+            const m = FIELD_META[f];
+            return (
+              <div key={f}>
+                <label htmlFor={`ob-${f}`} className="block text-sm font-medium text-text-secondary mb-1.5">
+                  {m.label}
+                </label>
+                {m.textarea ? (
+                  <textarea id={`ob-${f}`} rows={3} value={details[f]} placeholder={m.placeholder} onChange={(e) => setDetails({ ...details, [f]: e.target.value })} className={inputCls} />
+                ) : (
+                  <input id={`ob-${f}`} type={m.type || "text"} value={details[f]} placeholder={m.placeholder} onChange={(e) => setDetails({ ...details, [f]: e.target.value })} className={inputCls} />
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
       {step === 3 && (
         <div className="space-y-5">
-          <div>
-            <label htmlFor="ob-goals" className="block text-sm font-medium text-text-primary mb-1.5">What does success look like for you?</label>
-            <textarea id="ob-goals" name="goals" value={formData.goals} onChange={handleChange} placeholder="e.g., Reduce missed calls by 50%, automate appointment booking..." rows={3} className={`${inputClasses} resize-none`} />
+          <div className="rounded-2xl bg-white/[.03] p-5 text-sm text-text-secondary">
+            <p>
+              <span className="text-text-primary font-semibold">{biz.businessName}</span> · {biz.contactName} · {biz.email}
+            </p>
+            <p className="mt-1">
+              Package: <span className="text-text-primary">{PACKAGE_OPTIONS.find((p) => p.id === packageId)?.name}</span>
+            </p>
+          </div>
+          <div className="max-h-64 overflow-y-auto rounded-2xl bg-bg-primary p-5 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)] text-sm" tabIndex={0} aria-label="Service terms">
+            <h3 className="text-text-primary font-bold mb-3">Service terms</h3>
+            {TERMS.map((t, i) => (
+              <p key={t.title} className="text-text-secondary mb-3">
+                <span className="text-text-primary font-semibold">
+                  {i + 1}. {t.title}.
+                </span>{" "}
+                {t.body}
+              </p>
+            ))}
           </div>
           <div>
-            <label htmlFor="ob-specialRequirements" className="block text-sm font-medium text-text-primary mb-1.5">Special Requirements or Notes</label>
-            <textarea id="ob-specialRequirements" name="specialRequirements" value={formData.specialRequirements} onChange={handleChange} placeholder="Anything else we should know..." rows={3} className={`${inputClasses} resize-none`} />
-            {errors.specialRequirements && <p className="mt-1 text-sm text-red-400">{errors.specialRequirements}</p>}
+            <label htmlFor="ob-accept" className="block text-sm font-medium text-text-secondary mb-1.5">
+              Type your full name to sign
+            </label>
+            <input id="ob-accept" value={acceptName} onChange={(e) => setAcceptName(e.target.value)} autoComplete="name" className={inputCls} />
           </div>
-          <div className="rounded-lg border border-border bg-bg-card p-6 space-y-3">
-            <h4 className="text-lg font-semibold text-text-primary mb-2">Review Your Information</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-              <div><span className="text-text-muted">Name:</span> <span className="text-text-primary">{formData.clientName}</span></div>
-              <div><span className="text-text-muted">Business:</span> <span className="text-text-primary">{formData.businessName}</span></div>
-              <div><span className="text-text-muted">Email:</span> <span className="text-text-primary">{formData.email}</span></div>
-              <div><span className="text-text-muted">Phone:</span> <span className="text-text-primary">{formData.phone}</span></div>
-              <div><span className="text-text-muted">Industry:</span> <span className="text-text-primary">{formData.industry}</span></div>
-              <div><span className="text-text-muted">Budget:</span> <span className="text-text-primary">{formData.monthlyBudget || "Not specified"}</span></div>
-              <div><span className="text-text-muted">Timeline:</span> <span className="text-text-primary">{formData.timeline || "Not specified"}</span></div>
-            </div>
-            <div className="pt-2">
-              <span className="text-text-muted text-sm">Services:</span>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {formData.services.map((s) => (<span key={s} className="text-xs bg-accent/15 text-accent px-2 py-1 rounded-full">{s}</span>))}
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between">
-            <Button type="button" variant="secondary" onClick={prevStep}>&larr; Back</Button>
-            <Button type="submit">{submitting ? "Generating Contract..." : "Generate Contract & Submit"}</Button>
-          </div>
+          <label className="flex items-start gap-3 text-sm text-text-secondary cursor-pointer">
+            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className={`mt-0.5 h-5 w-5 flex-shrink-0 accent-[var(--color-accent)] cursor-pointer ${focusRing}`} />
+            I agree to the service terms above on behalf of {biz.businessName || "my business"}.
+          </label>
         </div>
       )}
+
+      {error && (
+        <p role="alert" className="mt-5 text-sm text-red-400">
+          {error}
+        </p>
+      )}
+
+      <div className="mt-8 flex items-center justify-between gap-3">
+        {step > 0 ? (
+          <button
+            type="button"
+            onClick={() => {
+              setError("");
+              setStep((s) => s - 1);
+            }}
+            className={`${ghostBtn} ${focusRing}`}
+          >
+            <LuArrowLeft size={18} aria-hidden /> Back
+          </button>
+        ) : (
+          <span />
+        )}
+        {step < STEPS.length - 1 ? (
+          <button key="continue" type="button" onClick={next} className={`${primaryBtn} ${focusRing}`}>
+            Continue <LuArrowRight size={18} aria-hidden />
+          </button>
+        ) : (
+          <button key="submit" type="submit" disabled={submitting} className={`${primaryBtn} ${focusRing}`}>
+            {submitting ? "Submitting…" : "Accept and sign up"}
+          </button>
+        )}
+      </div>
     </form>
   );
 }

@@ -1,7 +1,7 @@
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { AnimatedOnScroll } from "@/components/ui/AnimatedOnScroll";
 import { OnboardingForm } from "@/components/ui/OnboardingForm";
-import { LuFileText, LuShieldCheck, LuClock } from "react-icons/lu";
+import { LuFileText, LuShieldCheck, LuListChecks } from "react-icons/lu";
 import { Kicker, PageGlow, panelCls } from "@/components/site/ui";
 
 export function OnboardingSection() {
@@ -14,8 +14,7 @@ export function OnboardingSection() {
           Let&apos;s get your <span className="text-accent">AI crew</span> started.
         </h1>
         <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-          Ready to get started? Fill out your information below and we&apos;ll generate
-          a service agreement tailored to your needs.
+          Tell us about your business, pick a package and accept the terms. Takes about 5 minutes.
         </p>
       </div>
 
@@ -23,9 +22,9 @@ export function OnboardingSection() {
         <AnimatedOnScroll direction="up" delay={0}>
           <div className={`${panelCls} p-6 text-left h-full`}>
             <LuFileText size={26} className="text-accent mb-4" />
-            <h3 className="text-xl font-bold text-text-primary mb-2">Instant Contract</h3>
+            <h3 className="text-xl font-bold text-text-primary mb-2">Sign in one click</h3>
             <p className="text-text-secondary text-sm">
-              Your service agreement is generated automatically as a Word document, ready to review and sign.
+              Review the terms and sign by typing your name. No printing or scanning.
             </p>
           </div>
         </AnimatedOnScroll>
@@ -34,16 +33,16 @@ export function OnboardingSection() {
             <LuShieldCheck size={26} className="text-accent mb-4" />
             <h3 className="text-xl font-bold text-text-primary mb-2">Secure & Private</h3>
             <p className="text-text-secondary text-sm">
-              Your information is encrypted and only used to prepare your agreement. We never share your data.
+              Your information is only used to set up your services. We never sell or share it.
             </p>
           </div>
         </AnimatedOnScroll>
         <AnimatedOnScroll direction="up" delay={0.2}>
           <div className={`${panelCls} p-6 text-left h-full`}>
-            <LuClock size={26} className="text-accent mb-4" />
-            <h3 className="text-xl font-bold text-text-primary mb-2">Quick Setup</h3>
+            <LuListChecks size={26} className="text-accent mb-4" />
+            <h3 className="text-xl font-bold text-text-primary mb-2">Track every step</h3>
             <p className="text-text-secondary text-sm">
-              Complete the form in under 5 minutes. Our team will follow up within 24 hours to kick things off.
+              You get a private portal link that shows exactly where your setup is.
             </p>
           </div>
         </AnimatedOnScroll>
