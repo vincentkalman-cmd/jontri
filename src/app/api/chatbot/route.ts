@@ -84,7 +84,11 @@ var sendBtn = document.getElementById("sendBtn");
 function addMsg(role, text) {
   var div = document.createElement("div");
   div.className = "msg " + role;
-  div.innerHTML = text.replace(/(https?:\\/\\/[^\\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+  var safe = String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  safe = safe.replace(/\\*\\*([^*]+)\\*\\*/g, '<strong>$1</strong>');
+  safe = safe.replace(/(https?:\\/\\/[^\\s<]+[^\\s<.,;:!?)])/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  safe = safe.replace(/\\n/g, '<br>');
+  div.innerHTML = safe;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
   return div;

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { NO_THINKING_HAIKU, textOf } from "@/lib/claude";
-import { getSupabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import { rateLimit } from "@/lib/ratelimit";
 
 function getAllowedOrigin(requestOrigin: string | null): string | null {
@@ -21,7 +21,7 @@ function corsHeaders(request: NextRequest): Record<string, string> {
 }
 
 async function getClientConfig(slug: string) {
-  const supabase = getSupabase();
+  const supabase = getSupabaseAdmin();
   const { data: client } = await supabase
     .from("clients")
     .select("*")
@@ -78,7 +78,7 @@ Your personality: ${personality}
 
 IMPORTANT RULES:
 - Only answer questions about ${businessName} and its services. If asked about unrelated topics, politely redirect to how you can help with ${businessName}'s services.
-- Be concise — keep responses under 3 sentences unless more detail is needed.
+- Be concise — keep responses under 3 sentences unless more detail is needed. Use plain text; short lists are fine.
 - If the visitor seems interested, suggest they book a consultation${bookingUrl ? ` at ${bookingUrl}` : ""} or ask for their contact info so someone can follow up.
 - Never make up information. If you don't know something specific, say you'll have someone from the team follow up.
 - Be warm and helpful, not pushy.
@@ -103,7 +103,7 @@ ${knowledge ? `Here is detailed information about the business scraped from thei
     const response = await anthropic.messages.create({
       model: "claude-haiku-5-5",
       thinking: NO_THINKING_HAIKU,
-      max_tokens: 300,
+      max_tokens: 600,
       system: [
         {
           type: "text",

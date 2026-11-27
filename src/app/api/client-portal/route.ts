@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabase } from "@/lib/supabase";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 // GET /api/client-portal?slug=abc-plumbing — public endpoint, no auth required
 export async function GET(request: NextRequest) {
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "slug is required" }, { status: 400 });
   }
 
-  const supabase = getSupabase();
+  const supabase = getSupabaseAdmin();
 
   const { data: client, error } = await supabase
     .from("clients")
