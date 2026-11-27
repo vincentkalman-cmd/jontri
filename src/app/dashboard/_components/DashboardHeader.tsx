@@ -25,22 +25,23 @@ export function DashboardHeader({
   onSignOut,
 }: DashboardHeaderProps) {
   return (
-    <div className="flex items-end justify-between mb-8">
+    <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
       <div>
-        <h1 className="text-3xl font-bold text-text-primary">Dashboard</h1>
-        <p className="text-text-secondary mt-1">
+        <p className="font-mono text-xs uppercase tracking-[0.08em] text-accent mb-3">Admin</p>
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em] leading-none text-text-primary">Dashboard</h1>
+        <p className="text-text-secondary mt-3">
           Manage clients, deploy AI services, and run outreach campaigns
         </p>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <div className="flex bg-bg-card border border-border rounded-lg p-0.5">
           {TABS.map((tab) => (
             <button
               key={tab.key}
               onClick={() => onViewChange(tab.key)}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`px-4 py-2 text-sm font-medium rounded-md whitespace-nowrap cursor-pointer transition-colors ${
                 view === tab.key
-                  ? "bg-accent text-white"
+                  ? "bg-accent text-accent-ink"
                   : "text-text-muted hover:text-text-primary"
               }`}
             >
@@ -50,7 +51,7 @@ export function DashboardHeader({
         </div>
         <button
           onClick={onQuickDeploy}
-          className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-accent text-white rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-accent-dark transition-all shadow-lg shadow-accent/20"
+          className="px-5 py-2.5 bg-gradient-to-r from-accent to-accent-light text-accent-ink rounded-lg text-sm font-semibold hover:from-accent-dark hover:to-accent transition-colors shadow-lg shadow-accent/20 whitespace-nowrap cursor-pointer"
         >
           Quick Deploy
         </button>
@@ -59,13 +60,13 @@ export function DashboardHeader({
             onViewChange("clients");
             onNewClient();
           }}
-          className="px-5 py-2.5 bg-accent text-white rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors"
+          className="px-5 py-2.5 bg-accent text-accent-ink rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors whitespace-nowrap cursor-pointer"
         >
           + New Client
         </button>
         <button
           onClick={onSignOut}
-          className="px-4 py-2.5 text-text-muted border border-border rounded-lg text-sm hover:text-text-primary hover:border-text-muted transition-colors"
+          className="px-4 py-2.5 text-text-muted border border-border rounded-lg text-sm hover:text-text-primary hover:border-text-muted transition-colors whitespace-nowrap cursor-pointer"
         >
           Sign Out
         </button>

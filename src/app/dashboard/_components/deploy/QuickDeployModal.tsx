@@ -163,7 +163,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
           <div className="flex items-start justify-between">
             <div>
               <h2 className="text-lg font-bold text-text-primary flex items-center gap-2">
-                <span className="bg-gradient-to-r from-purple-500 to-accent bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">
                   Quick Deploy
                 </span>
               </h2>
@@ -225,7 +225,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
                         `${window.location.origin}/client/${result.slug}`
                       )
                     }
-                    className="px-3 py-2 text-xs bg-accent text-white rounded-lg hover:bg-accent-dark transition-colors font-medium flex-shrink-0"
+                    className="px-3 py-2 text-xs bg-accent text-accent-ink rounded-lg hover:bg-accent-dark transition-colors font-medium flex-shrink-0"
                   >
                     Copy
                   </button>
@@ -237,7 +237,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
               {result.success && (
                 <button
                   onClick={onClose}
-                  className="px-5 py-2.5 bg-accent text-white rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors"
+                  className="px-5 py-2.5 bg-accent text-accent-ink rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors"
                 >
                   View in Clients
                 </button>
@@ -270,7 +270,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
                     key={svc.key}
                     type="button"
                     onClick={() => setServices((p) => ({ ...p, [svc.key]: !p[svc.key] }))}
-                    className={`flex-1 flex items-center gap-2 p-3 rounded-xl border text-left text-sm transition-all ${
+                    className={`flex-1 flex items-center gap-2 p-3 rounded-xl border text-left text-sm transition-[color,background-color,border-color,box-shadow,opacity,transform] ${
                       services[svc.key]
                         ? "border-accent bg-accent/10 text-text-primary"
                         : "border-border bg-bg-primary/30 text-text-muted opacity-60"
@@ -469,7 +469,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
               <button
                 type="submit"
                 disabled={deploying}
-                className="px-6 py-2.5 bg-gradient-to-r from-purple-500 to-accent text-white rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-accent-dark transition-all disabled:opacity-50 shadow-lg shadow-accent/20"
+                className="px-6 py-2.5 bg-gradient-to-r from-accent to-accent-light text-accent-ink rounded-lg text-sm font-semibold hover:from-accent-dark hover:to-accent transition-[color,background-color,border-color,box-shadow,opacity,transform] disabled:opacity-50 shadow-lg shadow-accent/20"
               >
                 {deploying ? "Deploying..." : "Deploy All"}
               </button>

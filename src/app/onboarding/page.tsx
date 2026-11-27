@@ -1,15 +1,15 @@
-import { Navbar } from "@/components/Navbar";
+import { SiteNav } from "@/components/site/SiteNav";
 import { OnboardingSection } from "@/components/OnboardingSection";
-import { Footer } from "@/components/Footer";
+import { SiteFooter } from "@/components/site/SiteFooter";
 
 export default function OnboardingPage() {
   return (
     <>
-      <Navbar />
+      <SiteNav />
       <main>
         <OnboardingSection />
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

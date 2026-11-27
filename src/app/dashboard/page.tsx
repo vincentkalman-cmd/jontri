@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { SiteNav } from "@/components/site/SiteNav";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { DashboardHeader, type DashboardView } from "./_components/DashboardHeader";
 import { StatsBar } from "./_components/StatsBar";
 import { TierSelector } from "./_components/tiers/TierSelector";
@@ -102,9 +102,9 @@ export default function DashboardPage() {
 
   return (
     <>
-      <Navbar />
-      <main className="min-h-screen bg-bg-primary pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SiteNav minimal />
+      <main className="min-h-screen bg-bg-primary pt-10 pb-16">
+        <div className="max-w-[1200px] mx-auto px-6">
           <DashboardHeader
             view={view}
             onViewChange={setView}
@@ -137,7 +137,7 @@ export default function DashboardPage() {
               />
               <div className="flex gap-6">
                 <div
-                  className={`transition-all ${
+                  className={`transition-[color,background-color,border-color,box-shadow,opacity,transform] ${
                     selectedClient
                       ? "w-1/3 flex-shrink-0"
                       : "w-full"
@@ -199,7 +199,7 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

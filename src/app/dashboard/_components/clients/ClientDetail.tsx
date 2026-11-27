@@ -134,7 +134,7 @@ export default function ClientDetail({
                 return (
                   <div
                     key={svc.name}
-                    className={`rounded-xl border p-4 text-center transition-all ${
+                    className={`rounded-xl border p-4 text-center transition-[color,background-color,border-color,box-shadow,opacity,transform] ${
                       deployed
                         ? "border-accent/30 bg-accent-glow"
                         : "border-border bg-bg-primary/30 opacity-40"

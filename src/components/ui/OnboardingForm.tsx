@@ -118,7 +118,7 @@ export function OnboardingForm() {
     <div className="flex items-center justify-center gap-2 mb-8">
       {[1, 2, 3].map((s) => (
         <div key={s} className="flex items-center gap-2">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${s === step ? "bg-accent text-white" : s < step ? "bg-accent/30 text-accent" : "bg-bg-card border border-border text-text-muted"}`}>{s < step ? "✓" : s}</div>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${s === step ? "bg-accent text-accent-ink" : s < step ? "bg-accent/30 text-accent" : "bg-bg-card border border-border text-text-muted"}`}>{s < step ? "✓" : s}</div>
           {s < 3 && <div className={`w-12 h-0.5 ${s < step ? "bg-accent/50" : "bg-border"}`} />}
         </div>
       ))}

@@ -18,7 +18,7 @@ export function SectionWrapper({
         alternate ? "bg-bg-secondary" : "bg-bg-primary"
       } ${className}`}
     >
-      <div className="mx-auto max-w-7xl">{children}</div>
+      <div className="mx-auto max-w-[1152px]">{children}</div>
     </section>
   );
 }

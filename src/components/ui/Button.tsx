@@ -15,9 +15,9 @@ interface ButtonProps {
 
 const variantStyles: Record<Variant, string> = {
   primary:
-    "bg-accent hover:bg-accent-light text-white shadow-lg shadow-accent-glow",
+    "bg-accent hover:bg-accent-light text-accent-ink shadow-lg shadow-accent-glow",
   secondary:
-    "border border-accent text-accent hover:bg-accent hover:text-white",
+    "border border-accent text-accent hover:bg-accent hover:text-accent-ink",
   ghost: "text-text-secondary hover:text-text-primary",
 };
 
@@ -32,7 +32,7 @@ export function Button({
   disabled,
 }: ButtonProps) {
   const base = `inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold
-    transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
+    transition-[color,background-color,border-color,box-shadow,opacity,transform] duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
     focus:ring-offset-bg-primary`;
 
   const classes = `${base} ${variantStyles[variant]} ${className}`;

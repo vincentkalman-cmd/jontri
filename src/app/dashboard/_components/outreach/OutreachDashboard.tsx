@@ -44,7 +44,7 @@ export function OutreachDashboard() {
         </div>
         <button
           onClick={() => setShowBuilder(true)}
-          className="px-5 py-2.5 bg-gradient-to-r from-accent to-purple-500 text-white rounded-lg text-sm font-semibold hover:from-accent-dark hover:to-purple-600 transition-all shadow-lg shadow-accent/20"
+          className="px-5 py-2.5 bg-gradient-to-r from-accent to-accent-light text-accent-ink rounded-lg text-sm font-semibold hover:from-accent-dark hover:to-accent transition-[color,background-color,border-color,box-shadow,opacity,transform] shadow-lg shadow-accent/20"
         >
           + New Campaign
         </button>
@@ -53,7 +53,7 @@ export function OutreachDashboard() {
       {/* Main layout */}
       <div className="flex gap-6">
         {/* Campaign list */}
-        <div className={`transition-all ${selectedCampaign ? "w-1/3 flex-shrink-0" : "w-full"}`}>
+        <div className={`transition-[color,background-color,border-color,box-shadow,opacity,transform] ${selectedCampaign ? "w-1/3 flex-shrink-0" : "w-full"}`}>
           <CampaignList
             campaigns={campaigns}
             loading={loading}

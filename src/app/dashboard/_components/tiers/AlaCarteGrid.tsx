@@ -184,7 +184,7 @@ export function AlaCarteGrid({ onDeployService }: AlaCarteGridProps) {
                 type="button"
                 disabled={svc.status !== "live"}
                 onClick={() => svc.status === "live" && onDeployService(svc)}
-                className={`bg-bg-card border rounded-xl p-5 transition-all text-left ${
+                className={`bg-bg-card border rounded-xl p-5 transition-[color,background-color,border-color,box-shadow,opacity,transform] text-left ${
                   svc.status === "live"
                     ? "border-accent/30 hover:border-accent/60 cursor-pointer hover:shadow-lg hover:shadow-accent/5"
                     : "border-border opacity-60 cursor-not-allowed"

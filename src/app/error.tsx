@@ -1,6 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
+import { SiteNav } from "@/components/site/SiteNav";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { Kicker, PageGlow, primaryBtn, ghostBtn } from "@/components/site/ui";
 
 export default function Error({
   error,
@@ -14,21 +18,27 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-6 bg-bg-primary">
-      <div className="max-w-md w-full text-center">
-        <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent">Error</p>
-        <h1 className="mt-3 text-3xl font-bold text-text-primary">Something went wrong</h1>
-        <p className="mt-3 text-text-secondary">
-          We hit an unexpected issue. Try again, or refresh the page.
-        </p>
-        <button
-          type="button"
-          onClick={reset}
-          className="mt-8 inline-flex items-center rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white cursor-pointer transition-colors duration-200 hover:bg-accent-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        >
-          Try again
-        </button>
-      </div>
-    </main>
+    <>
+      <SiteNav />
+      <main className="relative min-h-[calc(100vh-68px)] overflow-hidden bg-bg-primary flex items-center justify-center px-6 py-20">
+        <PageGlow />
+        <div className="relative max-w-lg w-full text-center">
+          <Kicker>Error</Kicker>
+          <h1 className="mt-4 text-5xl sm:text-6xl font-extrabold tracking-[-0.04em] leading-none text-text-primary">
+            Something went wrong.
+          </h1>
+          <p className="mt-5 text-text-secondary text-lg">We hit an unexpected issue. Try again, or head back home.</p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <button type="button" onClick={reset} className={primaryBtn}>
+              Try again
+            </button>
+            <Link href="/" className={ghostBtn}>
+              Back to home
+            </Link>
+          </div>
+        </div>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

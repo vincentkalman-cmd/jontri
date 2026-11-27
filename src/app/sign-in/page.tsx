@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { LuMail, LuArrowLeft } from "react-icons/lu";
+import { SiteNav } from "@/components/site/SiteNav";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { PageGlow, Kicker, primaryBtn, inputCls, panelCls } from "@/components/site/ui";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -38,93 +41,98 @@ export default function SignInPage() {
     }
   }
 
-  const inputClasses = "w-full bg-bg-card border border-border rounded-lg px-4 py-3 text-text-primary placeholder:text-text-muted focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors";
-
   return (
     <>
-      <Navbar />
-      <main className="min-h-screen bg-bg-primary flex items-center justify-center px-4">
-        <div className="w-full max-w-md">
+      <SiteNav />
+      <main className="relative min-h-[calc(100vh-68px)] overflow-hidden bg-bg-primary flex items-center justify-center px-4 py-16">
+        <PageGlow />
+        <div className="relative w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-text-primary">Sign In</h1>
-            <p className="text-text-secondary text-sm mt-2">Access your Jontri automation dashboard</p>
+            <Kicker>Client portal</Kicker>
+            <h1 className="mt-4 text-4xl sm:text-5xl font-extrabold tracking-[-0.04em] leading-none text-text-primary">
+              Welcome back.
+            </h1>
+            <p className="text-text-secondary mt-4">Sign in to manage your AI crew.</p>
           </div>
 
           {showForgot ? (
-            <div className="bg-bg-card border border-border rounded-xl p-6 text-center">
-              <span className="text-4xl block mb-4">&#x1F4E7;</span>
-              <h2 className="text-lg font-bold text-text-primary mb-2">Reset Your Password</h2>
-              <p className="text-text-muted text-sm mb-6">
-                Contact your Jontri account manager to reset your password:
+            <div className={`${panelCls} p-7 text-center`}>
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/12 text-accent">
+                <LuMail size={22} aria-hidden />
+              </div>
+              <h2 className="text-xl font-bold text-text-primary mb-2">Reset your password</h2>
+              <p className="text-text-secondary text-sm mb-6">
+                Email us and we&apos;ll reset it for you, usually within a few hours.
               </p>
-              <a
-                href="mailto:vincent@jontri.com?subject=Password%20Reset%20Request"
-                className="inline-block px-6 py-3 bg-accent text-white rounded-lg font-semibold text-sm hover:bg-accent-dark transition-colors"
-              >
+              <a href="mailto:vincent@jontri.com?subject=Password%20Reset%20Request" className={primaryBtn}>
                 Email vincent@jontri.com
               </a>
-              <p className="text-text-muted text-xs mt-4">Or call us to get immediate assistance.</p>
               <button
+                type="button"
                 onClick={() => setShowForgot(false)}
-                className="text-accent text-sm mt-4 hover:text-accent-dark transition-colors block mx-auto"
+                className="mt-6 mx-auto flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
               >
-                &larr; Back to Sign In
+                <LuArrowLeft size={14} aria-hidden /> Back to sign in
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-bg-card border border-border rounded-xl p-6 space-y-5">
+            <form onSubmit={handleSubmit} className={`${panelCls} p-7 space-y-5`}>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-1.5">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
+                  Email
+                </label>
                 <input
                   id="email"
                   type="email"
                   required
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@company.com"
-                  className={inputClasses}
+                  className={inputCls}
                 />
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-text-primary mb-1.5">Password</label>
+                <label htmlFor="password" className="block text-sm font-medium text-text-secondary mb-2">
+                  Password
+                </label>
                 <div className="relative">
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     required
+                    autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className={inputClasses + " pr-12"}
+                    className={`${inputCls} pr-16`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors text-sm"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-xs text-text-muted hover:text-text-primary transition-colors cursor-pointer"
                   >
-                    {showPassword ? "Hide" : "Show"}
+                    {showPassword ? "HIDE" : "SHOW"}
                   </button>
                 </div>
               </div>
 
               {error && (
-                <p className="text-red-400 text-sm">{error}</p>
+                <p className="text-sm text-[#FF9B8A]" role="alert">
+                  {error}
+                </p>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 bg-accent text-white rounded-lg font-semibold text-sm hover:bg-accent-dark transition-colors disabled:opacity-50"
-              >
-                {loading ? "Signing in..." : "Sign In"}
+              <button type="submit" disabled={loading} className={`${primaryBtn} w-full`}>
+                {loading ? "Signing in…" : "Sign in →"}
               </button>
 
               <div className="text-center">
                 <button
                   type="button"
                   onClick={() => setShowForgot(true)}
-                  className="text-accent text-sm hover:text-accent-dark transition-colors"
+                  className="text-sm text-text-secondary hover:text-accent transition-colors cursor-pointer"
                 >
                   Forgot password?
                 </button>
@@ -132,12 +140,15 @@ export default function SignInPage() {
             </form>
           )}
 
-          <p className="text-center text-text-muted text-xs mt-6">
-            Need access? Contact your Jontri account manager.
+          <p className="text-center text-text-muted text-sm mt-6">
+            Not a client yet?{" "}
+            <Link href="/#demo" className="text-accent-light hover:text-accent transition-colors">
+              See what we build →
+            </Link>
           </p>
         </div>
       </main>
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

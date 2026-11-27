@@ -16,7 +16,7 @@ export function TierCard({ tier, onDeploy }: TierCardProps) {
 
   return (
     <div
-      className={`relative bg-bg-card rounded-2xl border p-6 flex flex-col transition-all hover:shadow-xl ${
+      className={`relative bg-bg-card rounded-2xl border p-6 flex flex-col transition-[color,background-color,border-color,box-shadow,opacity,transform] hover:shadow-xl ${
         tier.highlighted
           ? "border-accent/50 shadow-lg shadow-accent/10 ring-1 ring-accent/20"
           : "border-border hover:border-accent/30"
@@ -25,7 +25,7 @@ export function TierCard({ tier, onDeploy }: TierCardProps) {
       {/* Most Popular badge */}
       {tier.highlighted && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="bg-gradient-to-r from-accent to-purple-500 text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg shadow-accent/30">
+          <span className="bg-gradient-to-r from-accent to-accent-light text-accent-ink text-xs font-bold px-4 py-1 rounded-full shadow-lg shadow-accent/30">
             Most Popular
           </span>
         </div>
@@ -76,9 +76,9 @@ export function TierCard({ tier, onDeploy }: TierCardProps) {
       {/* CTA */}
       <button
         onClick={() => onDeploy(tier)}
-        className={`w-full py-3 rounded-xl text-sm font-bold transition-all ${
+        className={`w-full py-3 rounded-xl text-sm font-bold transition-[color,background-color,border-color,box-shadow,opacity,transform] ${
           tier.highlighted
-            ? "bg-gradient-to-r from-accent to-purple-500 text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/35"
+            ? "bg-gradient-to-r from-accent to-accent-light text-accent-ink shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/35"
             : "bg-accent/10 text-accent border border-accent/30 hover:bg-accent/20 hover:border-accent/50"
         }`}
       >

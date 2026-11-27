@@ -109,7 +109,7 @@ export function CampaignDetail({ campaign, onClose, onRefresh }: CampaignDetailP
                 key={stage.key}
                 onClick={() => !isRunning && runStage(stage.key)}
                 disabled={isRunning}
-                className={`flex-1 p-3 rounded-xl border text-center transition-all ${
+                className={`flex-1 p-3 rounded-xl border text-center transition-[color,background-color,border-color,box-shadow,opacity,transform] ${
                   isDone
                     ? "border-success/30 bg-success/5"
                     : isRunning

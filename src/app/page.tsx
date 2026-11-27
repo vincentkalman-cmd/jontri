@@ -1,5 +1,6 @@
-import "./home.css";
 import { ChatWidget } from "@/components/ChatWidget";
+import { SiteNav } from "@/components/site/SiteNav";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { TalkToAI } from "@/components/home/TalkToAI";
 import { HeroConsole } from "@/components/home/HeroConsole";
 import { MissedCallCalculator } from "@/components/home/MissedCallCalculator";
@@ -74,27 +75,7 @@ export default function Home() {
         <rect width="100%" height="100%" filter="url(#jh-noise)" />
       </svg>
 
-      <nav aria-label="Main">
-        <div className="wrap">
-          <a className="logo" href="#top" aria-label="Jontri home">
-            <i aria-hidden />
-            jontri
-          </a>
-          <div className="links">
-            <a href="#demo">Try it</a>
-            <a href="#services">Services</a>
-            <a href="#how">How it works</a>
-            <a href="#packages">Packages</a>
-            <a href="#faq">FAQ</a>
-          </div>
-          <div className="navr">
-            <a className="login" href="/sign-in">
-              Client login
-            </a>
-            <TalkToAI />
-          </div>
-        </div>
-      </nav>
+      <SiteNav />
 
       <main id="top">
         {/* HERO */}
@@ -353,19 +334,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer>
-        <div className="wrap">
-          <a className="logo" href="#top" style={{ margin: 0 }}>
-            <i aria-hidden />
-            jontri
-          </a>
-          <div>
-            © {new Date().getFullYear()} Jontri · <a href="mailto:hello@jontri.com" style={{ marginLeft: 0 }}>hello@jontri.com</a>
-            <a href="/sign-in">Client login</a>
-            <a href="/onboarding">Onboarding</a>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <RevealObserver />
       <ChatWidget />

@@ -168,7 +168,7 @@ export default function NewClientModal({
             <button
               type="submit"
               disabled={submitting}
-              className="px-5 py-2.5 bg-accent text-white rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors disabled:opacity-50"
+              className="px-5 py-2.5 bg-accent text-accent-ink rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors disabled:opacity-50"
             >
               {submitting ? "Creating..." : "Create Client"}
             </button>

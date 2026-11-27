@@ -183,7 +183,7 @@ export default function DeployModal({ service, onClose, onDeployed }: DeployModa
               {result.success && (
                 <button
                   onClick={onClose}
-                  className="px-5 py-2.5 bg-accent text-white rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors"
+                  className="px-5 py-2.5 bg-accent text-accent-ink rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors"
                 >
                   View in Clients
                 </button>
@@ -264,7 +264,7 @@ export default function DeployModal({ service, onClose, onDeployed }: DeployModa
               <button
                 type="submit"
                 disabled={deploying}
-                className="px-6 py-2.5 bg-accent text-white rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors disabled:opacity-50"
+                className="px-6 py-2.5 bg-accent text-accent-ink rounded-lg text-sm font-semibold hover:bg-accent-dark transition-colors disabled:opacity-50"
               >
                 {deploying ? "Deploying..." : `Deploy ${service.name}`}
               </button>

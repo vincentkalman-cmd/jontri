@@ -133,7 +133,7 @@ export function CampaignBuilder({ onClose, onCreated }: CampaignBuilderProps) {
                   key={m.key}
                   type="button"
                   onClick={() => setMode(m.key)}
-                  className={`flex-1 p-4 rounded-xl border text-left transition-all ${
+                  className={`flex-1 p-4 rounded-xl border text-left transition-[color,background-color,border-color,box-shadow,opacity,transform] ${
                     mode === m.key
                       ? "border-accent bg-accent/10"
                       : "border-border bg-bg-primary/30 opacity-70"
@@ -256,7 +256,7 @@ export function CampaignBuilder({ onClose, onCreated }: CampaignBuilderProps) {
             <button
               type="submit"
               disabled={creating}
-              className="px-6 py-2.5 bg-gradient-to-r from-accent to-purple-500 text-white rounded-lg text-sm font-semibold hover:from-accent-dark hover:to-purple-600 transition-all disabled:opacity-50 shadow-lg shadow-accent/20"
+              className="px-6 py-2.5 bg-gradient-to-r from-accent to-accent-light text-accent-ink rounded-lg text-sm font-semibold hover:from-accent-dark hover:to-accent transition-[color,background-color,border-color,box-shadow,opacity,transform] disabled:opacity-50 shadow-lg shadow-accent/20"
             >
               {creating ? "Creating..." : "Create Campaign"}
             </button>

@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 import { Inter, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "./home.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
 });
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-bricolage",
   axes: ["opsz"],
 });
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   weight: ["400", "500", "600"],
 });
 
