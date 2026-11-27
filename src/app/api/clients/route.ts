@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { provisionService, type ProvisionResult } from "@/lib/provision";
+import { toDashboardClient } from "@/lib/dashboard-client";
+import { newPortalToken } from "@/lib/lifecycle";
 
 // Provisioning can call Vapi / Claude / fetch the client site.
 export const maxDuration = 60;
@@ -12,15 +14,14 @@ function slugify(name: string): string {
 // GET /api/clients — list all clients
 export async function GET() {
   const supabase = getSupabaseAdmin();
-  const { data: clients, error } = await supabase
-    .from("clients")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
+  const { data: rows, error } = await supabase.from("clients").select("*").order("created_at", { ascending: false });
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  // Only the small bits of config the list needs (never secrets).
+  const { data: cfgs } = await supabase
+    .from("client_configs")
+    .select('slug, onboarding:config->onboarding, phoneNumber:config->"voice-agent"->>phoneNumber');
+  const bySlug = new Map((cfgs || []).map((c) => [c.slug as string, c as { onboarding?: unknown; phoneNumber?: unknown }]));
+  const clients = (rows || []).map((r) => toDashboardClient(r, bySlug.get(r.slug) || {}));
   return NextResponse.json({ clients, total: clients.length });
 }
 
@@ -58,6 +59,9 @@ export async function POST(request: NextRequest) {
       contact_phone: contactPhone || "",
       services: {},
       status: "active",
+      // Created by the owner, so it skips sign-up and starts at kickoff.
+      portal_token: newPortalToken(),
+      stage: "kickoff",
     };
     if (tierId) insertData.tier_id = tierId;
     if (billingType) insertData.billing_type = billingType;
