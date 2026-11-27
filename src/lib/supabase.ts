@@ -16,7 +16,7 @@ export function getSupabaseAdmin(): SupabaseClient {
   return _supabaseAdmin;
 }
 
-/** Anon-key client — use in public-facing API routes (chat, client-portal, subscribe) */
+/** Anon-key client — use in public-facing API routes (chat, subscribe) */
 export function getSupabase(): SupabaseClient {
   if (!_supabasePublic) {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

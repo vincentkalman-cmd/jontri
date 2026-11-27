@@ -1,251 +1,27 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import type { IconType } from "react-icons";
-import {
-  LuPhoneCall, LuMessagesSquare, LuGlobe, LuCrosshair, LuSearch, LuStar, LuSparkles,
-  LuRepeat, LuChartBar, LuWorkflow, LuCalculator, LuHandshake, LuSettings, LuLock, LuWrench,
-} from "react-icons/lu";
+import type { Metadata } from "next";
+import { LuLock } from "react-icons/lu";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { Kicker, PageGlow, panelCls } from "@/components/site/ui";
+import { PageGlow } from "@/components/site/ui";
 
-interface ServiceDetail {
-  status: string;
-  detail?: string;
-  businessPhone?: string;
-  businessHours?: string;
-  embedCode?: string;
-  scores?: Record<string, number>;
-  fixes?: { label: string; fix: string }[];
-  aiScore?: number;
-  recommendations?: string[];
-}
+export const metadata: Metadata = { title: "Client portal", robots: { index: false, follow: false } };
 
-const SCORE_LABELS: Record<string, string> = { seo: "Google SEO", ai: "AI search", speed: "Speed & mobile", trust: "Trust signals" };
-
-interface ClientPortal {
-  name: string;
-  slug: string;
-  industry: string;
-  status: string;
-  services: Record<string, ServiceDetail>;
-  createdAt: string;
-}
-
-const SERVICE_META: Record<string, { label: string; icon: IconType; description: string }> = {
-  "voice-agent": { label: "AI Voice Agent", icon: LuPhoneCall, description: "24/7 AI-powered phone agent handling calls, booking appointments, and answering questions." },
-  chatbot: { label: "AI Chatbot", icon: LuMessagesSquare, description: "Website chatbot that answers visitor questions, captures leads, and books meetings." },
-  website: { label: "AI Website", icon: LuGlobe, description: "AI-optimized website built for conversions, SEO, and mobile performance." },
-  prospector: { label: "Lead Generation", icon: LuCrosshair, description: "Automated lead prospecting, qualification, and personalized outreach." },
-  "seo-audit": { label: "SEO Optimization", icon: LuSearch, description: "Ongoing SEO monitoring, keyword tracking, and optimization recommendations." },
-  "review-mgmt": { label: "Review Management", icon: LuStar, description: "Automated review monitoring, responses, and reputation management." },
-  "ai-seo": { label: "AI Platform SEO", icon: LuSparkles, description: "Optimized for AI search engines \u2014 ChatGPT, Perplexity, Google AI Overviews." },
-  "follow-up": { label: "Automated Follow-Ups", icon: LuRepeat, description: "Intelligent follow-up sequences that nurture leads automatically." },
-  "reporting": { label: "Reporting Dashboard", icon: LuChartBar, description: "Monthly performance reports with AI-powered insights." },
-  "n8n-workflows": { label: "Custom Workflows", icon: LuWorkflow, description: "Custom automation workflows tailored to your business processes." },
-  "ai-estimating": { label: "AI Estimating", icon: LuCalculator, description: "AI-powered estimating and quoting for faster, more accurate proposals." },
-  "strategy-calls": { label: "Strategy Calls", icon: LuHandshake, description: "Dedicated strategy sessions with your AI automation team." },
-};
-
-const STATUS_LABELS: Record<string, { label: string; color: string }> = {
-  pending: { label: "Setting Up", color: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30" },
-  configured: { label: "Configured", color: "bg-accent/15 text-accent-light border-accent/30" },
-  active: { label: "Active", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
-  completed: { label: "Active", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
-  dry_run: { label: "Testing", color: "bg-purple-500/15 text-purple-400 border-purple-500/30" },
-  needs_setup: { label: "Waiting on info", color: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30" },
-  manual: { label: "In progress", color: "bg-accent/15 text-accent-light border-accent/30" },
-  error: { label: "Being fixed", color: "bg-red-500/15 text-red-400 border-red-500/30" },
-};
-
-export default function ClientPortalPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const [data, setData] = useState<ClientPortal | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (!slug) return;
-    fetch(`/api/client-portal?slug=${encodeURIComponent(slug)}`)
-      .then(async (res) => {
-        if (!res.ok) {
-          setError("Client not found");
-          return;
-        }
-        const json = await res.json();
-        setData(json);
-      })
-      .catch(() => setError("Could not load client data"))
-      .finally(() => setLoading(false));
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-bg-primary flex items-center justify-center" role="status" aria-label="Loading">
-        <div className="animate-spin w-8 h-8 border-[3px] border-accent border-t-transparent rounded-full" />
-      </div>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <>
-        <SiteNav minimal />
-        <main className="relative min-h-[calc(100vh-68px)] overflow-hidden bg-bg-primary flex items-center justify-center px-4">
-          <PageGlow />
-          <div className="relative text-center">
-            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/12 text-accent">
-              <LuLock size={26} aria-hidden />
-            </div>
-            <h1 className="text-4xl font-extrabold tracking-[-0.04em] text-text-primary mb-3">Portal not found</h1>
-            <p className="text-text-secondary">This link may be invalid, or your portal hasn&apos;t been set up yet.</p>
-          </div>
-        </main>
-        <SiteFooter />
-      </>
-    );
-  }
-
-  const serviceEntries = Object.entries(data.services);
-
+/** Old /client/<slug> links: portals now live at a private /p/<token> link, so show no client data here. */
+export default function OldPortalLink() {
   return (
     <>
-    <SiteNav minimal />
-    <div className="relative min-h-screen overflow-hidden bg-bg-primary">
-      <PageGlow />
-      <header className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-14 pb-6">
-        <Kicker>Client portal</Kicker>
-        <div className="mt-5 flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-accent/15 flex items-center justify-center text-accent font-display font-extrabold text-2xl">
-            {data.name.charAt(0)}
+      <SiteNav minimal />
+      <main className="relative min-h-[calc(100vh-68px)] overflow-hidden bg-bg-primary flex items-center justify-center px-4">
+        <PageGlow />
+        <div className="relative text-center max-w-md">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/12 text-accent">
+            <LuLock size={26} aria-hidden />
           </div>
-          <div>
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em] leading-none text-text-primary">{data.name}</h1>
-            <p className="text-text-secondary mt-2">{data.industry}</p>
-          </div>
+          <h1 className="text-4xl font-extrabold tracking-[-0.04em] text-text-primary mb-3">Your portal has a new private link</h1>
+          <p className="text-text-secondary">Use the link Jontri emailed you. Can&apos;t find it? Email hello@jontri.com and we&apos;ll resend it.</p>
         </div>
-      </header>
-
-      <main className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-16">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-text-primary mb-1">Your AI crew</h2>
-          <p className="text-text-secondary text-sm">
-            Everything Jontri has set up for your business, and its current status.
-          </p>
-        </div>
-
-        {serviceEntries.length === 0 ? (
-          <div className={`text-center py-16 ${panelCls}`}>
-            <LuWrench size={30} className="mx-auto mb-3 text-accent" aria-hidden />
-            <p className="text-text-secondary text-sm">No services have been deployed yet.</p>
-            <p className="text-text-muted text-xs mt-1">Your services will appear here once they&apos;re configured.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {serviceEntries.map(([key, svc]) => {
-              const meta = SERVICE_META[key] || { label: key, icon: LuSettings, description: "" };
-              const Icon = meta.icon;
-              const statusInfo = STATUS_LABELS[svc.status] || { label: svc.status, color: "bg-border text-text-muted border-border" };
-
-              return (
-                <div key={key} className={`${panelCls} p-6`}>
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-accent/12 text-accent"><Icon size={20} aria-hidden /></span>
-                      <div>
-                        <h3 className="text-text-primary font-semibold">{meta.label}</h3>
-                        <p className="text-text-muted text-xs">{meta.description}</p>
-                      </div>
-                    </div>
-                    <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${statusInfo.color}`}>
-                      {statusInfo.label}
-                    </span>
-                  </div>
-
-                  {svc.scores && (
-                    <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      {Object.entries(svc.scores).map(([k, v]) => (
-                        <div key={k} className="rounded-xl bg-bg-primary/60 border border-border p-3 text-center">
-                          <p className="text-2xl font-display font-extrabold text-text-primary leading-none">{v}</p>
-                          <p className="text-[11px] text-text-muted mt-1.5">{SCORE_LABELS[k] || k}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {svc.fixes && svc.fixes.length > 0 && (
-                    <ul className="mt-4 space-y-2">
-                      {svc.fixes.map((f, i) => (
-                        <li key={i} className="text-sm text-text-secondary bg-bg-primary/50 border border-border rounded-lg px-3 py-2">
-                          <span className="text-text-primary font-medium">{f.label}:</span> {f.fix}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {typeof svc.aiScore === "number" && (
-                    <p className="mt-4 text-sm text-text-secondary">
-                      AI search visibility: <span className="text-text-primary font-semibold">{svc.aiScore}/10</span>
-                    </p>
-                  )}
-
-                  {svc.recommendations && svc.recommendations.length > 0 && (
-                    <ul className="mt-3 space-y-2">
-                      {svc.recommendations.map((r, i) => (
-                        <li key={i} className="text-sm text-text-secondary bg-bg-primary/50 border border-border rounded-lg px-3 py-2">
-                          {r}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {/* Service-specific details */}
-                  {key === "voice-agent" && svc.businessPhone && (
-                    <div className="mt-4 bg-bg-primary/50 border border-border rounded-lg p-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-xs text-text-muted uppercase tracking-wide mb-0.5">Business Phone</p>
-                          <p className="text-sm text-text-primary font-medium">{svc.businessPhone}</p>
-                        </div>
-                        {svc.businessHours && (
-                          <div>
-                            <p className="text-xs text-text-muted uppercase tracking-wide mb-0.5">Business Hours</p>
-                            <p className="text-sm text-text-primary">{svc.businessHours}</p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {key === "chatbot" && svc.embedCode && (
-                    <div className="mt-4 bg-bg-primary/50 border border-border rounded-lg p-4">
-                      <p className="text-xs text-text-muted mb-2 font-medium">Embed Code</p>
-                      <p className="text-text-muted text-xs mb-2">Add this to your website, right before the closing &lt;/body&gt; tag:</p>
-                      <div className="flex items-center gap-2">
-                        <code className="flex-1 bg-black/80 text-accent-light text-xs p-3 rounded-lg font-mono break-all select-all">
-                          {svc.embedCode}
-                        </code>
-                        <button
-                          onClick={() => navigator.clipboard.writeText(svc.embedCode || "")}
-                          className="px-3 py-2 text-xs bg-accent text-accent-ink rounded-lg hover:bg-accent-light transition-colors font-semibold flex-shrink-0 cursor-pointer"
-                        >
-                          Copy
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-
       </main>
-    </div>
-    <SiteFooter />
+      <SiteFooter />
     </>
   );
 }
