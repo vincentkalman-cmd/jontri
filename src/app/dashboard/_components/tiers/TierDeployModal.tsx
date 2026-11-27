@@ -4,6 +4,19 @@ import { useState } from "react";
 import type { Tier } from "@/lib/tiers";
 import { getTierServices, getTierServiceObjects } from "@/lib/tiers";
 import { ProvisionResults, rowFromResponse, type ProvisionRow } from "../deploy/ProvisionResults";
+import { portalUrl } from "@/lib/lifecycle";
+
+/** The client's private portal link (/p/<token>), looked up after deploy. Empty if unavailable. */
+async function fetchPortalLink(slug: string): Promise<string> {
+  try {
+    const res = await fetch(`/api/clients/${encodeURIComponent(slug)}`);
+    const data = await res.json();
+    const token = data?.client?.portal_token;
+    return typeof token === "string" && token ? portalUrl(window.location.origin, token) : "";
+  } catch {
+    return "";
+  }
+}
 
 interface TierDeployModalProps {
   tier: Tier;
@@ -21,7 +34,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
   const [result, setResult] = useState<{
     success: boolean;
     message: string;
-    slug?: string;
+    portalLink?: string;
     deployed: string[];
     failed: string[];
     rows: ProvisionRow[];
@@ -133,10 +146,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
       }
 
       setStep(3);
-      const portalUrl =
-        typeof window !== "undefined"
-          ? `${window.location.origin}/client/${slug}`
-          : `/client/${slug}`;
+      const portalLink = deployed.length > 0 ? await fetchPortalLink(slug) : "";
 
       setResult({
         success: deployed.length > 0,
@@ -150,7 +160,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
                 failed.length > 0 ? ` Failed: ${failed.join(", ")}.` : ""
               }`
             : "No services were deployed. Please check the required fields.",
-        slug,
+        portalLink,
         deployed,
         failed,
         rows,
@@ -226,23 +236,18 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
             <ProvisionResults rows={result.rows} />
 
             {/* Portal link */}
-            {result.success && result.slug && (
+            {result.success && result.portalLink && (
               <div className="mt-4 bg-bg-primary border border-border rounded-xl p-4">
                 <p className="text-sm font-semibold text-text-primary mb-2">
                   Client Portal Link
                 </p>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-black/80 text-accent text-xs p-3 rounded-lg font-mono break-all select-all">
-                    {typeof window !== "undefined"
-                      ? window.location.origin
-                      : ""}
-                    /client/{result.slug}
+                    {result.portalLink}
                   </code>
                   <button
                     onClick={() =>
-                      navigator.clipboard.writeText(
-                        `${window.location.origin}/client/${result.slug}`
-                      )
+                      navigator.clipboard.writeText(result.portalLink || "")
                     }
                     className="px-3 py-2 text-xs bg-accent text-accent-ink rounded-lg hover:bg-accent-dark transition-colors font-medium flex-shrink-0"
                   >

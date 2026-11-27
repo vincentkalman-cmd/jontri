@@ -17,31 +17,7 @@ import QuickDeployModal from "./_components/deploy/QuickDeployModal";
 import { OutreachDashboard } from "./_components/outreach/OutreachDashboard";
 import type { Tier } from "@/lib/tiers";
 
-interface Onboarding {
-  services_requested: string[];
-  project_description: string;
-  current_tools: string;
-  monthly_budget: string;
-  timeline: string;
-  goals: string;
-  special_requirements: string;
-  submitted_at: string;
-}
-
-export interface Client {
-  name: string;
-  slug: string;
-  industry: string;
-  description: string;
-  contact: { name: string; email: string; phone: string; address?: string };
-  onboarding?: Onboarding;
-  services: Record<string, { status: string; updated_at: string; detail?: string }>;
-  created_at: string;
-  status: string;
-  tier_id?: string;
-  billing_type?: string;
-  monthly_rate?: number;
-}
+import type { DashboardClient as Client } from "@/lib/dashboard-client";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -157,6 +133,14 @@ export default function DashboardPage() {
                       client={selectedClient}
                       onClose={() => setSelectedClient(null)}
                       onRemove={removeClient}
+                      onUpdated={async (updated) => {
+                        if (updated) setSelectedClient(updated);
+                        const res = await fetch("/api/clients");
+                        const data = await res.json().catch(() => ({ clients: [] }));
+                        const list: Client[] = data.clients || [];
+                        setClients(list);
+                        if (!updated) setSelectedClient((cur) => (cur ? list.find((c) => c.slug === cur.slug) || null : null));
+                      }}
                     />
                   </div>
                 )}

@@ -1,30 +1,10 @@
 "use client";
 
-interface Onboarding {
-  services_requested: string[];
-  project_description: string;
-  current_tools: string;
-  monthly_budget: string;
-  timeline: string;
-  goals: string;
-  special_requirements: string;
-  submitted_at: string;
-}
+import type { DashboardClient as Client } from "@/lib/dashboard-client";
+import { groupByStage } from "@/lib/dashboard-client";
+import { STAGE_LABELS } from "@/lib/lifecycle";
 
-export interface Client {
-  name: string;
-  slug: string;
-  industry: string;
-  description: string;
-  contact: { name: string; email: string; phone: string; address?: string };
-  onboarding?: Onboarding;
-  services: Record<string, { status: string; updated_at: string; detail?: string }>;
-  created_at: string;
-  status: string;
-  tier_id?: string;
-  billing_type?: string;
-  monthly_rate?: number;
-}
+export type { DashboardClient as Client } from "@/lib/dashboard-client";
 
 interface ClientListProps {
   clients: Client[];
@@ -72,7 +52,12 @@ export default function ClientList({
           </div>
         </div>
       ) : (
-        clients.map((client) => {
+        groupByStage(clients).map((group) => (
+          <section key={group.stage} aria-label={STAGE_LABELS[group.stage]} className="space-y-2">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-text-muted pt-2">
+              {STAGE_LABELS[group.stage]} ({group.clients.length})
+            </h3>
+            {group.clients.map((client) => {
           const serviceCount = Object.keys(client.services || {}).length;
           const pendingCount = Object.values(client.services || {}).filter(
             (s) => s.status === "pending"
@@ -112,12 +97,14 @@ export default function ClientList({
                 <div className="text-right flex-shrink-0 ml-3">
                   <span
                     className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                      client.status === "active"
-                        ? "bg-success/15 text-success"
-                        : "bg-border text-text-muted"
+                      client.stage === "kickoff" || client.stage === "review"
+                        ? "bg-accent/15 text-accent"
+                        : client.stage === "live"
+                          ? "bg-success/15 text-success"
+                          : "bg-border text-text-muted"
                     }`}
                   >
-                    {client.status}
+                    {STAGE_LABELS[client.stage]}
                   </span>
                   <p className="text-text-muted text-xs mt-1">
                     {serviceCount > 0
@@ -130,7 +117,9 @@ export default function ClientList({
               </div>
             </button>
           );
-        })
+            })}
+          </section>
+        ))
       )}
     </div>
   );

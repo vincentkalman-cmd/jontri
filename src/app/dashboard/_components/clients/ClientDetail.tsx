@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import type { Client } from "./ClientList";
+import ClientWorkPanel from "./ClientWorkPanel";
+import { portalUrl } from "@/lib/lifecycle";
 
 interface ClientDetailProps {
   client: Client;
   onClose: () => void;
   onRemove: (slug: string) => void;
+  onUpdated: (c?: Client) => void;
 }
 
 const SERVICE_OPTIONS = [
@@ -54,16 +57,19 @@ export default function ClientDetail({
   client,
   onClose,
   onRemove,
+  onUpdated,
 }: ClientDetailProps) {
-  const [tab, setTab] = useState<"services" | "onboarding" | "contact">(
-    "services"
-  );
+  const [tab, setTab] = useState<"work" | "services" | "onboarding" | "contact">("work");
 
   function handleShareLink() {
-    const url = `${window.location.origin}/client/${client.slug}`;
-    navigator.clipboard.writeText(url);
-    alert("Client link copied!");
+    navigator.clipboard.writeText(portalUrl(window.location.origin, client.portal_token));
+    alert("Private portal link copied!");
   }
+
+  const ob = (client.onboarding || {}) as Record<string, unknown>;
+  const obStr = (k: string) => (typeof ob[k] === "string" ? (ob[k] as string) : "");
+  const obDetails = ob.details && typeof ob.details === "object" ? (ob.details as Record<string, unknown>) : {};
+  const obServices = Array.isArray(ob.services_requested) ? (ob.services_requested as unknown[]).filter((x): x is string => typeof x === "string") : [];
 
   return (
     <div className="flex-1 min-w-0">
@@ -93,12 +99,14 @@ export default function ClientDetail({
             </p>
           </div>
           <div className="flex gap-2">
-            <button
-              onClick={handleShareLink}
-              className="px-3 py-1.5 text-accent border border-accent/30 rounded-lg text-xs hover:bg-accent/10 transition-colors"
-            >
-              Share Link
-            </button>
+            {client.portal_token && (
+              <button
+                onClick={handleShareLink}
+                className="px-3 py-1.5 text-accent border border-accent/30 rounded-lg text-xs hover:bg-accent/10 transition-colors"
+              >
+                Copy portal link
+              </button>
+            )}
             <button
               onClick={() => onRemove(client.slug)}
               className="px-3 py-1.5 text-red-400 border border-red-400/30 rounded-lg text-xs hover:bg-red-400/10 transition-colors"
@@ -116,7 +124,7 @@ export default function ClientDetail({
 
         {/* Tabs */}
         <div className="flex gap-1 mb-5 border-b border-border">
-          {(["services", "onboarding", "contact"] as const).map((t) => (
+          {(["work", "services", "onboarding", "contact"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -130,6 +138,9 @@ export default function ClientDetail({
             </button>
           ))}
         </div>
+
+        {/* Work Tab */}
+        {tab === "work" && <ClientWorkPanel key={client.slug} client={client} onUpdated={onUpdated} />}
 
         {/* Services Tab */}
         {tab === "services" && (
@@ -165,20 +176,6 @@ export default function ClientDetail({
                 );
               })}
             </div>
-            <div className="bg-bg-primary/50 border border-border rounded-lg p-4">
-              <p className="text-xs text-text-muted mb-2 font-medium">
-                Deploy via CLI
-              </p>
-              <code className="text-xs text-accent block font-mono">
-                python jontri.py deploy {client.slug} prospector --live
-              </code>
-              <code className="text-xs text-accent block mt-1 font-mono">
-                python jontri.py deploy {client.slug} voice-agent --live
-              </code>
-              <code className="text-xs text-accent block mt-1 font-mono">
-                python jontri.py run-all prospector --live
-              </code>
-            </div>
           </div>
         )}
 
@@ -187,52 +184,32 @@ export default function ClientDetail({
           <div>
             {client.onboarding ? (
               <div className="space-y-4">
-                <InfoRow
-                  label="Submitted"
-                  value={new Date(
-                    client.onboarding.submitted_at
-                  ).toLocaleString()}
-                />
-                <div>
-                  <p className="text-xs text-text-muted uppercase tracking-wide mb-1.5">
-                    Services Requested
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {client.onboarding.services_requested.map((s) => (
-                      <span
-                        key={s}
-                        className="text-xs bg-accent/15 text-accent px-2.5 py-1 rounded-full font-medium"
-                      >
-                        {s}
-                      </span>
-                    ))}
+                {obStr("submitted_at") && <InfoRow label="Submitted" value={new Date(obStr("submitted_at")).toLocaleString()} />}
+                <InfoRow label="Package" value={obStr("package")} />
+                <InfoRow label="Website" value={obStr("website")} />
+                {Object.entries(obDetails)
+                  .filter(([, v]) => typeof v === "string" && v)
+                  .map(([k, v]) => (
+                    <InfoRow key={k} label={k.replace(/([A-Z])/g, " $1")} value={v as string} />
+                  ))}
+                {obServices.length > 0 && (
+                  <div>
+                    <p className="text-xs text-text-muted uppercase tracking-wide mb-1.5">Services Requested</p>
+                    <div className="flex flex-wrap gap-2">
+                      {obServices.map((s) => (
+                        <span key={s} className="text-xs bg-accent/15 text-accent px-2.5 py-1 rounded-full font-medium">
+                          {s}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <InfoRow
-                  label="Project Description"
-                  value={client.onboarding.project_description}
-                />
-                <InfoRow
-                  label="Current Tools"
-                  value={client.onboarding.current_tools}
-                />
-                <div className="grid grid-cols-2 gap-4">
-                  <InfoRow
-                    label="Monthly Budget"
-                    value={client.onboarding.monthly_budget}
-                  />
-                  <InfoRow
-                    label="Timeline"
-                    value={client.onboarding.timeline}
-                  />
-                </div>
-                <InfoRow label="Goals" value={client.onboarding.goals} />
-                {client.onboarding.special_requirements && (
-                  <InfoRow
-                    label="Special Requirements"
-                    value={client.onboarding.special_requirements}
-                  />
                 )}
+                <InfoRow label="Project Description" value={obStr("project_description")} />
+                <InfoRow label="Current Tools" value={obStr("current_tools")} />
+                <InfoRow label="Monthly Budget" value={obStr("monthly_budget")} />
+                <InfoRow label="Timeline" value={obStr("timeline")} />
+                <InfoRow label="Goals" value={obStr("goals")} />
+                <InfoRow label="Special Requirements" value={obStr("special_requirements")} />
               </div>
             ) : (
               <div className="text-center py-10">
@@ -263,9 +240,6 @@ export default function ClientDetail({
               <InfoRow label="Email" value={client.contact?.email} />
               <InfoRow label="Phone" value={client.contact?.phone} />
             </div>
-            {client.contact?.address && (
-              <InfoRow label="Address" value={client.contact.address} />
-            )}
             <div className="grid grid-cols-2 gap-4">
               <InfoRow label="Industry" value={client.industry} />
               <InfoRow

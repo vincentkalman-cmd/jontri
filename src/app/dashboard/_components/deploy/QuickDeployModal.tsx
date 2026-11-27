@@ -2,6 +2,19 @@
 
 import { useState } from "react";
 import { ProvisionResults, rowFromResponse, type ProvisionRow } from "./ProvisionResults";
+import { portalUrl } from "@/lib/lifecycle";
+
+/** The client's private portal link (/p/<token>), looked up after deploy. Empty if unavailable. */
+async function fetchPortalLink(slug: string): Promise<string> {
+  try {
+    const res = await fetch(`/api/clients/${encodeURIComponent(slug)}`);
+    const data = await res.json();
+    const token = data?.client?.portal_token;
+    return typeof token === "string" && token ? portalUrl(window.location.origin, token) : "";
+  } catch {
+    return "";
+  }
+}
 
 interface QuickDeployModalProps {
   onClose: () => void;
@@ -16,7 +29,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
   const [services, setServices] = useState({ voiceAgent: true, chatbot: true, website: true });
   const [deploying, setDeploying] = useState(false);
   const [step, setStep] = useState(0); // 0=form, 1=scraping, 2=deploying, 3=done
-  const [result, setResult] = useState<{ success: boolean; message: string; slug?: string; rows: ProvisionRow[] } | null>(
+  const [result, setResult] = useState<{ success: boolean; message: string; portalLink?: string; rows: ProvisionRow[] } | null>(
     null
   );
 
@@ -145,15 +158,15 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
       }
 
       setStep(3);
-      const portalUrl = `${window.location.origin}/client/${slug}`;
+      const portalLink = deployed.length > 0 ? await fetchPortalLink(slug) : "";
       const msg =
         deployed.length > 0
           ? `Deployed ${deployed.join(", ")} for "${businessName}".${
               pagesScraped > 0 ? ` Scraped ${pagesScraped} pages for context.` : ""
-            }${failed.length > 0 ? ` Failed: ${failed.join(", ")}.` : ""}\n\nClient portal link (shareable):\n${portalUrl}`
+            }${failed.length > 0 ? ` Failed: ${failed.join(", ")}.` : ""}`
           : "No services were deployed. Please select at least one service and fill in the required fields.";
 
-      setResult({ success: deployed.length > 0, message: msg, slug, rows });
+      setResult({ success: deployed.length > 0, message: msg, portalLink, rows });
       onDeployed();
     } catch {
       setResult({ success: false, message: "Network error. Please try again.", rows: [] });
@@ -209,14 +222,14 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
                 {result.success ? "Services Deployed!" : "Deployment Failed"}
               </p>
               <p className="text-text-muted text-xs leading-relaxed whitespace-pre-line">
-                {result.message.split("\n\nClient portal")[0]}
+                {result.message}
               </p>
             </div>
 
             <ProvisionResults rows={result.rows} />
 
             {/* Shareable Client Link */}
-            {result.success && result.slug && (
+            {result.success && result.portalLink && (
               <div className="mt-4 bg-bg-primary border border-border rounded-xl p-4">
                 <p className="text-sm font-semibold text-text-primary mb-2">
                   Shareable Client Link
@@ -226,13 +239,11 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
                 </p>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-black/80 text-accent text-xs p-3 rounded-lg font-mono break-all select-all">
-                    {typeof window !== "undefined" && window.location.origin}/client/{result.slug}
+                    {result.portalLink}
                   </code>
                   <button
                     onClick={() =>
-                      navigator.clipboard.writeText(
-                        `${window.location.origin}/client/${result.slug}`
-                      )
+                      navigator.clipboard.writeText(result.portalLink || "")
                     }
                     className="px-3 py-2 text-xs bg-accent text-accent-ink rounded-lg hover:bg-accent-dark transition-colors font-medium flex-shrink-0"
                   >
