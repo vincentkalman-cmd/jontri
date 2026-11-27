@@ -7,7 +7,7 @@ import { normalizeUserUrl, safeFetchPage, publicFileExists } from "@/lib/safe-fe
 import { pageText } from "@/lib/page-text";
 import { auditHtml } from "@/lib/site-audit";
 import { analyzeAiSeo } from "@/lib/ai-seo";
-import { upsertAssistant } from "@/lib/vapi";
+import { upsertAssistant, resolveVapiKey } from "@/lib/vapi";
 
 export type ProvisionStatus = "active" | "needs_setup" | "manual" | "error";
 
@@ -81,9 +81,9 @@ async function provisionChatbot(slug: string, cfg: Cfg, origin: string): Promise
 }
 
 async function provisionVoiceAgent(slug: string, cfg: Cfg): Promise<ProvisionResult> {
-  const apiKey = str(cfg.vapiApiKey);
+  const apiKey = resolveVapiKey(cfg);
   if (!apiKey) {
-    return { service: "voice-agent", status: "needs_setup", detail: "Add the client's Vapi API key, then redeploy to create the assistant." };
+    return { service: "voice-agent", status: "needs_setup", detail: "VAPI_API_KEY isn't set in Vercel yet. Add it, then run setup again." };
   }
   let knowledge = str(cfg.websiteKnowledge);
   const patch: Record<string, unknown> = {};
@@ -112,7 +112,7 @@ async function provisionVoiceAgent(slug: string, cfg: Cfg): Promise<ProvisionRes
   return {
     service: "voice-agent",
     status: "active",
-    detail: "Assistant is live in the client's Vapi account. Attach a phone number to it in Vapi (or forward their line) to take calls.",
+    detail: "AI receptionist is live. Use Get phone number in the dashboard to give it a number.",
     configPatch: { ...patch, assistantId: r.assistantId, deployedAt: new Date().toISOString() },
     assistantId: r.assistantId,
   };

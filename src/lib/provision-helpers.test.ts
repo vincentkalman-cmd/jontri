@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { buildVoicePrompt, buildAssistantPayload } from "./vapi.ts";
+import { buildVoicePrompt, buildAssistantPayload, buyPhoneNumber, resolveVapiKey } from "./vapi.ts";
 
 test("voice prompt includes business facts and honesty rule", () => {
   const p = buildVoicePrompt({
@@ -28,4 +28,44 @@ test("assistant payload: default greeting, transfer number only when given, name
   assert.equal(q.forwardingPhoneNumber, "+15551234567");
   assert.equal(q.firstMessage, "Hi!");
   assert.deepEqual(q.metadata, { client_slug: "x" });
+});
+
+test("resolveVapiKey prefers the client's key, then Jontri's env key", () => {
+  const prev = process.env.VAPI_API_KEY;
+  process.env.VAPI_API_KEY = "env-key";
+  assert.equal(resolveVapiKey({ vapiApiKey: " client-key " }), "client-key");
+  assert.equal(resolveVapiKey({}), "env-key");
+  delete process.env.VAPI_API_KEY;
+  assert.equal(resolveVapiKey({}), "");
+  if (prev !== undefined) process.env.VAPI_API_KEY = prev;
+});
+
+test("buyPhoneNumber posts to Vapi and returns the number", async () => {
+  const realFetch = globalThis.fetch;
+  let seen: { url: string; body: Record<string, unknown>; auth: string } | null = null;
+  globalThis.fetch = (async (url: string, init: RequestInit) => {
+    seen = { url, body: JSON.parse(String(init.body)), auth: String((init.headers as Record<string, string>).Authorization) };
+    return new Response(JSON.stringify({ id: "pn_1", number: "+17205550199" }), { status: 201 });
+  }) as typeof fetch;
+  try {
+    const r = await buyPhoneNumber("key", "asst_1", { areaCode: "720", name: "Haul Hero" });
+    assert.deepEqual(r, { ok: true, id: "pn_1", number: "+17205550199" });
+    assert.equal(seen!.url, "https://api.vapi.ai/phone-number");
+    assert.equal(seen!.auth, "Bearer key");
+    assert.equal(seen!.body.assistantId, "asst_1");
+    assert.equal(seen!.body.numberDesiredAreaCode, "720");
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("buyPhoneNumber reports Vapi errors and rejects bad area codes", async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = (async () => new Response(JSON.stringify({ message: ["Area code not available"] }), { status: 400 })) as typeof fetch;
+  try {
+    assert.deepEqual(await buyPhoneNumber("key", "asst_1", { areaCode: "720" }), { ok: false, error: "Area code not available" });
+    assert.equal((await buyPhoneNumber("key", "asst_1", { areaCode: "72a" })).ok, false);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
 });

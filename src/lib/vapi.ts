@@ -88,3 +88,35 @@ export async function upsertAssistant(
     return { ok: false, error: e instanceof Error ? e.message : "Could not reach Vapi" };
   }
 }
+
+/** The client's own Vapi key if they have one, otherwise Jontri's account key (server env only). */
+export function resolveVapiKey(cfg: Record<string, unknown>): string {
+  const own = typeof cfg.vapiApiKey === "string" ? cfg.vapiApiKey.trim() : "";
+  return own || process.env.VAPI_API_KEY || "";
+}
+
+/** Buy/attach a Vapi phone number and point it at the assistant. */
+export async function buyPhoneNumber(
+  apiKey: string,
+  assistantId: string,
+  opts: { areaCode?: string; name?: string } = {},
+): Promise<{ ok: true; id: string; number: string } | { ok: false; error: string }> {
+  if (opts.areaCode && !/^\d{3}$/.test(opts.areaCode)) return { ok: false, error: "Area code must be 3 digits." };
+  const body: Record<string, unknown> = { provider: "vapi", assistantId };
+  if (opts.areaCode) body.numberDesiredAreaCode = opts.areaCode;
+  if (opts.name) body.name = opts.name.slice(0, 40);
+  try {
+    const res = await fetch(`${VAPI_BASE}/phone-number`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(20_000),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.id) return { ok: true, id: String(data.id), number: String(data.number || "") };
+    const msg = Array.isArray(data.message) ? data.message.join("; ") : data.message || data.error || `Vapi error ${res.status}`;
+    return { ok: false, error: String(msg) };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not reach Vapi" };
+  }
+}
