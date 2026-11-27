@@ -1,6 +1,6 @@
 /**
  * Homepage copy & demo scripts. Edit text here; components read from this file.
- * The hero scenes use a fictional example business ("Summit Heating & Air").
+ * The hero scenes use fictional example businesses, one industry per scene.
  */
 
 export type SceneIcon = "call" | "chat" | "target" | "loop" | "star" | "search";
@@ -42,10 +42,10 @@ export const HERO_SCENES: Scene[] = [
     title: "Website chat · 11:52 PM",
     status: "live",
     steps: [
-      { kind: "cu", who: "Visitor", text: "Do you do AC repair on weekends?" },
-      { kind: "ai", who: "Website assistant", text: "We do! Saturdays 8 AM to 4 PM. Is your AC not cooling, or making a noise?" },
-      { kind: "cu", who: "Visitor", text: "Not cooling at all. Upstairs is like 85°." },
-      { kind: "ai", who: "Website assistant", text: "Got it. I have Saturday at 9 AM open. What's the best number to confirm?" },
+      { kind: "cu", who: "Visitor", text: "Do you have any Saturday openings for a facial?" },
+      { kind: "ai", who: "Glow Med Spa assistant", text: "We do! Saturdays 9 AM to 3 PM. Is this your first visit with us?" },
+      { kind: "cu", who: "Visitor", text: "Yes, first time." },
+      { kind: "ai", who: "Glow Med Spa assistant", text: "Welcome! I have Saturday at 10 AM open. What's the best number to confirm?" },
       { kind: "sys", text: "✓ Lead captured · sent to your phone" },
     ],
   },
@@ -68,11 +68,11 @@ export const HERO_SCENES: Scene[] = [
     title: "Follow-up · SMS",
     status: "auto",
     steps: [
-      { kind: "note", text: "Quote sent 2 days ago · no reply" },
-      { kind: "ai", who: "Summit Heating & Air", text: "Hi Mark, just checking in on the water heater quote. I can still hold Thursday morning for you." },
+      { kind: "note", text: "Consultation request 2 days ago · no reply" },
+      { kind: "ai", who: "Hartley Law", text: "Hi Mark, just following up on your free case review. I can still hold Thursday morning for you." },
       { kind: "cu", who: "Mark", text: "Thursday works. Go ahead." },
-      { kind: "ai", who: "Summit Heating & Air", text: "Done! You're booked Thursday at 8 AM. We'll text when the tech is on the way." },
-      { kind: "sys", text: "✓ Job won · added to calendar" },
+      { kind: "ai", who: "Hartley Law", text: "Done! You're booked Thursday at 9 AM. We'll send a reminder the day before." },
+      { kind: "sys", text: "✓ Consultation booked · added to calendar" },
     ],
   },
   {
@@ -82,8 +82,8 @@ export const HERO_SCENES: Scene[] = [
     status: "auto",
     steps: [
       { kind: "stars" },
-      { kind: "cu", who: "Dana M. · Google", text: "Fast, friendly, fixed our furnace in an hour on the coldest night of the year." },
-      { kind: "ai", who: "Drafted reply", text: "Thank you, Dana! So glad Mike got you warm again. Stay cozy, and we're here anytime you need us." },
+      { kind: "cu", who: "Dana M. · Google", text: "So gentle and quick. My kids actually look forward to the dentist now." },
+      { kind: "ai", who: "Bright Smile Dental · reply", text: "Thank you, Dana! We love seeing your family. See you all at the next cleaning!" },
       { kind: "sys", text: "✓ Reply posted · review requests sent to today's customers" },
     ],
   },
@@ -95,10 +95,10 @@ export const HERO_SCENES: Scene[] = [
     steps: [
       {
         kind: "gpt",
-        query: "best furnace repair near me in Denver?",
+        query: "best roofing company near me in Denver?",
         before: "Here are a few highly rated options: ",
-        highlight: "Summit Heating & Air",
-        after: " is well reviewed, offers same-day service, and is praised for fast emergency repairs…",
+        highlight: "Peak Roofing Co.",
+        after: " is well reviewed, offers free inspections, and is praised for fast storm-damage repairs…",
       },
       { kind: "sys", text: "✓ Recommended in ChatGPT, Perplexity & Google AI Overviews" },
     ],
