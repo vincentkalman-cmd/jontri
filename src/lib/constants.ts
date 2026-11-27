@@ -6,7 +6,7 @@ export const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
-export const BOOKING_URL = "https://calendly.com/jontri/consultation";
+export const BOOKING_URL = "https://calendly.com/vincent-jontri/30min";
 
 export const SERVICES = [
   {

@@ -249,7 +249,7 @@ export function buildChecklistEmail(name: string): string {
               <p style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#475569;">
                 <strong>No matter your score, there's an opportunity.</strong> Book a free strategy session and we'll walk through your results together — with a custom action plan for your business.
               </p>
-              <a href="https://calendly.com/jontri/consultation" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#35e0c2,#22c7aa);color:#021a15;font-size:16px;font-weight:600;text-decoration:none;border-radius:8px;">Get Your Free Strategy Session</a>
+              <a href="https://calendly.com/vincent-jontri/30min" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#35e0c2,#22c7aa);color:#021a15;font-size:16px;font-weight:600;text-decoration:none;border-radius:8px;">Get Your Free Strategy Session</a>
             </td>
           </tr>
 

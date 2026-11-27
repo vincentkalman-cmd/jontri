@@ -8,7 +8,7 @@ export const SENDER = {
   fromName: process.env.FROM_NAME || "Vincent Kalman",
   fromTitle: process.env.FROM_TITLE || "Founder",
   fromCompany: process.env.FROM_COMPANY || "Jontri Consulting",
-  bookingUrl: process.env.BOOKING_URL || "https://calendly.com/jontri/consultation",
+  bookingUrl: process.env.BOOKING_URL || "https://calendly.com/vincent-jontri/30min",
 };
 
 // Default ICP (Ideal Customer Profile)

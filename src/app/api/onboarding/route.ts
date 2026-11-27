@@ -177,7 +177,7 @@ export async function POST(request: NextRequest) {
           from_name: "Vincent Kalman",
           from_title: "Founder",
           from_company: "Jontri Consulting",
-          booking_url: "https://calendly.com/jontri/consultation",
+          booking_url: "https://calendly.com/vincent-jontri/30min",
         },
         onboarding: {
           services_requested: data.services,
