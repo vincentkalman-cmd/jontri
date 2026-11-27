@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import { provisionService, type ProvisionResult } from "@/lib/provision";
+
+// Provisioning can call Vapi / Claude / fetch the client site.
+export const maxDuration = 60;
 
 function slugify(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -93,19 +97,6 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // If a service is being deployed, add it to the services JSONB
-  if (service) {
-    const services = client.services || {};
-    services[service] = { status: "pending", updated_at: now };
-    const { data } = await supabase
-      .from("clients")
-      .update({ services })
-      .eq("slug", slug)
-      .select()
-      .single();
-    if (data) client = data;
-  }
-
   // Load existing config or create new one
   const { data: existingConfig } = await supabase
     .from("client_configs")
@@ -120,7 +111,7 @@ export async function POST(request: NextRequest) {
     client: {
       name,
       industry: industry || "",
-      description: description || "",
+      description: description || prevConfig?.client?.description || "",
       website: serviceConfig?.websiteUrl || prevConfig?.client?.website || "",
     },
     sender: prevConfig.sender || {
@@ -131,14 +122,44 @@ export async function POST(request: NextRequest) {
     },
   };
 
-  // Save service-specific config
+  // Save service-specific config (keep server-generated fields like assistantId across redeploys)
   if (service && serviceConfig) {
-    config[service] = serviceConfig;
+    config[service] = { ...(prevConfig[service] || {}), ...serviceConfig };
+  }
+
+  // Set the service up for real, then record its true status.
+  let provision: ProvisionResult | null = null;
+  if (service) {
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
+    try {
+      provision = await provisionService(service, slug, config[service] || {}, origin);
+    } catch (e) {
+      provision = { service, status: "error", detail: e instanceof Error ? e.message : "Setup failed" };
+    }
+    if (provision.configPatch) {
+      config[service] = { ...(config[service] || {}), ...provision.configPatch };
+    }
+    const services = { ...(client.services || {}) };
+    services[service] = { status: provision.status, detail: provision.detail, updated_at: now };
+    const { data } = await supabase.from("clients").update({ services }).eq("slug", slug).select().single();
+    if (data) client = data;
   }
 
   await supabase
     .from("client_configs")
     .upsert({ slug, config, updated_at: now });
 
-  return NextResponse.json({ client }, { status: 201 });
+  // Never echo secrets or bulky config back to the browser.
+  const safeProvision = provision
+    ? {
+        service: provision.service,
+        status: provision.status,
+        detail: provision.detail,
+        embedCode: provision.embedCode,
+        assistantId: provision.assistantId,
+        scores: provision.scores,
+        aiScore: provision.aiScore,
+      }
+    : null;
+  return NextResponse.json({ client, provision: safeProvision }, { status: 201 });
 }

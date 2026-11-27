@@ -4,24 +4,11 @@ import { NO_THINKING_HAIKU } from "@/lib/claude";
 import { rateLimit } from "@/lib/ratelimit";
 import { normalizeUserUrl, safeFetchPage, publicFileExists } from "@/lib/safe-fetch";
 import { auditHtml, type AuditCheck } from "@/lib/site-audit";
+import { pageText } from "@/lib/page-text";
 import { createDemoToken } from "@/lib/demo-token";
 import { claimDemoRun, demoSecret } from "@/lib/demo-cap";
 
 export const maxDuration = 30;
-
-function pageText(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<svg[\s\S]*?<\/svg>/gi, " ")
-    .replace(/<\/(h[1-6]|p|li|div|section|tr)>/gi, "\n")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/&#39;|&rsquo;/g, "'").replace(/&quot;/g, '"')
-    .replace(/[ \t]+/g, " ")
-    .split("\n").map((l) => l.trim()).filter((l) => l.length > 20)
-    .join("\n")
-    .slice(0, 6000);
-}
 
 function businessName(html: string, host: string): string {
   const og = html.match(/<meta[^>]*property=["']og:site_name["'][^>]*content=["']([^"']+)["']/i)?.[1];

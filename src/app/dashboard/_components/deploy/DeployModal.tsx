@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ProvisionResults, rowFromResponse, type ProvisionRow } from "./ProvisionResults";
 
 interface AutomationField {
   key: string;
@@ -32,7 +33,7 @@ const inputClasses =
 export default function DeployModal({ service, onClose, onDeployed }: DeployModalProps) {
   const [form, setForm] = useState<Record<string, string>>({});
   const [deploying, setDeploying] = useState(false);
-  const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
+  const [result, setResult] = useState<{ success: boolean; message: string; rows: ProvisionRow[] } | null>(null);
 
   async function handleDeploy(e: React.FormEvent) {
     e.preventDefault();
@@ -85,25 +86,18 @@ export default function DeployModal({ service, onClose, onDeployed }: DeployModa
         }),
       });
 
-      if (res.ok) {
+      const row = await rowFromResponse(res, service.serviceKey, service.name);
+      if (row.status !== "error") {
         const pagesNote = serviceConfig.pagesScraped
-          ? ` Scraped ${serviceConfig.pagesScraped} pages from their website for context.`
+          ? ` Scanned ${serviceConfig.pagesScraped} pages from their website for context.`
           : "";
-        const embedNote =
-          service.serviceKey === "chatbot"
-            ? `\n\nEmbed code (add to client's website):\n<script src="${window.location.origin}/api/chatbot?client=${slug}&color=${encodeURIComponent(form.primaryColor || "#3B82F6")}"></script>`
-            : "";
-        setResult({
-          success: true,
-          message: `${service.name} configured for "${businessName}" (${slug}). Service is now pending deployment.${pagesNote}${embedNote}`,
-        });
+        setResult({ success: true, message: `${service.name} for "${businessName}" (${slug}).${pagesNote}`, rows: [row] });
         onDeployed();
       } else {
-        const data = await res.json().catch(() => ({}));
-        setResult({ success: false, message: data.error || "Failed to configure service." });
+        setResult({ success: false, message: row.detail, rows: [] });
       }
     } catch {
-      setResult({ success: false, message: "Network error. Please try again." });
+      setResult({ success: false, message: "Network error. Please try again.", rows: [] });
     } finally {
       setDeploying(false);
     }
@@ -147,37 +141,14 @@ export default function DeployModal({ service, onClose, onDeployed }: DeployModa
                   result.success ? "text-success" : "text-red-400"
                 }`}
               >
-                {result.success ? "Service Configured!" : "Configuration Failed"}
+                {result.success ? "Service Saved" : "Setup Failed"}
               </p>
               <p className="text-text-muted text-xs leading-relaxed">
-                {result.message.split("\n\nEmbed code")[0]}
+                {result.message}
               </p>
             </div>
 
-            {/* Embed Code for Chatbot */}
-            {result.success && result.message.includes("<script") && (
-              <div className="mt-4 bg-bg-primary border border-border rounded-xl p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-semibold text-text-primary">Embed Code</p>
-                  <button
-                    onClick={() => {
-                      const code = result.message.split("\n").pop() || "";
-                      navigator.clipboard.writeText(code);
-                    }}
-                    className="text-xs text-accent hover:text-accent-dark font-medium"
-                  >
-                    Copy to clipboard
-                  </button>
-                </div>
-                <p className="text-text-muted text-xs mb-2">
-                  Add this one line to the client&apos;s website, right before the closing
-                  &lt;/body&gt; tag:
-                </p>
-                <code className="block bg-black/80 text-green-400 text-xs p-3 rounded-lg font-mono break-all select-all">
-                  {result.message.split("\n").pop()}
-                </code>
-              </div>
-            )}
+            <ProvisionResults rows={result.rows} />
 
             <div className="flex justify-end gap-3 mt-4">
               {result.success && (

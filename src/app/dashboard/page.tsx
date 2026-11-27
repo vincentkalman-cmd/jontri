@@ -35,7 +35,7 @@ export interface Client {
   description: string;
   contact: { name: string; email: string; phone: string; address?: string };
   onboarding?: Onboarding;
-  services: Record<string, { status: string; updated_at: string }>;
+  services: Record<string, { status: string; updated_at: string; detail?: string }>;
   created_at: string;
   status: string;
   tier_id?: string;

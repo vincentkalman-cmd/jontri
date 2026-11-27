@@ -29,47 +29,37 @@ export async function GET(request: NextRequest) {
 
   const config = configRow?.config || {};
 
-  // Build a safe public view of deployed services
-  const serviceDetails: Record<string, Record<string, string>> = {};
+  // Build a safe public view of deployed services (never include API keys or raw config).
+  type Detail = Record<string, unknown>;
+  const serviceDetails: Record<string, Detail> = {};
+  const services: Record<string, { status?: string; detail?: string }> = client.services || {};
 
-  if (client.services?.["voice-agent"]) {
-    serviceDetails["voice-agent"] = {
-      status: client.services["voice-agent"].status,
-      businessPhone: config["voice-agent"]?.businessPhone || "",
-      businessHours: config["voice-agent"]?.businessHours || config.chatbot?.businessHours || "Monday-Friday 8am-6pm",
-    };
-  }
+  for (const [key, svc] of Object.entries(services)) {
+    const cfg = (config[key] || {}) as Record<string, unknown>;
+    const d: Detail = { status: svc?.status || "pending" };
+    if (svc?.detail) d.detail = svc.detail;
 
-  if (client.services?.chatbot) {
-    const chatbotColor = config.chatbot?.primaryColor || "#3B82F6";
-    serviceDetails.chatbot = {
-      status: client.services.chatbot.status,
-      embedCode: `<script src="${request.nextUrl.origin}/api/chatbot?client=${slug}&color=${encodeURIComponent(chatbotColor)}"></script>`,
-    };
-  }
-
-  if (client.services?.website) {
-    serviceDetails.website = {
-      status: client.services.website.status,
-    };
-  }
-
-  if (client.services?.prospector) {
-    serviceDetails.prospector = {
-      status: client.services.prospector.status,
-    };
-  }
-
-  if (client.services?.["seo-audit"]) {
-    serviceDetails["seo-audit"] = {
-      status: client.services["seo-audit"].status,
-    };
-  }
-
-  if (client.services?.["review-mgmt"]) {
-    serviceDetails["review-mgmt"] = {
-      status: client.services["review-mgmt"].status,
-    };
+    if (key === "voice-agent") {
+      d.businessPhone = cfg.businessPhone || "";
+      d.businessHours = cfg.businessHours || "Monday-Friday 8am-6pm";
+    }
+    if (key === "chatbot") {
+      const color = typeof cfg.primaryColor === "string" && /^#[0-9a-fA-F]{3,8}$/.test(cfg.primaryColor) ? cfg.primaryColor : "#3B82F6";
+      d.embedCode = `<script src="${request.nextUrl.origin}/api/chatbot?client=${encodeURIComponent(slug)}&color=${encodeURIComponent(color)}"></script>`;
+    }
+    if (key === "seo-audit" && cfg.audit && typeof cfg.audit === "object") {
+      const audit = cfg.audit as { scores?: unknown; fixes?: unknown; checkedAt?: unknown };
+      d.scores = audit.scores;
+      d.fixes = Array.isArray(audit.fixes) ? audit.fixes.slice(0, 5) : [];
+      d.checkedAt = audit.checkedAt;
+    }
+    if (key === "ai-seo" && cfg.analysis && typeof cfg.analysis === "object") {
+      const an = cfg.analysis as { overall_score?: unknown; top_recommendations?: unknown };
+      d.aiScore = an.overall_score;
+      d.recommendations = Array.isArray(an.top_recommendations) ? an.top_recommendations.slice(0, 5) : [];
+      d.checkedAt = cfg.checkedAt;
+    }
+    serviceDetails[key] = d;
   }
 
   return NextResponse.json({

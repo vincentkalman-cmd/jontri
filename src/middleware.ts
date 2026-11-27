@@ -57,7 +57,7 @@ async function verifyJwt(token: string, secret: string): Promise<boolean> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const protectedPaths = ["/dashboard", "/api/clients"];
+  const protectedPaths = ["/dashboard", "/api/clients", "/api/voice-agent", "/api/ai-seo", "/api/outreach"];
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
 
   if (!isProtected) return NextResponse.next();
@@ -77,5 +77,11 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/clients/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/api/clients/:path*",
+    "/api/voice-agent/:path*",
+    "/api/ai-seo/:path*",
+    "/api/outreach/:path*",
+  ],
 };

@@ -27,6 +27,15 @@ const STATUS_COLORS: Record<string, string> = {
   active: "bg-success/15 text-success",
   dry_run: "bg-purple-500/15 text-purple-400",
   error: "bg-red-500/15 text-red-400",
+  needs_setup: "bg-yellow-500/15 text-yellow-400",
+  manual: "bg-accent/10 text-accent-light",
+};
+
+const STATUS_TEXT: Record<string, string> = {
+  active: "live",
+  needs_setup: "needs info",
+  manual: "by Jontri",
+  error: "failed",
 };
 
 function InfoRow({ label, value }: { label: string; value?: string }) {
@@ -134,6 +143,7 @@ export default function ClientDetail({
                 return (
                   <div
                     key={svc.name}
+                    title={deployed?.detail || ""}
                     className={`rounded-xl border p-4 text-center transition-[color,background-color,border-color,box-shadow,opacity,transform] ${
                       deployed
                         ? "border-accent/30 bg-accent-glow"
@@ -148,7 +158,7 @@ export default function ClientDetail({
                       <span
                         className={`inline-block px-2 py-0.5 rounded-full text-xs mt-2 font-medium ${statusClass}`}
                       >
-                        {deployed.status}
+                        {STATUS_TEXT[deployed.status] || deployed.status}
                       </span>
                     )}
                   </div>

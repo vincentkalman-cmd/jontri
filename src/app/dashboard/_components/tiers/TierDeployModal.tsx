@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Tier } from "@/lib/tiers";
 import { getTierServices, getTierServiceObjects } from "@/lib/tiers";
+import { ProvisionResults, rowFromResponse, type ProvisionRow } from "../deploy/ProvisionResults";
 
 interface TierDeployModalProps {
   tier: Tier;
@@ -23,6 +24,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
     slug?: string;
     deployed: string[];
     failed: string[];
+    rows: ProvisionRow[];
   } | null>(null);
 
   const allServices = getTierServiceObjects(tier.id);
@@ -65,6 +67,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
       setStep(2);
       const deployed: string[] = [];
       const failed: string[] = [];
+      const rows: ProvisionRow[] = [];
 
       const baseConfig = {
         businessName,
@@ -117,14 +120,15 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
               monthlyRate: tier.monthlyRateCents,
             }),
           });
-          if (res.ok) {
-            const svc = allServices.find((s) => s.key === key);
-            deployed.push(svc?.label || key);
-          } else {
-            failed.push(key);
-          }
+          const svc = allServices.find((s) => s.key === key);
+          const row = await rowFromResponse(res, key, svc?.label || key);
+          rows.push(row);
+          if (row.status === "error") failed.push(row.label);
+          else deployed.push(row.label);
         } catch {
-          failed.push(key);
+          const svc = allServices.find((s) => s.key === key);
+          rows.push({ service: key, label: svc?.label || key, status: "error", detail: "Network error" });
+          failed.push(svc?.label || key);
         }
       }
 
@@ -149,6 +153,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
         slug,
         deployed,
         failed,
+        rows,
       });
       onDeployed();
     } catch {
@@ -157,6 +162,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
         message: "Network error. Please try again.",
         deployed: [],
         failed: [],
+        rows: [],
       });
     } finally {
       setDeploying(false);
@@ -217,20 +223,7 @@ export function TierDeployModal({ tier, onClose, onDeployed }: TierDeployModalPr
               </p>
             </div>
 
-            {/* Services deployed list */}
-            {result.deployed.length > 0 && (
-              <div className="mt-4 space-y-2">
-                {result.deployed.map((svc) => (
-                  <div
-                    key={svc}
-                    className="flex items-center gap-2 text-xs text-success"
-                  >
-                    <span>\u2713</span>
-                    <span>{svc}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            <ProvisionResults rows={result.rows} />
 
             {/* Portal link */}
             {result.success && result.slug && (

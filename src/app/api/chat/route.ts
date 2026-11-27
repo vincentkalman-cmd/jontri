@@ -3,6 +3,8 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NO_THINKING_HAIKU, textOf } from "@/lib/claude";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { rateLimit } from "@/lib/ratelimit";
+import { extractContact, leadEmailHtml } from "@/lib/leads";
+import { sendMail } from "@/lib/mailer";
 
 function getAllowedOrigin(requestOrigin: string | null): string | null {
   const allowedRaw = process.env.ALLOWED_ORIGINS || "https://jontri.com,https://www.jontri.com";
@@ -115,6 +117,19 @@ ${knowledge ? `Here is detailed information about the business scraped from thei
     });
 
     const reply = textOf(response);
+
+    // Lead capture: if the visitor shared an email/phone, email the conversation to the client.
+    const contact = typeof message === "string" ? extractContact(message) : null;
+    const leadTo = chatbotConfig.leadEmail || client.contact_email;
+    if (contact && leadTo) {
+      const transcript = [...messages, { role: "assistant" as const, content: reply }];
+      await sendMail({
+        to: leadTo,
+        subject: `New website lead for ${businessName}`,
+        html: leadEmailHtml(businessName, contact, transcript),
+        ...(contact.email ? { replyTo: contact.email } : {}),
+      });
+    }
 
     return NextResponse.json({ reply, businessName }, {
       headers: corsHeaders(request),

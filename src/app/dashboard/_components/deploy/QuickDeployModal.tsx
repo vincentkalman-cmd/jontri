@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ProvisionResults, rowFromResponse, type ProvisionRow } from "./ProvisionResults";
 
 interface QuickDeployModalProps {
   onClose: () => void;
@@ -15,7 +16,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
   const [services, setServices] = useState({ voiceAgent: true, chatbot: true, website: true });
   const [deploying, setDeploying] = useState(false);
   const [step, setStep] = useState(0); // 0=form, 1=scraping, 2=deploying, 3=done
-  const [result, setResult] = useState<{ success: boolean; message: string; slug?: string } | null>(
+  const [result, setResult] = useState<{ success: boolean; message: string; slug?: string; rows: ProvisionRow[] } | null>(
     null
   );
 
@@ -55,6 +56,12 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
       setStep(2);
       const deployed: string[] = [];
       const failed: string[] = [];
+      const rows: ProvisionRow[] = [];
+      const record = (row: ProvisionRow) => {
+        rows.push(row);
+        if (row.status === "error") failed.push(row.label);
+        else deployed.push(row.label);
+      };
 
       const baseConfig = {
         businessName,
@@ -69,6 +76,9 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
       };
 
       // Voice Agent
+      if (services.voiceAgent && !form.vapiApiKey) {
+        record({ service: "voice-agent", label: "AI Voice Agent", status: "needs_setup", detail: "Skipped: add the client's Vapi API key to create the voice assistant." });
+      }
       if (services.voiceAgent && form.vapiApiKey) {
         const res = await fetch("/api/clients", {
           method: "POST",
@@ -87,8 +97,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
             },
           }),
         });
-        if (res.ok) deployed.push("AI Voice Agent");
-        else failed.push("AI Voice Agent");
+        record(await rowFromResponse(res, "voice-agent", "AI Voice Agent"));
       }
 
       // Chatbot
@@ -110,8 +119,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
             },
           }),
         });
-        if (res.ok) deployed.push("AI Chatbot");
-        else failed.push("AI Chatbot");
+        record(await rowFromResponse(res, "chatbot", "AI Chatbot"));
       }
 
       // Website
@@ -133,8 +141,7 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
             },
           }),
         });
-        if (res.ok) deployed.push("Website");
-        else failed.push("Website");
+        record(await rowFromResponse(res, "website", "Website"));
       }
 
       setStep(3);
@@ -146,10 +153,10 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
             }${failed.length > 0 ? ` Failed: ${failed.join(", ")}.` : ""}\n\nClient portal link (shareable):\n${portalUrl}`
           : "No services were deployed. Please select at least one service and fill in the required fields.";
 
-      setResult({ success: deployed.length > 0, message: msg, slug });
+      setResult({ success: deployed.length > 0, message: msg, slug, rows });
       onDeployed();
     } catch {
-      setResult({ success: false, message: "Network error. Please try again." });
+      setResult({ success: false, message: "Network error. Please try again.", rows: [] });
     } finally {
       setDeploying(false);
     }
@@ -205,6 +212,8 @@ export default function QuickDeployModal({ onClose, onDeployed }: QuickDeployMod
                 {result.message.split("\n\nClient portal")[0]}
               </p>
             </div>
+
+            <ProvisionResults rows={result.rows} />
 
             {/* Shareable Client Link */}
             {result.success && result.slug && (

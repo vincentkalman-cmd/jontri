@@ -13,10 +13,17 @@ import { Kicker, PageGlow, panelCls } from "@/components/site/ui";
 
 interface ServiceDetail {
   status: string;
+  detail?: string;
   businessPhone?: string;
   businessHours?: string;
   embedCode?: string;
+  scores?: Record<string, number>;
+  fixes?: { label: string; fix: string }[];
+  aiScore?: number;
+  recommendations?: string[];
 }
+
+const SCORE_LABELS: Record<string, string> = { seo: "Google SEO", ai: "AI search", speed: "Speed & mobile", trust: "Trust signals" };
 
 interface ClientPortal {
   name: string;
@@ -48,6 +55,9 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   active: { label: "Active", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
   completed: { label: "Active", color: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30" },
   dry_run: { label: "Testing", color: "bg-purple-500/15 text-purple-400 border-purple-500/30" },
+  needs_setup: { label: "Waiting on info", color: "bg-yellow-500/15 text-yellow-400 border-yellow-500/30" },
+  manual: { label: "In progress", color: "bg-accent/15 text-accent-light border-accent/30" },
+  error: { label: "Being fixed", color: "bg-red-500/15 text-red-400 border-red-500/30" },
 };
 
 export default function ClientPortalPage() {
@@ -154,6 +164,43 @@ export default function ClientPortalPage() {
                       {statusInfo.label}
                     </span>
                   </div>
+
+                  {svc.scores && (
+                    <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {Object.entries(svc.scores).map(([k, v]) => (
+                        <div key={k} className="rounded-xl bg-bg-primary/60 border border-border p-3 text-center">
+                          <p className="text-2xl font-display font-extrabold text-text-primary leading-none">{v}</p>
+                          <p className="text-[11px] text-text-muted mt-1.5">{SCORE_LABELS[k] || k}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {svc.fixes && svc.fixes.length > 0 && (
+                    <ul className="mt-4 space-y-2">
+                      {svc.fixes.map((f, i) => (
+                        <li key={i} className="text-sm text-text-secondary bg-bg-primary/50 border border-border rounded-lg px-3 py-2">
+                          <span className="text-text-primary font-medium">{f.label}:</span> {f.fix}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {typeof svc.aiScore === "number" && (
+                    <p className="mt-4 text-sm text-text-secondary">
+                      AI search visibility: <span className="text-text-primary font-semibold">{svc.aiScore}/10</span>
+                    </p>
+                  )}
+
+                  {svc.recommendations && svc.recommendations.length > 0 && (
+                    <ul className="mt-3 space-y-2">
+                      {svc.recommendations.map((r, i) => (
+                        <li key={i} className="text-sm text-text-secondary bg-bg-primary/50 border border-border rounded-lg px-3 py-2">
+                          {r}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
 
                   {/* Service-specific details */}
                   {key === "voice-agent" && svc.businessPhone && (

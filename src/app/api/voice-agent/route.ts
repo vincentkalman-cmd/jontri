@@ -18,7 +18,8 @@ async function getClientVapiKey(slug: string): Promise<string | null> {
     .select("config")
     .eq("slug", slug)
     .single();
-  return data?.config?.vapiApiKey || null;
+  // Saved by the dashboard under config["voice-agent"]; older rows may have it at the top level.
+  return data?.config?.["voice-agent"]?.vapiApiKey || data?.config?.vapiApiKey || null;
 }
 
 // GET — list assistants or call logs using the client's Vapi key
