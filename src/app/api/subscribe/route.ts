@@ -29,6 +29,7 @@ async function sendNotificationEmail(data: {
   name?: string;
   email: string;
   company?: string;
+  phone?: string;
   message?: string;
   source?: string;
   site?: string;
@@ -43,6 +44,7 @@ async function sendNotificationEmail(data: {
   const safeName = escapeHtml(data.name || "Unknown");
   const safeEmail = escapeHtml(data.email);
   const safeCompany = data.company ? escapeHtml(data.company) : "";
+  const safePhone = data.phone ? escapeHtml(String(data.phone).slice(0, 30)) : "";
   const safeMessage = data.message ? escapeHtml(data.message) : "";
 
   const safeSite = data.site ? escapeHtml(String(data.site).slice(0, 200)) : "";
@@ -60,6 +62,7 @@ async function sendNotificationEmail(data: {
     <table style="border-collapse:collapse;width:100%;max-width:500px;">
       <tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Name</td><td style="padding:8px;border-bottom:1px solid #eee;">${safeName}</td></tr>
       <tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Email</td><td style="padding:8px;border-bottom:1px solid #eee;"><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
+      ${safePhone ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Phone</td><td style="padding:8px;border-bottom:1px solid #eee;"><a href="tel:${safePhone}">${safePhone}</a></td></tr>` : ""}
       ${safeCompany ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Company</td><td style="padding:8px;border-bottom:1px solid #eee;">${safeCompany}</td></tr>` : ""}
       ${safeSite ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Website</td><td style="padding:8px;border-bottom:1px solid #eee;">${safeSite}</td></tr>` : ""}
       ${safeReport ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Site score</td><td style="padding:8px;border-bottom:1px solid #eee;white-space:pre-wrap;">${safeReport}</td></tr>` : ""}

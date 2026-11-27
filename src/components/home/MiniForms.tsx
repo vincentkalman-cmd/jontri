@@ -20,12 +20,13 @@ async function post(body: Record<string, string>): Promise<boolean> {
 export function ContactMini() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [phone, setPhone] = useState("");
   const [state, setState] = useState<State>("idle");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     setState("sending");
-    setState((await post({ email, message, source: "contact" })) ? "sent" : "error");
+    setState((await post({ email, phone: phone.trim(), message, source: "contact" })) ? "sent" : "error");
   }
 
   return (
@@ -38,6 +39,8 @@ export function ContactMini() {
         <form onSubmit={submit} style={{ display: "grid", gap: 8 }}>
           <label className="sr-only" htmlFor="c-msg">What do you need help with?</label>
           <input id="c-msg" required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="What do you need help with?" maxLength={2000} />
+          <label className="sr-only" htmlFor="c-phone">Phone (optional)</label>
+          <input id="c-phone" type="tel" autoComplete="tel" inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone (optional)" maxLength={30} />
           <div className="row">
             <label className="sr-only" htmlFor="c-email">Email</label>
             <input id="c-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@business.com" />
