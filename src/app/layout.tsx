@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { Inter, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import "./home.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+// Self-hosted variable fonts (latin subset) so builds never depend on Google Fonts.
+const inter = localFont({
+  src: "./fonts/inter-latin.woff2",
   variable: "--font-inter",
+  weight: "100 900",
+  display: "swap",
 });
 
-const display = Bricolage_Grotesque({
-  subsets: ["latin"],
+const display = localFont({
+  src: "./fonts/bricolagegrotesque-latin.woff2",
   variable: "--font-bricolage",
-  axes: ["opsz"],
+  weight: "200 800",
+  display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
+const mono = localFont({
+  src: "./fonts/jetbrainsmono-latin.woff2",
   variable: "--font-jetbrains",
-  weight: ["400", "500", "600"],
+  weight: "100 800",
+  display: "swap",
 });
 
 const SITE_URL = "https://jontri.com";
