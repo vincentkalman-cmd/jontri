@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,32 +7,52 @@ const inter = Inter({
   variable: "--font-sans",
 });
 
+const display = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-display",
+  axes: ["opsz"],
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500", "600"],
+});
+
+const SITE_URL = "https://jontri.com";
+const TITLE = "Jontri | AI Voice Agents, Lead Generation & Automation";
+const DESCRIPTION =
+  "Jontri sets up and manages AI voice agents, lead prospecting, website chatbots, review management, and SEO for businesses, so you capture every lead and cut busywork.";
+
 export const metadata: Metadata = {
-  title: "Jontri | AI-Powered Business Consulting",
-  description:
-    "Jontri helps businesses increase income and decrease expenses through intelligent AI automation solutions.",
-  keywords: [
-    "AI consulting",
-    "business automation",
-    "AI automation",
-    "reduce expenses",
-    "increase revenue",
-  ],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: TITLE,
+    template: "%s | Jontri",
+  },
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  applicationName: "Jontri",
   openGraph: {
-    title: "Jontri | AI-Powered Business Consulting",
+    title: TITLE,
     description:
-      "Increase income. Decrease expenses. AI automation that delivers real results.",
-    url: "https://jontri.com",
+      "Done-for-you AI automation: 24/7 AI call answering, automated lead generation, chatbots, and SEO that gets you found on Google and in AI answers.",
+    url: SITE_URL,
     siteName: "Jontri",
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jontri | AI-Powered Business Consulting",
+    title: TITLE,
     description:
-      "Increase income. Decrease expenses. AI automation that delivers real results.",
+      "Done-for-you AI automation: 24/7 AI call answering, automated lead generation, chatbots, and SEO.",
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 export default function RootLayout({
@@ -41,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

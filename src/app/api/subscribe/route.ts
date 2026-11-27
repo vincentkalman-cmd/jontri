@@ -30,6 +30,9 @@ async function sendNotificationEmail(data: {
   email: string;
   company?: string;
   message?: string;
+  source?: string;
+  site?: string;
+  report?: string;
 }) {
   const to = process.env.ZOHO_EMAIL;
   if (!to || !process.env.ZOHO_PASSWORD) {
@@ -42,9 +45,15 @@ async function sendNotificationEmail(data: {
   const safeCompany = data.company ? escapeHtml(data.company) : "";
   const safeMessage = data.message ? escapeHtml(data.message) : "";
 
-  const subject = data.message
-    ? `New Contact Form Submission from ${safeName}`
-    : `New Lead Capture: ${safeName} (${safeEmail})`;
+  const safeSite = data.site ? escapeHtml(String(data.site).slice(0, 200)) : "";
+  const safeReport = data.report ? escapeHtml(String(data.report).slice(0, 2000)) : "";
+
+  const subject =
+    data.source === "site-score"
+      ? `Site Score Lead: ${safeSite || safeEmail} (${safeEmail})`
+      : data.message
+        ? `New Contact Form Submission from ${safeName}`
+        : `New Lead Capture: ${safeName} (${safeEmail})`;
 
   const html = `
     <h2>${escapeHtml(subject)}</h2>
@@ -52,6 +61,8 @@ async function sendNotificationEmail(data: {
       <tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Name</td><td style="padding:8px;border-bottom:1px solid #eee;">${safeName}</td></tr>
       <tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Email</td><td style="padding:8px;border-bottom:1px solid #eee;"><a href="mailto:${safeEmail}">${safeEmail}</a></td></tr>
       ${safeCompany ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Company</td><td style="padding:8px;border-bottom:1px solid #eee;">${safeCompany}</td></tr>` : ""}
+      ${safeSite ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Website</td><td style="padding:8px;border-bottom:1px solid #eee;">${safeSite}</td></tr>` : ""}
+      ${safeReport ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Site score</td><td style="padding:8px;border-bottom:1px solid #eee;white-space:pre-wrap;">${safeReport}</td></tr>` : ""}
       ${safeMessage ? `<tr><td style="padding:8px;font-weight:bold;border-bottom:1px solid #eee;">Message</td><td style="padding:8px;border-bottom:1px solid #eee;">${safeMessage}</td></tr>` : ""}
     </table>
     <br/>
@@ -87,6 +98,9 @@ async function sendChecklistEmail(data: { name?: string; email: string }) {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
+    if (typeof data.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      return NextResponse.json({ error: "Please enter a valid email" }, { status: 400 });
+    }
 
     const body = new URLSearchParams();
     body.append("email_address", data.email);
@@ -112,9 +126,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // Send both the checklist to the subscriber and the notification to us
+    // Only checklist sign-ups get the checklist; contact messages and
+    // site-score leads just notify us.
+    const wantsChecklist = data.source !== "contact" && data.source !== "site-score";
     await Promise.allSettled([
-      sendChecklistEmail(data),
+      wantsChecklist ? sendChecklistEmail(data) : Promise.resolve(),
       sendNotificationEmail(data),
     ]);
 

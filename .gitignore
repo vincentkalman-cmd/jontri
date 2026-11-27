@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Claude Code MCP config (contains local secrets)
+.mcp.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
@@ -63,3 +66,6 @@ jontri_platform/__pycache__/
 .claude/
 
 .vercel
+
+# brainstorming companion
+.superpowers/

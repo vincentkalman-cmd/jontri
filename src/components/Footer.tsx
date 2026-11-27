@@ -11,8 +11,8 @@ export function Footer() {
               Jontri Consulting
             </h3>
             <p className="text-sm text-text-secondary">
-              AI-powered business consulting that increases income and decreases
-              expenses.
+              Done-for-you AI automation: voice agents, lead generation,
+              chatbots, and SEO that increase income and decrease expenses.
             </p>
           </div>
 

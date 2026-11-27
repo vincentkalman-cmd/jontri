@@ -5,7 +5,7 @@ import { useEffect } from "react";
 export function ChatWidget() {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "/api/chatbot?client=jontri-consulting&color=%233B82F6&v=3";
+    script.src = "/api/chatbot?client=jontri-consulting&color=%2335E0C2&v=3";
     script.async = true;
     document.body.appendChild(script);
 

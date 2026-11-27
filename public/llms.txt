@@ -1,0 +1,23 @@
+# Jontri
+
+> Jontri is a done-for-you AI automation company. We set up and manage AI systems that answer calls, generate leads, and get businesses found online, so owners capture more revenue with less busywork.
+
+## Services
+- AI Voice Agent: a 24/7 AI receptionist that answers calls, qualifies callers, books appointments, and transfers urgent calls.
+- AI Lead Prospecting: daily lists of qualified local prospects, researched and scored by AI, with personalized outreach.
+- AI Website Chatbot: a chatbot trained on the business that answers questions and captures leads after hours.
+- Review Management: automated review requests and AI-drafted review replies.
+- SEO & AI Search Visibility: Google SEO plus visibility in ChatGPT, Perplexity, and Google AI Overviews.
+- Follow-Up & Custom Workflows: automated follow-up sequences, quoting, reporting, and custom n8n workflows.
+
+Services are offered as three monthly packages (AI Lead Engine, AI Operations Suite, Full AI Transformation) or individually.
+
+## How it works
+1. Discovery: review current operations and find where AI can help most.
+2. Strategy: a custom automation plan with ROI projections.
+3. Implementation: build and integrate the systems with existing tools.
+4. Optimization: ongoing monitoring, tuning, and scaling.
+
+## Contact
+- Website: https://jontri.com
+- Email: hello@jontri.com

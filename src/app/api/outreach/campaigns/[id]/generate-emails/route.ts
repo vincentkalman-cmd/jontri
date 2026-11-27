@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import Anthropic from "@anthropic-ai/sdk";
+import { NO_THINKING_SONNET, textOf } from "@/lib/claude";
 import { EMAIL_PROMPT, SENDER, fillPrompt } from "@/lib/outreach-config";
 
 // POST /api/outreach/campaigns/[id]/generate-emails — generate personalized emails
@@ -74,13 +75,14 @@ export async function POST(
 
       try {
         const resp = await anthropic.messages.create({
-          model: "claude-sonnet-4-6",
+          model: "claude-sonnet-5-5",
+          thinking: NO_THINKING_SONNET,
           max_tokens: 500,
           messages: [{ role: "user", content: prompt }],
         });
 
         const text =
-          resp.content[0].type === "text" ? resp.content[0].text : "";
+          textOf(resp);
         const result = JSON.parse(text);
 
         await supabase

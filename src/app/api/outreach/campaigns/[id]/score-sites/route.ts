@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import Anthropic from "@anthropic-ai/sdk";
+import { NO_THINKING_HAIKU, textOf } from "@/lib/claude";
 import { SITE_SCORE_PROMPT, fillPrompt } from "@/lib/outreach-config";
 
 // POST /api/outreach/campaigns/[id]/score-sites — score lead websites
@@ -83,13 +84,14 @@ export async function POST(
 
       try {
         const resp = await anthropic.messages.create({
-          model: "claude-haiku-4-5-20251001",
+          model: "claude-haiku-5-5",
+          thinking: NO_THINKING_HAIKU,
           max_tokens: 500,
           messages: [{ role: "user", content: prompt }],
         });
 
         const text =
-          resp.content[0].type === "text" ? resp.content[0].text : "";
+          textOf(resp);
         const result = JSON.parse(text);
 
         await supabase
